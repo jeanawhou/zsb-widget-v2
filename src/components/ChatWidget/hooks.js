@@ -3,21 +3,18 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
-import { isExpandedChatSelector } from 'store/selectors/ui.js';
+import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { messagesSelector } from 'store/selectors/messages.js';
-import { decrypt, encrypt } from 'src/store/utils';
 
-const SECRET_KEY = import.meta.env.VITE_CRYPTO_KEY;
 
-const useChatWidget = ({ bot }) => {
+const useChatWidget = (props) => {
   const [, dispatch] = useContext(Context);
-  const isExpanded = useSelector(isExpandedChatSelector);
+  const isExpanded = useSelector(isWidgetExpandedSelector);
   const messages = useSelector(messagesSelector);
 
   const widgetRef = useRef();
 
   const [isViewportBelow50, setIsViewportBelow50] = useState(false);
-  const [encyptText, setEncrypt] = useState({});
 
   const toggleChat = () => {
     if (isExpanded) {
@@ -26,9 +23,6 @@ const useChatWidget = ({ bot }) => {
       dispatch({ type: EXPAND_WIDGET })
     }
   };
-
-  console.log('enc', SECRET_KEY, bot, encyptText);
-
 
   useEffect(() => {
     const checkViewportHeight = () => {
@@ -42,20 +36,17 @@ const useChatWidget = ({ bot }) => {
       checkViewportHeight();
     };
 
-    const enc = encrypt(bot, String(SECRET_KEY));
-    setEncrypt(enc);
-
     checkViewportHeight();
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-
-  }, [bot]);
+  }, []);
 
   const noOperation = async () => ({});
 
+  // scroll down if messages changed
   useEffect(() => {
     if (messages && widgetRef.current) {
       const messageContainer = widgetRef.current
@@ -64,9 +55,6 @@ const useChatWidget = ({ bot }) => {
           messageContainer.scrollTop = messageContainer.scrollHeight,
         200
       );
-    }
-    if (messages && messages.length && encyptText) {
-      console.log(decrypt(encyptText, SECRET_KEY));
     }
   }, [messages])
   

@@ -2,16 +2,19 @@ import PropTypes from 'prop-types'
 import { StyledChatHeader, StyledChatHeaderActionIcons, StyledFlexColumnSpaceEvenly, StyledSubtitle } from '../StyledComponents';
 import { CloseOutlined, EllipsisOutlined } from '@ant-design/icons';
 import WidgetIcon from '../WidgetIcon';
+import useSelector from 'src/store/useSelector';
+import { chatConfigSelector } from 'src/store/selectors/ui';
 
 const ChatHeader = props => {
   const { toggleChat, showLogoOnChat, ...rest } = props
+  const chatConfig = useSelector(chatConfigSelector)
 
   return (
     <StyledChatHeader {...rest}>
       {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
-        <h3>ZSB Chat ZSB ChatZSB Chat ZSB</h3>
-        <StyledSubtitle>Im a subtitle</StyledSubtitle>
+        <h3>{chatConfig.identifier || chatConfig.botTitle}</h3>
+        <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
       </StyledFlexColumnSpaceEvenly>
       <StyledChatHeaderActionIcons>
         <CloseOutlined

@@ -3,9 +3,12 @@ import { SendOutlined } from '@ant-design/icons';
 
 import { StyledInputWrapper } from '../StyledComponents';
 import { useMessageInput } from './hooks';
+import useSelector from 'src/store/useSelector';
+import { chatConfigSelector } from 'src/store/selectors/ui';
 
 
 const MessageInput = props => {
+  const chatConfig = useSelector(chatConfigSelector)
   const { placeholder, ...rest } = props;
   const {
     handleKeyDown,
@@ -20,7 +23,7 @@ const MessageInput = props => {
     <StyledInputWrapper {...rest}>
       <textarea
         rows={1}
-        placeholder={placeholder}
+        placeholder={chatConfig.placeholder}
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
         onKeyDown={handleKeyDown}
