@@ -1,6 +1,7 @@
 import { botReducer } from './bot';
 import { messagesReducer } from './messages';
 import { uiReducer } from './ui';
+import { userReducer } from './user';
 
 const combineReducers =
   (...reducers) =>
@@ -8,7 +9,8 @@ const combineReducers =
     reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
 export const combinedReducers = combineReducers(
-  messagesReducer,
-  uiReducer,
+  userReducer,
   botReducer,
+  uiReducer,
+  messagesReducer,
 );
