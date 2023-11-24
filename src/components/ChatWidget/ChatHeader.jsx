@@ -1,30 +1,14 @@
-import { cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import { StyledChatHeader, StyledChatHeaderActionIcons, StyledFlexColumnSpaceEvenly, StyledSubtitle } from '../StyledComponents';
 import { CloseOutlined, EllipsisOutlined } from '@ant-design/icons';
+import WidgetIcon from '../WidgetIcon';
 
 const ChatHeader = props => {
-  const { toggleChat, launcherIcon, showLogoOnChat, ...rest } = props
-  const renderChatLogo = () => {
-    const classNames = `chat-launcher isLogoOnly`;
+  const { toggleChat, showLogoOnChat, ...rest } = props
 
-    if (typeof launcherIcon === 'string') {
-      return (
-        <img
-          src={launcherIcon}
-          alt="chat launcher"
-          className={classNames}
-        />
-      );
-    } else {
-      return cloneElement(launcherIcon, {
-        className: classNames,
-      });
-    }
-  }
   return (
     <StyledChatHeader {...rest}>
-      {showLogoOnChat ? renderChatLogo() : null}
+      {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
         <h3>ZSB Chat ZSB ChatZSB Chat ZSB</h3>
         <StyledSubtitle>Im a subtitle</StyledSubtitle>

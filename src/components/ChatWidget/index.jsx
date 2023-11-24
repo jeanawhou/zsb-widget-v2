@@ -1,4 +1,3 @@
-import { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -15,14 +14,10 @@ import Typing from '../Typing';
 import MessageInput from '../MessageInput';
 import ChatHeader from './ChatHeader';
 import QuickReplies from '../QuickReplies';
+import WidgetIcon from '../WidgetIcon';
 
 const ChatWidget = (props) => {
-  console.log();
   const {
-    title,
-    subtitle,
-    launcherIcon,
-    widgetColor,
     placeholder,
     style,
     configProps,
@@ -42,13 +37,7 @@ const ChatWidget = (props) => {
         />
       );
     } else {
-      if (typeof launcherIcon === 'string') {
-        return (
-          <img src={launcherIcon} className="chat-launcher" alt="chat launcher" onClick={toggleChat} />
-        );
-      } else {
-        return cloneElement(launcherIcon, { onClick: toggleChat, className: 'chat-launcher' })
-      }
+      return <WidgetIcon onClick={toggleChat} />
     }
   };
 
@@ -68,7 +57,7 @@ const ChatWidget = (props) => {
       minimized={!isExpanded ? 'true' : 'false'}
       style={style}
     >
-      {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat={showLogoOnChat} launcherIcon={launcherIcon} /> : null}
+      {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat={showLogoOnChat} /> : null}
       {isExpanded && (
         <StyledChatWrapper minimized={!isExpanded ? 'true' : 'false'}>
           <StyledMessagesWrapper ref={widgetRef}>
@@ -105,9 +94,7 @@ ChatWidget.defaultProps = {
   launcherIcon:
     'https://logosandtypes.com/wp-content/uploads/2022/07/openai.svg',
   showLogoOnChat: false,
-  bot: {
-    subject: 'jeana cute'
-  },
+  bot: ''
 };
 
 ChatWidget.propTypes = {
@@ -121,7 +108,7 @@ ChatWidget.propTypes = {
   configProps: PropTypes.object,
   handleSendMessage: PropTypes.func,
   handleAddReply: PropTypes.func,
-  bot: PropTypes.object,
+  bot: PropTypes.string,
 };
 
 export default ChatWidget;
