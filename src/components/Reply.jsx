@@ -7,7 +7,6 @@ import TimeStamp from './TimeStamp';
 
 const Reply = ({ message }) => {
   const { timeReply, reply } = message;
-  console.log('timeReply', timeReply);
   return (
     <StyledMessage>
       <StyledBotReplyMessage>
