@@ -10,6 +10,6 @@ const Typing = () => {
       </StyledBotReplyMessage>
     </StyledMessage>
   );
-}
+};
 
-export default Typing
+export default Typing;

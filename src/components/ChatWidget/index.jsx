@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types';
 import { CloseOutlined } from '@ant-design/icons';
 
-import {
-  StyledChatWrapper,
-  StyledMessagesWrapper,
-  StyledWidgetWrapper,
-} from '../StyledComponents';
+import { StyledChatWrapper, StyledMessagesWrapper, StyledWidgetWrapper } from '../StyledComponents';
 import useChatWidget from './hooks';
 import UserMessage from '../UserMessage';
 import Reply from '../Reply';
@@ -16,8 +12,7 @@ import QuickReplies from '../QuickReplies';
 import WidgetIcon from '../WidgetIcon';
 
 const ChatWidget = (props) => {
-  const { isExpanded, messages, toggleChat, widgetRef, isViewportBelow50 } =
-  useChatWidget(props);
+  const { isExpanded, messages, toggleChat, widgetRef, isViewportBelow50 } = useChatWidget(props);
 
   const quickReplies = [
     {
@@ -31,10 +26,7 @@ const ChatWidget = (props) => {
   ];
 
   return (
-    <StyledWidgetWrapper
-      minimized={!isExpanded ? 'true' : 'false'}
-      style={props.style}
-    >
+    <StyledWidgetWrapper minimized={!isExpanded ? 'true' : 'false'} style={props.style}>
       {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat={true} /> : null}
       {isExpanded && (
         <StyledChatWrapper minimized={!isExpanded ? 'true' : 'false'}>
@@ -43,11 +35,7 @@ const ChatWidget = (props) => {
               return (
                 <div key={`message-${index}`}>
                   {message.text ? <UserMessage message={message} /> : null}
-                  {message.reply ? (
-                    <Reply message={message} key={`reply-message-${index}`} />
-                  ) : (
-                    <Typing />
-                  )}
+                  {message.reply ? <Reply message={message} key={`reply-message-${index}`} /> : <Typing />}
                 </div>
               );
             })}
@@ -56,12 +44,11 @@ const ChatWidget = (props) => {
           <MessageInput />
         </StyledChatWrapper>
       )}
-      {isViewportBelow50 && isExpanded ? null : isExpanded ? <CloseOutlined
-          onClick={toggleChat}
-          size={30}
-          className="chat-launcher"
-        /> : <WidgetIcon onClick={toggleChat} />}
-    
+      {isViewportBelow50 && isExpanded ? null : isExpanded ? (
+        <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
+      ) : (
+        <WidgetIcon onClick={toggleChat} />
+      )}
     </StyledWidgetWrapper>
   );
 };

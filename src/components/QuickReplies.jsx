@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 
-import {
-  StyledClientMessage,
-  StyledFlexRowSpaceEvenly,
-} from './StyledComponents';
+import { StyledClientMessage, StyledFlexRowSpaceEvenly } from './StyledComponents';
 import { useContext } from 'react';
 import { Context } from 'src/store/store';
 import { SEND_NEW_MESSAGE } from 'src/store/action';
@@ -14,17 +11,15 @@ const QuickReplies = (props) => {
   const [state, dispatch] = useContext(Context);
 
   const handleClickBubble = async (message) => {
-    const res = await apiService.askQuestion()
+    const res = await apiService.askQuestion();
     dispatch({ type: SEND_NEW_MESSAGE, payload: { newMessage: message } });
-  }
+  };
 
   return (
     <StyledFlexRowSpaceEvenly style={{ paddingTop: 5 }}>
       {quickReplies.map((qr, idx) => (
         <StyledClientMessage quickreply="true" key={`quick-reply ${idx}`} onClick={() => handleClickBubble(qr.value)}>
-          <span>
-            {qr.label}
-          </span>
+          <span>{qr.label}</span>
         </StyledClientMessage>
       ))}
     </StyledFlexRowSpaceEvenly>
@@ -32,10 +27,12 @@ const QuickReplies = (props) => {
 };
 
 QuickReplies.propTypes = {
-  quickReplies: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.string,
-  })),
+  quickReplies: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    }),
+  ),
   onClick: PropTypes.func,
 };
 

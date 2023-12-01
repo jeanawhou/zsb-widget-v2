@@ -1,13 +1,18 @@
-import PropTypes from 'prop-types'
-import { StyledChatHeader, StyledChatHeaderActionIcons, StyledFlexColumnSpaceEvenly, StyledSubtitle } from '../StyledComponents';
+import PropTypes from 'prop-types';
+import {
+  StyledChatHeader,
+  StyledChatHeaderActionIcons,
+  StyledFlexColumnSpaceEvenly,
+  StyledSubtitle,
+} from '../StyledComponents';
 import { CloseOutlined, EllipsisOutlined } from '@ant-design/icons';
 import WidgetIcon from '../WidgetIcon';
 import useSelector from 'src/store/useSelector';
 import { chatConfigSelector } from 'src/store/selectors/ui';
 
-const ChatHeader = props => {
-  const { toggleChat, showLogoOnChat, ...rest } = props
-  const chatConfig = useSelector(chatConfigSelector)
+const ChatHeader = (props) => {
+  const { toggleChat, showLogoOnChat, ...rest } = props;
+  const chatConfig = useSelector(chatConfigSelector);
 
   return (
     <StyledChatHeader {...rest}>
@@ -17,16 +22,12 @@ const ChatHeader = props => {
         <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
       </StyledFlexColumnSpaceEvenly>
       <StyledChatHeaderActionIcons>
-        <CloseOutlined
-          onClick={toggleChat}
-          tabIndex={1}
-          onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : ({}))}
-        />
+        <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />
         <EllipsisOutlined />
       </StyledChatHeaderActionIcons>
     </StyledChatHeader>
   );
-}
+};
 
 ChatHeader.propTypes = {
   toggleChat: PropTypes.func.isRequired,
@@ -34,4 +35,4 @@ ChatHeader.propTypes = {
   launcherIcon: PropTypes.any,
 };
 
-export default ChatHeader
+export default ChatHeader;

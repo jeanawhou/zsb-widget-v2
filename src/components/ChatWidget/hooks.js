@@ -6,7 +6,6 @@ import useSelector from 'store/useSelector';
 import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { messagesSelector } from 'store/selectors/messages.js';
 
-
 const useChatWidget = (props) => {
   const [, dispatch] = useContext(Context);
   const isExpanded = useSelector(isWidgetExpandedSelector);
@@ -20,7 +19,7 @@ const useChatWidget = (props) => {
     if (isExpanded) {
       dispatch({ type: MINIMIZE_WIDGET });
     } else {
-      dispatch({ type: EXPAND_WIDGET })
+      dispatch({ type: EXPAND_WIDGET });
     }
   };
 
@@ -49,15 +48,11 @@ const useChatWidget = (props) => {
   // scroll down if messages changed
   useEffect(() => {
     if (messages && widgetRef.current) {
-      const messageContainer = widgetRef.current
-      setTimeout(
-        () =>
-          messageContainer.scrollTop = messageContainer.scrollHeight,
-        200
-      );
+      const messageContainer = widgetRef.current;
+      setTimeout(() => (messageContainer.scrollTop = messageContainer.scrollHeight), 200);
     }
-  }, [messages])
-  
+  }, [messages]);
+
   return {
     isExpanded,
     messages,
@@ -66,6 +61,6 @@ const useChatWidget = (props) => {
     widgetRef,
     isViewportBelow50,
   };
-}
+};
 
-export default useChatWidget
+export default useChatWidget;

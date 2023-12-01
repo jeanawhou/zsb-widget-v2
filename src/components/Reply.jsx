@@ -20,13 +20,13 @@ const Reply = ({ message }) => {
       </StyledBotReplyMessage>
     </StyledMessage>
   );
-}
+};
 
 Reply.propTypes = {
   message: PropTypes.shape({
     reply: PropTypes.string,
     timeReply: PropTypes.any,
-  })
+  }),
 };
 
-export default Reply
+export default Reply;

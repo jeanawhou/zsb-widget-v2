@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { SendOutlined } from '@ant-design/icons';
 
 import { StyledInputWrapper } from '../StyledComponents';
@@ -6,17 +6,10 @@ import { useMessageInput } from './hooks';
 import useSelector from 'src/store/useSelector';
 import { chatConfigSelector } from 'src/store/selectors/ui';
 
-
-const MessageInput = props => {
-  const chatConfig = useSelector(chatConfigSelector)
+const MessageInput = (props) => {
+  const chatConfig = useSelector(chatConfigSelector);
   const { placeholder, ...rest } = props;
-  const {
-    handleKeyDown,
-    handleSendMessage,
-    setNewMessage,
-    newMessage,
-    isExpanded,
-  } = useMessageInput({
+  const { handleKeyDown, handleSendMessage, setNewMessage, newMessage, isExpanded } = useMessageInput({
     props,
   });
   return (
@@ -29,18 +22,13 @@ const MessageInput = props => {
         onKeyDown={handleKeyDown}
         autoFocus={isExpanded}
       />
-      <SendOutlined
-        label="Send"
-        onClick={handleSendMessage}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-      />
+      <SendOutlined label="Send" onClick={handleSendMessage} onKeyDown={handleKeyDown} tabIndex={0} />
     </StyledInputWrapper>
   );
-}
+};
 
 MessageInput.propTypes = {
   placeholder: PropTypes.string,
 };
 
-export default MessageInput
+export default MessageInput;
