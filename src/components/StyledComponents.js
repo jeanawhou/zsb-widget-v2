@@ -91,7 +91,6 @@ export const StyledChatWrapper = styled.div`
             font-size: 36px;
             padding: 10px;
             border-radius: 50%;
-            
           }
         `
       : css`
@@ -128,11 +127,24 @@ export const StyledWidgetWrapper = styled.div`
     }
   }
 
+  @keyframes reverseRotate {
+    from {
+      transform: rotate(180deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
   .chat-launcher {
     cursor: pointer;
     height: 40px;
     margin-top: 10px;
     float: right;
+    background: ${(props) => props.color || cssVariables.zsbCyanGradient};
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow: ${cssVariables.boxShadow};
 
     &.isLogoOnly {
       padding: 0px;
@@ -145,10 +157,10 @@ export const StyledWidgetWrapper = styled.div`
       props.minimized === 'false'
         ? css`
             border-radius: 50%;
-            border: 1px solid ${cssVariables.zsbCyanGradient};
-            box-shadow: ${cssVariables.boxShadow};
+            border: 1px solid ${(props) => props.color || cssVariables.zsbCyanGradient};
             width: 40px;
-            background-color: ${(props) => props.color || cssVariables.zsbCyan};
+            height: 40px;
+            background: ${(props) => props.color || cssVariables.zsbCyanGradient};
 
             &.anticon-close {
               display: flex;
@@ -160,7 +172,9 @@ export const StyledWidgetWrapper = styled.div`
               animation: rotate 0.5s linear;
             }
           `
-        : css``}
+        : css`
+            animation: reverseRotate 0.5s linear;
+          `}
   }
 `;
 
@@ -175,7 +189,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
     }
   }
 
-  background-color: ${(props) => props.color || cssVariables.zsbCyan};
+  background: ${(props) => props.color || cssVariables.zsbCyanGradient};
   color: ${(props) => props.textColor || '#fff'};
   padding: 6px;
   width: ${(props) => props.width || '300px'};
@@ -241,7 +255,7 @@ export const StyledClientMessage = styled(StyledMessage)`
     padding: ${(props) => (props.quickreply === 'true' ? '5px 8px' : '8px')};
     width: fit-content;
     border-radius: 10px;
-    background-color: ${(props) => props.color || cssVariables.zsbCyan};
+    background: ${(props) => props.color || cssVariables.zsbCyanGradient};
     color: ${(props) => props.textColor || '#fff'};
   }
 `;
@@ -290,8 +304,7 @@ export const StyledBotReplyMessage = styled(StyledMessage)`
       content: '';
       animation: blink 1s infinite;
       animation-fill-mode: both;
-      background: ${(props) =>
-        props.color ? props.color : cssVariables.zsbCyan} !important;
+      background: ${(props) => (props.color ? props.color : cssVariables.zsbCyan)} !important;
       top: 5px;
       border-radius: 50% !important;
       text-align: center;
