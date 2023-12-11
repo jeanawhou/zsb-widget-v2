@@ -1,13 +1,13 @@
-import { StyledBotReplyMessage, StyledMessage } from './StyledComponents';
+import { StyledBotReply, StyledMessage } from './StyledComponents';
 
 const Typing = () => {
   return (
     <StyledMessage>
-      <StyledBotReplyMessage className="typing">
+      <StyledBotReply className="typing">
         <span></span>
         <span></span>
         <span></span>
-      </StyledBotReplyMessage>
+      </StyledBotReply>
     </StyledMessage>
   );
 };
