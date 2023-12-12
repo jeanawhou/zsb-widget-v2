@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import { useCallback } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
 import { StyledChatWrapper, StyledMessagesWrapper, StyledWidgetWrapper } from '../StyledComponents';
@@ -10,20 +10,22 @@ import MessageInput from '../MessageInput';
 import ChatHeader from './ChatHeader';
 import QuickReplies from '../QuickReplies';
 import WidgetIcon from '../WidgetIcon';
+import useSelector from 'src/store/useSelector';
+import {
+  shouldShowQuickRepliesSelector,
+  lastMessageQuickReplySelector,
+  messagesSelector,
+} from 'src/store/selectors/messages';
 
 const ChatWidget = (props) => {
-  const { isExpanded, messages, toggleChat, widgetRef, isViewportBelow50 } = useChatWidget(props);
+  const { isExpanded, toggleChat, widgetRef, isViewportBelow50 } = useChatWidget(props);
+  const messages = useSelector(messagesSelector);
+  const quickReplies = useSelector(lastMessageQuickReplySelector);
+  const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
 
-  const quickReplies = [
-    {
-      label: 'hello',
-      value: 'hello',
-    },
-    {
-      label: 'hi',
-      value: 'hi',
-    },
-  ];
+  const renderQuickReply = useCallback(() => {
+    return shouldShowQuickReply ? <QuickReplies quickReplies={quickReplies} /> : <></>;
+  }, [quickReplies, shouldShowQuickReply]);
 
   return (
     <StyledWidgetWrapper minimized={!isExpanded ? 'true' : 'false'} style={props.style}>
@@ -40,7 +42,7 @@ const ChatWidget = (props) => {
               );
             })}
           </StyledMessagesWrapper>
-          <QuickReplies quickReplies={quickReplies} />
+          {renderQuickReply()}
           <MessageInput />
         </StyledChatWrapper>
       )}
