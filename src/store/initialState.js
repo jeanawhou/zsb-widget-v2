@@ -1,4 +1,4 @@
-export const initialMessages = []
+export const initialMessages = [];
 
 export const initialChat = {
   title: 'ZSB Chat',
@@ -12,11 +12,10 @@ export const initialChat = {
 
 export const initialUI = {
   isWidgetExpanded: false,
-  quickReplies: [],
   widgetType: 'chat',
   widgetConfig: {
     icon: '/zsb-icon-faded-small.svg',
-    chat: initialChat
+    chat: initialChat,
   },
 };
 
@@ -24,7 +23,7 @@ export const initialPublicKeys = {
   sentinel: null,
   graph: null,
   wlk: null,
-  key: null
+  key: null,
 };
 
 export const initialUserState = {
@@ -32,7 +31,7 @@ export const initialUserState = {
   email: null,
   name: null,
   sessionId: null,
-}
+};
 
 export const initialMetadata = {
   maxInteraction: null,
@@ -40,7 +39,7 @@ export const initialMetadata = {
   maxUnlike: null,
   enableTextToSpeech: false,
   unlikeCount: null,
-}
+};
 
 export const initialState = {
   messages: initialMessages,
@@ -53,5 +52,5 @@ export const initialState = {
   fbConfig: {
     fbApiVersion: null,
     fbAccessToken: null,
-  }
+  },
 };
