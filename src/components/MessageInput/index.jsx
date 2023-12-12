@@ -8,7 +8,7 @@ import { chatConfigSelector } from 'src/store/selectors/ui';
 
 const MessageInput = (props) => {
   const chatConfig = useSelector(chatConfigSelector);
-  const { placeholder, ...rest } = props;
+  const { placeholder, ...rest } = chatConfig;
   const { handleKeyDown, handleSendMessage, setNewMessage, newMessage, isExpanded } = useMessageInput({
     props,
   });
@@ -16,7 +16,7 @@ const MessageInput = (props) => {
     <StyledInputWrapper {...rest}>
       <textarea
         rows={1}
-        placeholder={chatConfig.placeholder}
+        placeholder={placeholder}
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
         onKeyDown={handleKeyDown}
