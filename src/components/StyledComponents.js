@@ -139,6 +139,7 @@ export const StyledWidgetWrapper = styled.div`
   .chat-launcher {
     cursor: pointer;
     height: 40px;
+    width: 40px;
     margin-top: 10px;
     float: right;
     background: ${(props) => props.color || cssVariables.zsbCyanGradient};
@@ -248,14 +249,17 @@ export const StyledMessage = styled.div`
 `;
 
 export const StyledClientMessage = styled(StyledMessage)`
-  align-items: flex-end;
+  align-items: ${(props) => (props.quickreply === 'true' ? 'center' : 'flex-end')};
+  width: ${(props) => (props.quickreply === 'true' ? '100%' : 'inherit')};
 
   > span:first-child {
-    max-width: 80%;
+    max-width: ${(props) => (props.quickreply === 'true' ? '100%' : '80%')};
     padding: ${(props) => (props.quickreply === 'true' ? '5px 8px' : '8px')};
+    margin: ${(props) => (props.quickreply === 'true' ? '0px 5px' : '0')};
+    cursor: ${(props) => (props.quickreply === 'true' ? 'pointer' : 'auto')};
     width: fit-content;
     border-radius: 10px;
-    background: ${(props) => props.color || cssVariables.zsbCyanGradient};
+    background: ${(props) => (props.reaction === 'true' ? '#f0f0f0' : props.color || cssVariables.zsbCyanGradient)};
     color: ${(props) => props.textColor || '#fff'};
   }
 `;
@@ -272,18 +276,17 @@ export const StyledReplyFooter = styled(StyledFlexRowSpaceBetween)`
   }
 `;
 
-export const StyledBotReplyMessage = styled(StyledMessage)`
+export const StyledQuickReplyWrapper = styled.div`
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 5px 0;
+  width: 100%;
+`;
+
+export const StyledBotReply = styled(StyledMessage)`
   align-items: flex-start;
   max-width: 80%;
-
-  span:first-child:not(.typing) {
-    border-radius: 10px;
-    background-color: #f0f0f0;
-    text-align: left;
-    width: fit-content;
-    padding: 8px;
-    line-height: 18px;
-  }
 
   &.typing {
     background-color: #f0f0f0;
@@ -339,6 +342,30 @@ export const StyledBotReplyMessage = styled(StyledMessage)`
     100% {
       opacity: 0.1;
     }
+  }
+`;
+
+export const StyledReplyMessageContent = styled.span`
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  text-align: left;
+  width: fit-content;
+  padding: 8px;
+  line-height: 18px;
+  margin: 5px 0;
+
+  .anticon {
+    display: block;
+    margin-right: -5px;
+    margin-bottom: -12px;
+    text-align: end;
+  }
+
+  p:last-child,
+  p:last-child,
+  span > p:last-child,
+  span > p:only-child {
+    margin: 0;
   }
 `;
 
