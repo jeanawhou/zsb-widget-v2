@@ -12,16 +12,10 @@ export const apiService = {
     });
   },
 
-  askQuestion: function (
-    input,
-    publicKeys,
-    user,
-    interactionId,
-    channel,
-  ) {
+  askQuestion: function (input, publicKeys, user, interactionId, integration, ws = null) {
     const { sentinel, key, graph, wlk } = publicKeys;
     const { isAuthenticated, visitorId, sessionId } = user;
-    const interactionHistory = getLocalStorageItem('context')
+    const interactionHistory = getLocalStorageItem('context') || [];
 
     return this.jacPrimeRun({
       snt: sentinel,
@@ -34,40 +28,33 @@ export const apiService = {
           visitor_id: visitorId,
           session_id: sessionId,
           interaction_id: interactionId,
-          channel,
+          channel: integration.name,
           isAuthenticated,
         },
+        integration,
         api_name: 'ask_question',
         history: interactionHistory,
+        ws_target: ws,
       },
     });
   },
 
-  logFeedback: function (
-    key,
-    nd,
-    snt,
-    wlk,
-    feedback,
-    visitor_id,
-    session_id,
-    interaction_id,
-    channel,
-    isAuthenticated
-  ) {
+  logFeedback: function (publicKeys, feedback, interactionId, user, channel) {
+    const { sentinel, key, graph, wlk } = publicKeys;
+    const { isAuthenticated, visitorId, sessionId } = user;
     return this.jacPrimeRun({
-      snt,
+      snt: sentinel,
       key,
-      nd,
+      nd: graph,
       wlk,
       ctx: {
         feedback,
         metadata: {
           channel,
           isAuthenticated,
-          visitor_id,
-          session_id,
-          interaction_id,
+          visitor_id: visitorId,
+          session_id: sessionId,
+          interaction_id: interactionId,
         },
         api_name: 'log_feedback',
       },
@@ -84,7 +71,7 @@ export const apiService = {
     channel,
     interactionID,
     hasAlreadySentEmail,
-    callbackEmail
+    callbackEmail,
   ) {
     const uuidPrefix = 'urn:uuid:';
     const strippedUUID = nd.split(uuidPrefix).pop();
@@ -97,11 +84,7 @@ export const apiService = {
         customer_info,
         session_id,
         api_name: 'log_callback',
-        send_email: callbackEmail
-          ? hasAlreadySentEmail
-            ? false
-            : true
-          : false,
+        send_email: callbackEmail ? (hasAlreadySentEmail ? false : true) : false,
         interaction_id: interactionID,
         url: `${BASE_URL}/bot/${strippedUUID}/callback-logs?sessionid=${session_id}`,
       },
