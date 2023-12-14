@@ -1,11 +1,18 @@
 import { omit } from 'lodash';
 
-import { CLEAR_QUICK_REPLIES, EXPAND_WIDGET, MINIMIZE_WIDGET, SET_QUICK_REPLIES, SET_WIDGET_CONFIG } from '../action';
+import {
+  ADD_REACTION_TO_LAST_MESSAGE,
+  CLEAR_QUICK_REPLIES,
+  EXPAND_WIDGET,
+  MINIMIZE_WIDGET,
+  SET_QUICK_REPLIES,
+  SET_WIDGET_CONFIG,
+} from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 
 export const uiReducer = (state, action) => {
-  const EXCLUDED_PROPS = ['style', 'bot', 'children']
+  const EXCLUDED_PROPS = ['style', 'bot', 'children'];
 
   switch (action.type) {
     case EXPAND_WIDGET: {
@@ -51,10 +58,7 @@ export const uiReducer = (state, action) => {
 
     case SET_WIDGET_CONFIG: {
       const { configJSON, widgetProps } = action.payload;
-      const widgetUI = extractWidgetUI(
-        omit(configJSON, EXCLUDED_PROPS),
-        omit(widgetProps, EXCLUDED_PROPS)
-      );
+      const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
       const { icon, fbAccessToken, fbApiVersion, authenticatedUser, ...restOfUI } = widgetUI;
 
@@ -64,11 +68,11 @@ export const uiReducer = (state, action) => {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon,
+            icon: icon || state.ui.widgetConfig.icon,
             chat: {
               ...restOfUI,
-            }
-          }
+            },
+          },
         },
         user: {
           ...state.user,
@@ -83,6 +87,10 @@ export const uiReducer = (state, action) => {
         bot: {
           ...state.bot,
           identifier: restOfUI.identifier,
+        },
+        integration: {
+          ...state.integration,
+          ...restOfUI.integration,
         },
         isWidgetReady: true,
       };
