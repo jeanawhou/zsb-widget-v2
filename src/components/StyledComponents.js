@@ -354,11 +354,15 @@ export const StyledReplyMessageContent = styled.span`
   line-height: 18px;
   margin: 5px 0;
 
-  .anticon {
+  .anticon:not(.anticon-warning) {
     display: block;
     margin-right: -5px;
     margin-bottom: -12px;
     text-align: end;
+  }
+
+  .anticon-warning {
+    margin-right: 5px;
   }
 
   p:last-child,

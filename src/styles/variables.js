@@ -5,4 +5,5 @@ export const cssVariables = {
   boxShadowNoBottom: '0 1px 0 0 rgb(0 0 0 / 20%), 0 2px 0 0 rgb(0 0 0 / 20%)',
   blueLike: '#4267B2',
   redLike: '#FA3E3E',
+  warning: '#faad14',
 };
