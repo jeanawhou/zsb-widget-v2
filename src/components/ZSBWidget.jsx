@@ -52,7 +52,6 @@ ZSBWidget.defaultProps = {
   title: '',
   subtitle: '',
   placeholder: 'Type your message...',
-  icon: 'https://logosandtypes.com/wp-content/uploads/2022/07/openai.svg',
   showLogoOnChat: false,
   bot: 'U2FsdGVkX1/+3jMGwQZvHR+ZGRFTAwkLrSKLGHZNd2+xKPqkvy+BUykxlCqoEHvAwFWkaK8qUtDzFaIuvvx0JpPKU9xnxT7o2zWecCrfg1fBPlFrQ6sGFo+sKaGME/4yqBDs28YG+WpaAnvC/o8g9r7rUoumuWedsU8puK0ftC0qfQOmXsJHBy0BoRVq72bwB/kNrnCI5DC2QciUVnVxWHvdHbPfv+TTQf+J/wtG0OU+kF1MX9fkY1kPL9acK7njXNcyOwujfZFphRaqXvbTUHCaWOObS6sUXxEhK4LpEE3D28Qq7+4EI3gzNI9S3+dj0qRdm7R1bpwRdG4UzbIOKmK1UgslT+NgYdIZ/RzXulUeCCT/rNauHTaY3URiSC9823VbqULna3k8LY8CrG01uu9R4YDwaYcoSUt5gIM9dNg1d1v5Uqv1wt6MZa+rxUl4099h3/Z8QnCIZmdaMVdeAE9kb5QQxCl8sAK42hxxN9dvcgiXykKgFu8KnV7I4PAZ4+3MukpyS1WMxM1XnQVvHw==',
 };
