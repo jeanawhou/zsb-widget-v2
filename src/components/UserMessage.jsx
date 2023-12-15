@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 import { StyledClientMessage, StyledMessage } from './StyledComponents';
 import TimeStamp from './TimeStamp';
+import DOMPurify from 'dompurify';
 
 const UserMessage = ({ message }) => {
   const { timeMessageSent, text } = message;
@@ -9,7 +10,11 @@ const UserMessage = ({ message }) => {
   return (
     <StyledMessage>
       <StyledClientMessage>
-        <span>{text}</span>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(text),
+          }}
+        />
         <em>
           <TimeStamp time={timeMessageSent} />
         </em>
