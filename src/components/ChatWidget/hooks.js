@@ -7,7 +7,7 @@ import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { messagesSelector } from 'store/selectors/messages.js';
 
 const useChatWidget = (props) => {
-  const [, dispatch] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const messages = useSelector(messagesSelector);
 

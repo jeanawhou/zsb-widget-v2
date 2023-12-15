@@ -13,6 +13,7 @@ export const initialChat = {
 export const initialUI = {
   isWidgetExpanded: false,
   widgetType: 'chat',
+  newMessageCount: null,
   widgetConfig: {
     icon: '/zsb-icon-faded-small.svg',
     chat: initialChat,

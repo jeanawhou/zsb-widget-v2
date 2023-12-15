@@ -1,7 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
-import { StyledChatWrapper, StyledMessagesWrapper, StyledWidgetWrapper } from '../StyledComponents';
+import {
+  StyledChatWrapper,
+  StyledFlexRowRight,
+  StyledMessageBadge,
+  StyledMessagesWrapper,
+  StyledWidgetWrapper,
+} from '../StyledComponents';
 import useChatWidget from './hooks';
 import UserMessage from '../UserMessage';
 import Reply from '../Reply';
@@ -16,12 +22,40 @@ import {
   lastMessageQuickReplySelector,
   messagesSelector,
 } from 'src/store/selectors/messages';
+import { newMessageCountSelector } from 'src/store/selectors/ui';
+import { Context } from 'src/store/store';
+import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
 
 const ChatWidget = (props) => {
   const { isExpanded, toggleChat, widgetRef, isViewportBelow50 } = useChatWidget(props);
+  const [, dispatch] = useContext(Context);
   const messages = useSelector(messagesSelector);
   const quickReplies = useSelector(lastMessageQuickReplySelector);
   const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
+  const newMessageCount = useSelector(newMessageCountSelector);
+
+  const handleScroll = () => {
+    if (widgetRef.current) {
+      const element = widgetRef.current;
+      const isMessagesWrapperScrolled = element.scrollTop + element.clientHeight >= element.scrollHeight;
+
+      if (isMessagesWrapperScrolled) {
+        dispatch({ type: CLEAR_NEW_MESSAGE_BADGE });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (widgetRef.current) {
+      widgetRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (widgetRef.current) {
+        widgetRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
 
   const renderQuickReply = useCallback(() => {
     return shouldShowQuickReply ? <QuickReplies quickReplies={quickReplies} /> : <></>;
@@ -46,10 +80,15 @@ const ChatWidget = (props) => {
           <MessageInput />
         </StyledChatWrapper>
       )}
-      {isViewportBelow50 && isExpanded ? null : isExpanded ? (
-        <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
-      ) : (
-        <WidgetIcon onClick={toggleChat} />
+      {isViewportBelow50 ? null : (
+        <StyledFlexRowRight>
+          {isExpanded ? (
+            <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
+          ) : (
+            <WidgetIcon onClick={toggleChat} />
+          )}
+          {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
+        </StyledFlexRowRight>
       )}
     </StyledWidgetWrapper>
   );

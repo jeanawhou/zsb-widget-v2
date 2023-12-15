@@ -408,3 +408,15 @@ export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
     cursor: pointer;
   }
 `;
+
+export const StyledMessageBadge = styled.span`
+  text-align: center;
+  background: ${cssVariables.redLike};
+  height: 14px;
+  border-radius: 50%;
+  margin-left: -16px;
+  padding: 4px;
+  width: 14px;
+  font-size: 12px;
+  color: #fff;
+`;
