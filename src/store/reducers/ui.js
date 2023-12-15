@@ -93,6 +93,14 @@ export const uiReducer = (state, action) => {
           ...restOfUI.integration,
         },
         isWidgetReady: true,
+        messages: state.messages?.length
+          ? []
+          : [
+              {
+                reply: { text: widgetUI.welcomeMessage } || null,
+                timeReply: new Date(),
+              },
+            ],
       };
     }
 
