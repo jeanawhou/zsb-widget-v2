@@ -9,6 +9,22 @@ export const StyledFlexRowCenter = styled.div`
   align-items: center;
 `;
 
+export const StyledFlexbox = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+export const StyledFlexCenter = styled(StyledFlexbox)`
+  justify-content: center;
+  align-items: center;
+`;
+
+export const StyledFlexRowRight = styled(StyledFlexbox)`
+  ${StyledFlexCenter}
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
 export const StyledFlexRowLeft = styled.div`
   display: flex;
   flex-direction: row;
@@ -51,6 +67,14 @@ export const StyledFlexRowSpaceEvenly = styled.div`
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
+  gap: 5px;
+`;
+
+export const StyledActionButtonsWrapper = styled(StyledFlexRowSpaceEvenly)`
+  margin-top: 10px;
+  > button {
+    width: 100%;
+  }
 `;
 
 export const StyledFlexColumn = styled.div`
@@ -59,6 +83,14 @@ export const StyledFlexColumn = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+export const StyledFlexColumnLeft = styled(StyledFlexColumn)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: start;
 `;
 
 export const StyledSubtitle = styled.span`

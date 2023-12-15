@@ -22,7 +22,7 @@ import {
   lastMessageQuickReplySelector,
   messagesSelector,
 } from 'src/store/selectors/messages';
-import { newMessageCountSelector } from 'src/store/selectors/ui';
+import { newMessageCountSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
 import { Context } from 'src/store/store';
 import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
 
@@ -33,6 +33,7 @@ const ChatWidget = (props) => {
   const quickReplies = useSelector(lastMessageQuickReplySelector);
   const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
+  const widgetThemeColor = useSelector(widgetThemeColorSelector);
 
   const handleScroll = () => {
     if (widgetRef.current) {
@@ -62,7 +63,7 @@ const ChatWidget = (props) => {
   }, [quickReplies, shouldShowQuickReply]);
 
   return (
-    <StyledWidgetWrapper minimized={!isExpanded ? 'true' : 'false'} style={props.style}>
+    <StyledWidgetWrapper color={widgetThemeColor} minimized={!isExpanded ? 'true' : 'false'} style={props.style}>
       {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat={true} /> : null}
       {isExpanded && (
         <StyledChatWrapper minimized={!isExpanded ? 'true' : 'false'}>

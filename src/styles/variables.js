@@ -6,4 +6,5 @@ export const cssVariables = {
   blueLike: '#4267B2',
   redLike: '#FA3E3E',
   warning: '#faad14',
+  grayBorder: '#c3c3c3',
 };

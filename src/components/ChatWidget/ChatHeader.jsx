@@ -1,21 +1,24 @@
 import PropTypes from 'prop-types';
+import { CloseOutlined } from '@ant-design/icons';
+
 import {
   StyledChatHeader,
   StyledChatHeaderActionIcons,
   StyledFlexColumnSpaceEvenly,
   StyledSubtitle,
 } from '../StyledComponents';
-import { CloseOutlined, EllipsisOutlined } from '@ant-design/icons';
 import WidgetIcon from '../WidgetIcon';
 import useSelector from 'src/store/useSelector';
-import { chatConfigSelector } from 'src/store/selectors/ui';
+import { chatConfigSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
+import ChatHeaderMenu from './ChatHeaderMenu';
 
 const ChatHeader = (props) => {
   const { toggleChat, showLogoOnChat, ...rest } = props;
   const chatConfig = useSelector(chatConfigSelector);
+  const widgetThemeColor = useSelector(widgetThemeColorSelector);
 
   return (
-    <StyledChatHeader {...rest}>
+    <StyledChatHeader color={widgetThemeColor} {...rest}>
       {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
         <h3>{chatConfig.identifier || chatConfig.botTitle}</h3>
@@ -23,7 +26,7 @@ const ChatHeader = (props) => {
       </StyledFlexColumnSpaceEvenly>
       <StyledChatHeaderActionIcons>
         <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />
-        <EllipsisOutlined />
+        <ChatHeaderMenu />
       </StyledChatHeaderActionIcons>
     </StyledChatHeader>
   );
