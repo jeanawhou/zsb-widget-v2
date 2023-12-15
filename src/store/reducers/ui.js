@@ -104,6 +104,26 @@ export const uiReducer = (state, action) => {
       };
     }
 
+    case ADD_REACTION_TO_LAST_MESSAGE: {
+      const messagesWithReplyLastMsg = (state.messages || []).map((msg, idx) => {
+        if (idx == state.messages?.length - 1) {
+          return {
+            ...msg,
+            feedback: action.payload,
+          };
+        }
+        return msg;
+      });
+      return {
+        ...state,
+        messages: messagesWithReplyLastMsg,
+        metadata: {
+          ...state.metadata,
+          dislikes: action.payload === 0 ? 1 + state.metadata.dislikes : state.metadata.dislikes,
+        },
+      };
+    }
+
     default:
       return state;
   }

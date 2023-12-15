@@ -37,9 +37,9 @@ export const initialUserState = {
 export const initialMetadata = {
   maxInteraction: null,
   interactionHistory: [],
-  maxUnlike: null,
+  maxDislikes: null,
   enableTextToSpeech: false,
-  unlikeCount: null,
+  dislikes: 0,
 };
 
 export const initialState = {
@@ -54,4 +54,5 @@ export const initialState = {
     fbApiVersion: null,
     fbAccessToken: null,
   },
+  metadata: initialMetadata,
 };

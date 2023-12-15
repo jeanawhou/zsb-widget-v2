@@ -1,13 +1,13 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { StyledClientMessage, StyledQuickReplyWrapper } from './StyledComponents';
 import { Context } from 'src/store/store';
-import { ADD_REACTION_TO_LAST_MESSAGE, ADD_REPLY, SEND_NEW_MESSAGE } from 'src/store/action';
+import { ADD_REACTION_TO_LAST_MESSAGE, ADD_REPLY, SEND_NEW_MESSAGE, SHOW_AGENT_HANDOVER_FORM } from 'src/store/action';
 import useSelector from 'src/store/useSelector';
 import { hasQuickReplySelector, lastMessageSelector } from 'src/store/selectors/messages';
 import { apiService } from 'src/services/api.service';
-import { publicKeysSelector } from 'src/store/selectors';
+import { isMaxDislikesReachedSelector, publicKeysSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { REACTIONS } from 'src/store/constants/chat';
@@ -22,6 +22,7 @@ const QuickReplies = (props) => {
   const user = useSelector(userSelector);
   const integration = useSelector(integrationSelector);
   const lastMessage = useSelector(lastMessageSelector);
+  const maxDislikesReached = useSelector(isMaxDislikesReachedSelector);
 
   const handleAddQuickReply = async (reply) => {
     dispatch({
@@ -34,6 +35,14 @@ const QuickReplies = (props) => {
       }, 1000);
     }
   };
+
+  useEffect(() => {
+    if (maxDislikesReached) {
+      dispatch({
+        type: SHOW_AGENT_HANDOVER_FORM,
+      });
+    }
+  }, [maxDislikesReached]);
 
   const handleAddFeedback = async (reply) => {
     apiService.logFeedback(publicKeys, reply, lastMessage.interactionId || '', user, integration.name);
