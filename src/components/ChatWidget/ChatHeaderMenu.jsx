@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { Dropdown } from 'antd';
 import { ClearOutlined, EllipsisOutlined } from '@ant-design/icons';
 
@@ -37,12 +36,6 @@ const ChatHeaderMenu = () => {
       <EllipsisOutlined />
     </Dropdown>
   );
-};
-
-ChatHeaderMenu.propTypes = {
-  toggleChat: PropTypes.func.isRequired,
-  showLogoOnChat: PropTypes.bool,
-  launcherIcon: PropTypes.any,
 };
 
 export default ChatHeaderMenu;

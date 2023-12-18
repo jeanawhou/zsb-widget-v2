@@ -64,7 +64,7 @@ const ChatWidget = (props) => {
 
   return (
     <StyledWidgetWrapper color={widgetThemeColor} minimized={!isExpanded ? 'true' : 'false'} style={props.style}>
-      {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat={true} /> : null}
+      {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat /> : null}
       {isExpanded && (
         <StyledChatWrapper minimized={!isExpanded ? 'true' : 'false'}>
           <StyledMessagesWrapper ref={widgetRef}>

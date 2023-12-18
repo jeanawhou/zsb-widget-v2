@@ -19,7 +19,7 @@ const ChatHeader = (props) => {
 
   return (
     <StyledChatHeader color={widgetThemeColor} {...rest}>
-      {showLogoOnChat ? <WidgetIcon isLogo /> : null}
+      {showLogoOnChat === 'true' ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
         <h3>{chatConfig.identifier || chatConfig.botTitle}</h3>
         <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
