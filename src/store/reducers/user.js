@@ -1,4 +1,4 @@
-import { SET_VISITOR_ID } from '../action';
+import { SET_VISITOR_ID, SUBMIT_AGENT_HANDOVER_FORM } from '../action';
 
 export const userReducer = (state, action) => {
   switch (action.type) {
@@ -8,6 +8,17 @@ export const userReducer = (state, action) => {
         user: {
           ...state.user,
           visitorId: action.payload,
+        },
+      };
+    }
+
+    case SUBMIT_AGENT_HANDOVER_FORM: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload,
+          hasSubmittedUserDetails: true,
         },
       };
     }

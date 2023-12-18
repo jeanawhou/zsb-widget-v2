@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getLocalStorageItem } from './global.service';
+import { omit } from 'lodash';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const apiService = {
@@ -61,32 +62,24 @@ export const apiService = {
     });
   },
 
-  logCallback: function (
-    key,
-    nd,
-    snt,
-    wlk,
-    session_id,
-    customer_info,
-    channel,
-    interactionID,
-    hasAlreadySentEmail,
-    callbackEmail,
-  ) {
+  logCallback: function (publicKeys, customerInfo, interactionID, hasAlreadySentEmail, callbackEmail, user) {
     const uuidPrefix = 'urn:uuid:';
-    const strippedUUID = nd.split(uuidPrefix).pop();
+    const { sentinel, key, graph, wlk } = publicKeys;
+    const { sessionId } = user;
+    const strippedUUID = graph.split(uuidPrefix).pop();
+    const filteredCustomerInfo = customerInfo.map((info) => omit(info, ['mandatory']));
     return this.jacPrimeRun({
-      snt,
+      snt: sentinel,
       key,
-      nd,
+      nd: graph,
       wlk,
       ctx: {
-        customer_info,
-        session_id,
+        customer_info: filteredCustomerInfo,
+        session_id: sessionId,
         api_name: 'log_callback',
         send_email: callbackEmail ? (hasAlreadySentEmail ? false : true) : false,
         interaction_id: interactionID,
-        url: `${BASE_URL}/bot/${strippedUUID}/callback-logs?sessionid=${session_id}`,
+        url: `${BASE_URL}/bot/${strippedUUID}/callback-logs?sessionid=${sessionId}`,
       },
     });
   },

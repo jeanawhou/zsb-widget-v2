@@ -12,7 +12,7 @@ export const dislikesSelector = createSelector(metadataSelector, (metadata) => m
 
 export const isMaxDislikesReachedSelector = createSelector(metadataSelector, (metadata) => {
   if (metadata.maxDislikes && metadata.dislikes) {
-    return metadata.dislikes >= metadata.maxDislikes;
+    return metadata.dislikes >= Number(metadata.maxDislikes);
   }
   return false;
 });

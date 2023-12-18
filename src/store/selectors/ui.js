@@ -12,4 +12,7 @@ export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat
 
 export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
 
+export const handOffLabelSelector = createSelector(chatConfigSelector, (chat) => chat.handoffLabel);
+export const shouldSendCallbackEmailSelector = createSelector(chatConfigSelector, (chat) => chat.callbackEmail);
+
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);

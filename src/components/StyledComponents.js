@@ -286,7 +286,7 @@ export const StyledClientMessage = styled(StyledMessage)`
 
   > span:first-child {
     max-width: ${(props) => (props.quickreply === 'true' ? '100%' : '80%')};
-    padding: ${(props) => (props.quickreply === 'true' ? '5px 8px' : '8px')};
+    padding: ${(props) => (props.quickreply === 'true' ? '6px 8px' : '8px')};
     margin: ${(props) => (props.quickreply === 'true' ? '0px 5px' : '0')};
     cursor: ${(props) => (props.quickreply === 'true' ? 'pointer' : 'auto')};
     width: fit-content;
@@ -297,6 +297,7 @@ export const StyledClientMessage = styled(StyledMessage)`
 `;
 
 export const StyledReplyFooter = styled(StyledFlexRowSpaceBetween)`
+  margin-left: 18px;
   > em {
     margin-top: 5px;
     font-size: 10px;
@@ -364,6 +365,18 @@ export const StyledBotReply = styled(StyledMessage)`
     }
   }
 
+  .anticon-warning,
+  .anticon-user {
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    margin-left: -10px;
+    font-size: 24px;
+    display: flex;
+    align-self: flex-start;
+    margin-top: 12px;
+  }
+
   @keyframes blink {
     0% {
       opacity: 0.1;
@@ -402,6 +415,24 @@ export const StyledReplyMessageContent = styled.span`
   span > p:last-child,
   span > p:only-child {
     margin: 0;
+  }
+
+  input {
+    & * + * {
+      margin: 5px 0px;
+    }
+    border-bottom: 1.5px solid ${cssVariables.grayBorder};
+    border-radius: 3px !important;
+
+    &:active,
+    &:focus,
+    &:hover {
+      border-bottom: 1.5px solid ${cssVariables.grayBorder};
+    }
+  }
+
+  input:not(:first-child) {
+    margin-top: 5px;
   }
 `;
 

@@ -37,7 +37,7 @@ export const initialUserState = {
 export const initialMetadata = {
   maxInteraction: null,
   interactionHistory: [],
-  maxDislikes: null,
+  maxDislikes: 3 || import.meta.env.VITE_MAX_DISLIKES,
   enableTextToSpeech: false,
   dislikes: 0,
 };

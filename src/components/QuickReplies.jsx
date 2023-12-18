@@ -13,6 +13,8 @@ import { integrationSelector } from 'src/store/selectors/integration';
 import { REACTIONS } from 'src/store/constants/chat';
 import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { cssVariables } from 'src/styles/variables';
+import { handOffLabelSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
+import { generateUUID } from 'src/store/utils';
 
 const QuickReplies = (props) => {
   const { quickReplies } = props;
@@ -23,6 +25,8 @@ const QuickReplies = (props) => {
   const integration = useSelector(integrationSelector);
   const lastMessage = useSelector(lastMessageSelector);
   const maxDislikesReached = useSelector(isMaxDislikesReachedSelector);
+  const widgetThemeColor = useSelector(widgetThemeColorSelector);
+  const handoffLabel = useSelector(handOffLabelSelector);
 
   const handleAddQuickReply = async (reply) => {
     dispatch({
@@ -34,6 +38,18 @@ const QuickReplies = (props) => {
         dispatch({ type: ADD_REPLY, payload: { reply: { ...reply.answer } } });
       }, 1000);
     }
+  };
+
+  const requestAgent = async () => {
+    await dispatch({
+      type: SEND_NEW_MESSAGE,
+      payload: { newMessage: handoffLabel, interactionId: generateUUID() },
+    });
+    setTimeout(() => {
+      dispatch({
+        type: SHOW_AGENT_HANDOVER_FORM,
+      });
+    }, 1000);
   };
 
   useEffect(() => {
@@ -65,22 +81,38 @@ const QuickReplies = (props) => {
 
   return (
     <StyledQuickReplyWrapper>
-      {hasQuickReply
-        ? quickReplies.replies.map((qr, idx) => (
-            <StyledClientMessage quickreply="true" key={`quick-reply-${idx}`} onClick={() => handleAddQuickReply(qr)}>
-              <span>{qr.display}</span>
-            </StyledClientMessage>
-          ))
-        : REACTIONS.map((qr, idx) => (
-            <StyledClientMessage
-              reaction="true"
-              quickreply="true"
-              key={`quick-reply-${idx}`}
-              onClick={() => handleAddFeedback(qr.reply)}
-            >
-              <span>{renderReaction(qr.display)}</span>
-            </StyledClientMessage>
-          ))}
+      {hasQuickReply ? (
+        quickReplies.replies.map((qr, idx) => (
+          <StyledClientMessage
+            color={widgetThemeColor}
+            quickreply="true"
+            key={`quick-reply-${idx}`}
+            onClick={() => handleAddQuickReply(qr)}
+          >
+            <span>{qr.display}</span>
+          </StyledClientMessage>
+        ))
+      ) : // if return default answer
+      // render agent handover option
+      lastMessage?.type === 'default' ? (
+        <StyledClientMessage color={widgetThemeColor} quickreply="true" onClick={() => requestAgent()}>
+          <span>{handoffLabel}</span>
+        </StyledClientMessage>
+      ) : // if lastmessage is agent handover message
+      //
+      lastMessage?.type === 'agent-handover' ? null : (
+        REACTIONS.map((qr, idx) => (
+          <StyledClientMessage
+            color={widgetThemeColor}
+            reaction="true"
+            quickreply="true"
+            key={`quick-reply-${idx}`}
+            onClick={() => handleAddFeedback(qr.reply)}
+          >
+            <span>{renderReaction(qr.display)}</span>
+          </StyledClientMessage>
+        ))
+      )}
     </StyledQuickReplyWrapper>
   );
 };

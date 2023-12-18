@@ -1,7 +1,10 @@
 import { omit } from 'lodash';
 
 import {
+  ADD_ERROR_REPLY,
   ADD_REACTION_TO_LAST_MESSAGE,
+  ADD_REPLY,
+  CLEAR_NEW_MESSAGE_BADGE,
   CLEAR_QUICK_REPLIES,
   EXPAND_WIDGET,
   MINIMIZE_WIDGET,
@@ -10,6 +13,7 @@ import {
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
+import { ZSB_CHAT_BREAKER_ENCONDING } from '../constants/chat';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -52,6 +56,44 @@ export const uiReducer = (state, action) => {
         ui: {
           ...state.ui,
           quickReplies: [],
+        },
+      };
+    }
+
+    case ADD_ERROR_REPLY: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          newMessageCount: state.ui.newMessageCount + 1,
+        },
+      };
+    }
+
+    case ADD_REPLY: {
+      const replyContext = action.payload.reply.context;
+      const newMessageCount = replyContext.show_html.reduce((acc, html) => {
+        if (String(html).includes(ZSB_CHAT_BREAKER_ENCONDING)) {
+          const splitted = html.split(ZSB_CHAT_BREAKER_ENCONDING);
+          return splitted.length + acc;
+        }
+        return acc + 1;
+      }, 0);
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          newMessageCount,
+        },
+      };
+    }
+
+    case CLEAR_NEW_MESSAGE_BADGE: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          newMessageCount: null,
         },
       };
     }
