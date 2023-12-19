@@ -67,7 +67,8 @@ export const apiService = {
     const { sentinel, key, graph, wlk } = publicKeys;
     const { sessionId } = user;
     const strippedUUID = graph.split(uuidPrefix).pop();
-    const filteredCustomerInfo = customerInfo.map((info) => omit(info, ['mandatory']));
+    const EXCLUDED_FORM_INFO = ['mandatory'];
+    const filteredCustomerInfo = customerInfo.map((info) => omit(info, EXCLUDED_FORM_INFO));
     return this.jacPrimeRun({
       snt: sentinel,
       key,
