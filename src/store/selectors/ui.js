@@ -8,6 +8,16 @@ export const widgetConfigSelector = createSelector(uiSelector, (ui) => ui.widget
 
 export const chatConfigSelector = createSelector(widgetConfigSelector, (widgetConfig) => widgetConfig.chat);
 
+export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig) => {
+  console.log('chatConfig', chatConfig);
+  return Object.fromEntries(
+    Object.entries(chatConfig).map(([key, value]) =>
+      // filter out null, object and array types
+      [key, value == null || typeof value === 'object' || Array.isArray(value) ? false : value].filter(Boolean),
+    ),
+  );
+});
+
 export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat) => chat.color);
 
 export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
