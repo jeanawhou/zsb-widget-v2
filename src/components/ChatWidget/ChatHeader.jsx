@@ -13,13 +13,13 @@ import { chatConfigSelector, widgetThemeColorSelector } from 'src/store/selector
 import ChatHeaderMenu from './ChatHeaderMenu';
 
 const ChatHeader = (props) => {
-  const { toggleChat, showLogoOnChat, ...rest } = props;
+  const { toggleChat, showLogoOnChat, hideLauncher, ...rest } = props;
   const chatConfig = useSelector(chatConfigSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
 
   return (
-    <StyledChatHeader color={widgetThemeColor} {...rest}>
-      {showLogoOnChat === 'true' ? <WidgetIcon isLogo /> : null}
+    <StyledChatHeader hideLauncher={hideLauncher} color={widgetThemeColor} {...rest}>
+      {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
         <h3>{chatConfig.identifier || chatConfig.botTitle}</h3>
         <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
@@ -35,6 +35,7 @@ const ChatHeader = (props) => {
 ChatHeader.propTypes = {
   toggleChat: PropTypes.func.isRequired,
   showLogoOnChat: PropTypes.bool,
+  hideLauncher: PropTypes.bool,
   launcherIcon: PropTypes.any,
 };
 
