@@ -1,5 +1,7 @@
 export const ZSB_CHAT_BREAKER_ENCONDING = '&lt;zsb-chat-breaker /&gt;';
 
+export const FALLBACK_WIDGET_LABEL = 'Talk to us!';
+
 export const DEFAULT_AGENT_HANDOVER_MESSAGE = {
   cancelledFormMessage: "You've cancelled the form. Anything else I can help you with?",
   submittedFormMessage:
