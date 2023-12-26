@@ -5,15 +5,23 @@ import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
 import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { messagesSelector } from 'store/selectors/messages.js';
+import { chatStylesSelector, newMessageCountSelector } from 'src/store/selectors/ui';
+import { lastMessageQuickReplySelector, shouldShowQuickRepliesSelector } from 'src/store/selectors/messages';
+import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
 
-const useChatWidget = (props) => {
-  const [state, dispatch] = useContext(Context);
+const useChatWidget = () => {
+  const [, dispatch] = useContext(Context);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const messages = useSelector(messagesSelector);
+  const chatStyles = useSelector(chatStylesSelector);
+  const quickReplies = useSelector(lastMessageQuickReplySelector);
+  const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
+  const newMessageCount = useSelector(newMessageCountSelector);
 
-  const widgetRef = useRef();
+  const messagesRef = useRef();
+  const widgetRef = useRef(null);
 
-  const [isViewportBelow50, setIsViewportBelow50] = useState(false);
+  const [hideLauncher, setHideLauncher] = useState(false);
 
   const toggleChat = () => {
     if (isExpanded) {
@@ -23,18 +31,39 @@ const useChatWidget = (props) => {
     }
   };
 
+  const checkViewportHeight = () => {
+    const viewportHeight = window.innerHeight;
+    const screenHeight = window.screen.height;
+    if (isExpanded) {
+      console.log('in isexpanded', widgetRef?.current?.clientHeight);
+
+      if (!hideLauncher) {
+        const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
+        const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
+        console.log('not hidden', hideLauncher, 'isSmallScreen', isWidgetHeightSmall, isTouchingTopOfPage);
+        if (isWidgetHeightSmall || (!isWidgetHeightSmall && isTouchingTopOfPage)) {
+          setHideLauncher(true);
+        } else {
+          setHideLauncher(false);
+        }
+      } else {
+        const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
+        const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
+        console.log('launcher is hidden', isWidgetHeightSmall, isTouchingTopOfPage);
+        if (!isWidgetHeightSmall || !isTouchingTopOfPage) {
+          setHideLauncher(false);
+        }
+      }
+    } else {
+      setHideLauncher(false);
+    }
+  };
+
+  const handleResize = () => {
+    checkViewportHeight();
+  };
+
   useEffect(() => {
-    const checkViewportHeight = () => {
-      const viewportHeight = window.innerHeight;
-      const screenHeight = window.screen.height;
-      const isBelow50 = viewportHeight <= screenHeight / 2;
-      setIsViewportBelow50(isBelow50);
-    };
-
-    const handleResize = () => {
-      checkViewportHeight();
-    };
-
     checkViewportHeight();
     window.addEventListener('resize', handleResize);
 
@@ -43,12 +72,27 @@ const useChatWidget = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    checkViewportHeight();
+  }, [isExpanded]);
+
   const noOperation = async () => ({});
+
+  const handleScroll = () => {
+    if (messagesRef.current) {
+      const element = messagesRef.current;
+      const isMessagesWrapperScrolled = element.scrollTop + element.clientHeight >= element.scrollHeight;
+
+      if (isMessagesWrapperScrolled) {
+        dispatch({ type: CLEAR_NEW_MESSAGE_BADGE });
+      }
+    }
+  };
 
   // scroll down if messages changed
   useEffect(() => {
-    if (messages && widgetRef.current) {
-      const messageContainer = widgetRef.current;
+    if (messages && messagesRef.current) {
+      const messageContainer = messagesRef.current;
       setTimeout(() => (messageContainer.scrollTop = messageContainer.scrollHeight), 200);
     }
   }, [messages]);
@@ -58,8 +102,14 @@ const useChatWidget = (props) => {
     messages,
     noOperation,
     toggleChat,
+    messagesRef,
     widgetRef,
-    isViewportBelow50,
+    hideLauncher,
+    chatStyles,
+    quickReplies,
+    shouldShowQuickReply,
+    newMessageCount,
+    handleScroll,
   };
 };
 
