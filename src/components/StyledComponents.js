@@ -101,7 +101,13 @@ export const StyledSubtitle = styled.span`
   overflow: hidden;
 `;
 
-export const StyledChatWrapper = styled.div`
+export const StyledChatWrapper = styled(StyledFlexColumn)`
+  height: ${(props) => {
+    return props.hideLauncher ? '86%' : props.minimized === 'true' ? '0' : props.height || '350px';
+  }};
+  display: flex;
+  justify-content: space-between;
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -143,12 +149,78 @@ export const StyledChatWrapper = styled.div`
         `}
 `;
 
+export const StyledLauncherWrapper = styled.div`
+  color: #fff;
+  width: fit-content;
+  display: flex;
+  cursor: pointer;
+
+  margin-top: ${(props) =>
+    props.position?.includes('top') ? '0px' : props.position?.includes('bottom') ? '10px' : 'inherit'};
+  margin-bottom: ${(props) =>
+    props.position?.includes('bottom') ? '0px' : props.position?.includes('top') ? '10px' : 'inherit'};
+  margin-left: ${(props) =>
+    props.position?.includes('left') ? '0px' : props.position?.includes('right') ? '10px' : 'inherit'};
+  margin-right: ${(props) =>
+    props.position?.includes('right') ? '0px' : props.position?.includes('left') ? '10px' : 'inherit'};
+
+  top: ${(props) => (props.position?.includes('top') ? '0px' : 'inherit')};
+  bottom: ${(props) => (props.position?.includes('bottom') ? '0px' : 'inherit')};
+  left: ${(props) => (props.position?.includes('left') ? '0px' : 'inherit')};
+  right: ${(props) => (props.position?.includes('right') ? '0px' : 'inherit')};
+
+  float: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
+  ${(props) =>
+    props.position?.includes('left')
+      ? css`
+          ${StyledFlexRowLeft}
+        `
+      : css`
+          ${StyledFlexRowRight}
+        `}
+`;
+
+export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
+  height: 40px;
+  width: fit-content;
+  padding: 0 10px;
+  border-radius: 5px;
+  background: ${(props) => props.color || cssVariables.zsbCyan};
+`;
+
 export const StyledWidgetWrapper = styled.div`
   font-size: 16px;
-  font-family: 'Roboto', sans-serif !important;
+
+  font-family: Roboto, sans-serif !important;
+  height: ${(props) => (props.hideLauncher ? '100%' : props.minimized === 'true' ? 'auto' : 'inherit')};
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: ${(props) =>
+    props.hideLauncher && (props.position?.includes('bottom') || props.position?.includes('top'))
+      ? '0px'
+      : props.position?.includes('bottom')
+        ? '20px'
+        : 'inherit'};
+  right: ${(props) =>
+    props.hideLauncher && (props.position?.includes('right') || props.position?.includes('left'))
+      ? '0px'
+      : props.position?.includes('right')
+        ? '20px'
+        : 'inherit'};
+  top: ${(props) =>
+    props.hideLauncher && (props.position?.includes('top') || props.position?.includes('bottom'))
+      ? '0px'
+      : props.position?.includes('top')
+        ? '20px'
+        : 'inherit'};
+  left: ${(props) =>
+    props.hideLauncher && (props.position?.includes('left') || props.position?.includes('right'))
+      ? '0px'
+      : props.position?.includes('left')
+        ? '20px'
+        : 'inherit'};
+
+  text-align: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
+  text-align: ${(props) => (props.position?.includes('right') ? '-webkit-right' : '-webkit-left')};
 
   @keyframes rotate {
     from {
@@ -172,11 +244,9 @@ export const StyledWidgetWrapper = styled.div`
     cursor: pointer;
     height: 40px;
     width: 40px;
-    margin-top: 10px;
-    float: right;
-    background: ${(props) => props.color || cssVariables.zsbCyanGradient};
+    background: ${(props) => props.color || cssVariables.zsbCyan};
     padding: 5px;
-    border-radius: 50%;
+    border-radius: ${(props) => (props.shape?.includes('circle') ? '50%' : '5px')};
     box-shadow: ${cssVariables.boxShadow};
 
     &.isLogoOnly {
@@ -185,15 +255,16 @@ export const StyledWidgetWrapper = styled.div`
       box-shadow: none;
       cursor: default;
       background: none;
+      border: none;
     }
     ${(props) =>
       props.minimized === 'false'
         ? css`
             border-radius: 50%;
-            border: 1px solid ${(props) => props.color || cssVariables.zsbCyanGradient};
+            border: 1px solid ${(props) => props.color || cssVariables.zsbCyan};
             width: 40px;
             height: 40px;
-            background: ${(props) => props.color || cssVariables.zsbCyanGradient};
+            background: ${(props) => props.color || cssVariables.zsbCyan};
 
             &.anticon-close {
               display: flex;
@@ -222,13 +293,14 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
     }
   }
 
-  background: ${(props) => props.color || cssVariables.zsbCyanGradient};
+  background: ${(props) => props.color || cssVariables.zsbCyan};
   color: ${(props) => props.textColor || '#fff'};
   padding: 6px;
   width: ${(props) => props.width || '300px'};
   border-radius: 5px 5px 0px 0px;
   box-shadow: ${cssVariables.boxShadow};
-  height: 100px;
+  height: ${(props) => (props.hideLauncher ? '12%' : '80px')};
+  max-height: 80px;
   align-items: center;
   text-overflow: ellipsis;
   animation: fadeIn 0.5s ease-in-out;
@@ -254,8 +326,8 @@ export const StyledMessagesWrapper = styled.div`
   width: 100%;
   display: ${(props) => (props.minimized ? 'none' : 'flex')};
   overflow-y: auto;
-  min-height: 220px;
-  height: ${(props) => props.height || '350px'};
+  min-height: ${(props) => (props.hideLauncher ? '5%' : '220px')};
+  height: ${(props) => (props.hideLauncher ? '100%' : props.minimized !== 'true' ? '100%' : 'auto')};
   flex-direction: column;
 
   > :first-child {
@@ -291,15 +363,14 @@ export const StyledClientMessage = styled(StyledMessage)`
     cursor: ${(props) => (props.quickreply === 'true' ? 'pointer' : 'auto')};
     width: fit-content;
     border-radius: 10px;
-    background: ${(props) => (props.reaction === 'true' ? '#f0f0f0' : props.color || cssVariables.zsbCyanGradient)};
+    background: ${(props) => (props.reaction === 'true' ? '#f0f0f0' : props.color || cssVariables.zsbCyan)};
     color: ${(props) => props.textColor || '#fff'};
   }
 `;
 
 export const StyledReplyFooter = styled(StyledFlexRowSpaceBetween)`
-  margin-left: 18px;
+  margin-left: 30px;
   > em {
-    margin-top: 5px;
     font-size: 10px;
   }
 
@@ -340,7 +411,7 @@ export const StyledBotReply = styled(StyledMessage)`
       content: '';
       animation: blink 1s infinite;
       animation-fill-mode: both;
-      background: ${(props) => (props.color ? props.color : cssVariables.zsbCyan)} !important;
+      background: ${(props) => props.color || cssVariables.zsbCyan} !important;
       top: 5px;
       border-radius: 50% !important;
       text-align: center;
@@ -375,6 +446,13 @@ export const StyledBotReply = styled(StyledMessage)`
     display: flex;
     align-self: flex-start;
     margin-top: 12px;
+  }
+
+  .anticon-user {
+    background: ${(props) => props.color || cssVariables.zsbCyan};
+    padding: 5px;
+    border-radius: 50%;
+    color: #fff;
   }
 
   @keyframes blink {
@@ -421,8 +499,6 @@ export const StyledReplyMessageContent = styled.span`
     & * + * {
       margin: 5px 0px;
     }
-    border-bottom: 1.5px solid ${cssVariables.grayBorder};
-    border-radius: 3px !important;
 
     &:active,
     &:focus,
@@ -440,18 +516,23 @@ export const StyledInputWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 10px;
+  width: 98%;
+  border-top: 1.5px solid ${cssVariables.grayBorder};
 
   textarea {
+    border: none !important;
     resize: none;
     border-radius: 5px;
     width: 100%;
     padding: 10px;
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto, sans-serif;
     max-height: 100px;
   }
 
   .anticon-send {
     margin-left: 5px;
+    font-size: 24px;
+    color: ${(props) => props.color || cssVariables.zsbCyan};
   }
 
   input[type='text'] {
