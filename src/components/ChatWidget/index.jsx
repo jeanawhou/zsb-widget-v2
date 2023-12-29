@@ -1,11 +1,13 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
 import {
   StyledChatWrapper,
-  StyledFlexRowRight,
+  StyledFlexColumn,
+  StyledLauncherWrapper,
   StyledMessageBadge,
   StyledMessagesWrapper,
+  StyledWidgetLabel,
   StyledWidgetWrapper,
 } from '../StyledComponents';
 import useChatWidget from './hooks';
@@ -16,44 +18,31 @@ import MessageInput from '../MessageInput';
 import ChatHeader from './ChatHeader';
 import QuickReplies from '../QuickReplies';
 import WidgetIcon from '../WidgetIcon';
-import useSelector from 'src/store/useSelector';
-import {
-  shouldShowQuickRepliesSelector,
-  lastMessageQuickReplySelector,
-  messagesSelector,
-} from 'src/store/selectors/messages';
-import { newMessageCountSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
-import { Context } from 'src/store/store';
-import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
+import { FALLBACK_WIDGET_LABEL } from 'src/store/constants/chat';
 
 const ChatWidget = (props) => {
-  const { isExpanded, toggleChat, widgetRef, isViewportBelow50 } = useChatWidget(props);
-  const [, dispatch] = useContext(Context);
-  const messages = useSelector(messagesSelector);
-  const quickReplies = useSelector(lastMessageQuickReplySelector);
-  const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
-  const newMessageCount = useSelector(newMessageCountSelector);
-  const widgetThemeColor = useSelector(widgetThemeColorSelector);
-
-  const handleScroll = () => {
-    if (widgetRef.current) {
-      const element = widgetRef.current;
-      const isMessagesWrapperScrolled = element.scrollTop + element.clientHeight >= element.scrollHeight;
-
-      if (isMessagesWrapperScrolled) {
-        dispatch({ type: CLEAR_NEW_MESSAGE_BADGE });
-      }
-    }
-  };
+  const {
+    isExpanded,
+    toggleChat,
+    messagesRef,
+    hideLauncher,
+    widgetRef,
+    chatStyles,
+    quickReplies,
+    shouldShowQuickReply,
+    newMessageCount,
+    handleScroll,
+    messages,
+  } = useChatWidget(props);
 
   useEffect(() => {
-    if (widgetRef.current) {
-      widgetRef.current.addEventListener('scroll', handleScroll);
+    if (messagesRef.current) {
+      messagesRef.current.addEventListener('scroll', handleScroll);
     }
 
     return () => {
-      if (widgetRef.current) {
-        widgetRef.current.removeEventListener('scroll', handleScroll);
+      if (messagesRef.current) {
+        messagesRef.current.removeEventListener('scroll', handleScroll);
       }
     };
   }, []);
@@ -63,11 +52,31 @@ const ChatWidget = (props) => {
   }, [quickReplies, shouldShowQuickReply]);
 
   return (
-    <StyledWidgetWrapper color={widgetThemeColor} minimized={!isExpanded ? 'true' : 'false'} style={props.style}>
-      {isExpanded ? <ChatHeader toggleChat={toggleChat} showLogoOnChat /> : null}
-      {isExpanded && (
-        <StyledChatWrapper minimized={!isExpanded ? 'true' : 'false'}>
-          <StyledMessagesWrapper ref={widgetRef}>
+    <StyledWidgetWrapper
+      hideLauncher={hideLauncher}
+      ref={widgetRef}
+      {...chatStyles}
+      minimized={!isExpanded ? 'true' : 'false'}
+      style={props.style}
+    >
+      {(!isExpanded || !hideLauncher) && chatStyles.position?.includes('top') ? (
+        <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
+          {isExpanded ? (
+            <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
+          ) : (
+            <WidgetIcon onClick={toggleChat} />
+          )}
+          {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
+        </StyledLauncherWrapper>
+      ) : null}
+      {isExpanded ? <ChatHeader hideLauncher={hideLauncher} toggleChat={toggleChat} showLogoOnChat /> : null}
+      {isExpanded ? (
+        <StyledChatWrapper
+          hideLauncher={hideLauncher}
+          height={chatStyles.height}
+          minimized={!isExpanded ? 'true' : 'false'}
+        >
+          <StyledMessagesWrapper ref={messagesRef}>
             {messages.map((message, index) => {
               return (
                 <div key={`message-${index}`}>
@@ -77,20 +86,28 @@ const ChatWidget = (props) => {
               );
             })}
           </StyledMessagesWrapper>
-          {renderQuickReply()}
-          <MessageInput />
+          <StyledFlexColumn>
+            {renderQuickReply()}
+            <MessageInput />
+          </StyledFlexColumn>
         </StyledChatWrapper>
-      )}
-      {isViewportBelow50 ? null : (
-        <StyledFlexRowRight>
-          {isExpanded ? (
-            <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
+      ) : null}
+      {(!isExpanded || !hideLauncher) && chatStyles.position?.includes('bottom') ? (
+        <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
+          {chatStyles.shape?.includes('circle') ? (
+            isExpanded ? (
+              <CloseOutlined size={30} className="chat-launcher" />
+            ) : (
+              <WidgetIcon />
+            )
           ) : (
-            <WidgetIcon onClick={toggleChat} />
+            // if shape not circle
+            // render the label or fallback
+            <StyledWidgetLabel color={chatStyles.color}>{chatStyles.label || FALLBACK_WIDGET_LABEL}</StyledWidgetLabel>
           )}
           {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
-        </StyledFlexRowRight>
-      )}
+        </StyledLauncherWrapper>
+      ) : null}
     </StyledWidgetWrapper>
   );
 };
