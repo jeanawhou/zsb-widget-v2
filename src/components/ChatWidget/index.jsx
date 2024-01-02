@@ -18,7 +18,7 @@ import MessageInput from '../MessageInput';
 import ChatHeader from './ChatHeader';
 import QuickReplies from '../QuickReplies';
 import WidgetIcon from '../WidgetIcon';
-import { FALLBACK_WIDGET_LABEL } from 'src/store/constants/chat';
+import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
 const ChatWidget = (props) => {
   const {

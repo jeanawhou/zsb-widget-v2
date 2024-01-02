@@ -1,17 +1,17 @@
 import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 
 import { StyledClientMessage, StyledQuickReplyWrapper } from './StyledComponents';
 import { Context } from 'src/store/store';
-import { ADD_REACTION_TO_LAST_MESSAGE, ADD_REPLY, SEND_NEW_MESSAGE, SHOW_AGENT_HANDOVER_FORM } from 'src/store/action';
+import { ADD_REACTION_TO_LAST_MESSAGE, SEND_NEW_MESSAGE, SHOW_AGENT_HANDOVER_FORM } from 'src/store/action';
 import useSelector from 'src/store/useSelector';
 import { hasQuickReplySelector, lastMessageSelector } from 'src/store/selectors/messages';
 import { apiService } from 'src/services/api.service';
 import { isMaxDislikesReachedSelector, publicKeysSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
-import { REACTIONS } from 'src/store/constants/chat';
-import { DislikeFilled, LikeFilled } from '@ant-design/icons';
+import { REACTIONS } from 'src/constants/chat';
 import { cssVariables } from 'src/styles/variables';
 import { handOffLabelSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
 import { generateUUID } from 'src/store/utils';

@@ -1,4 +1,5 @@
 import { mapValues, isObject, camelCase, mapKeys } from 'lodash'
+import { ZSB_CHAT_BREAKER_ENCONDING } from 'src/constants/chat';
 
 export const camelCaseKeys = (obj) => {
   if (isObject(obj)) {
@@ -11,3 +12,10 @@ export const camelCaseKeys = (obj) => {
   }
   return obj;
 }
+
+export const hasZSBChatBreakerEncoding = (value) => {
+  if (value && typeof value === 'string') {
+    return value.includes(ZSB_CHAT_BREAKER_ENCONDING);
+  }
+  return false;
+};

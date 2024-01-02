@@ -9,6 +9,8 @@ export const DEFAULT_AGENT_HANDOVER_MESSAGE = {
   formHeader: 'Please share your details so we can reach out to you.',
 };
 
+export const MAX_DISLIKES = import.meta.env.VITE_MAX_DISLIKES;
+
 export const REACTIONS = [
   {
     display: 'like',

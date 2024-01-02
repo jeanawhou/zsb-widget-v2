@@ -7,7 +7,7 @@ import {
   SHOW_AGENT_HANDOVER_FORM,
   SUBMIT_AGENT_HANDOVER_FORM,
 } from '../action';
-import { DEFAULT_AGENT_HANDOVER_MESSAGE, DEFAULT_USER_FORM_FIELDS } from '../constants/chat';
+import { DEFAULT_AGENT_HANDOVER_MESSAGE, DEFAULT_USER_FORM_FIELDS } from '../../constants/chat';
 
 export const messagesReducer = (state, action) => {
   const messageState = state.messages;
