@@ -26,3 +26,5 @@ export const handOffLabelSelector = createSelector(chatConfigSelector, (chat) =>
 export const shouldSendCallbackEmailSelector = createSelector(chatConfigSelector, (chat) => chat.callbackEmail);
 
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);
+
+export const isTypingSelector = createSelector(chatConfigSelector, (chat) => chat.typing || false);

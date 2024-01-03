@@ -10,6 +10,8 @@ import {
   MINIMIZE_WIDGET,
   SET_QUICK_REPLIES,
   SET_WIDGET_CONFIG,
+  START_TYPING_MESSAGE,
+  STOP_TYPING_MESSAGE,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
@@ -162,6 +164,38 @@ export const uiReducer = (state, action) => {
         metadata: {
           ...state.metadata,
           dislikes: action.payload === 0 ? 1 + state.metadata.dislikes : state.metadata.dislikes,
+        },
+      };
+    }
+
+    case START_TYPING_MESSAGE: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: true,
+            },
+          },
+        },
+      };
+    }
+
+    case STOP_TYPING_MESSAGE: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: false,
+            },
+          },
         },
       };
     }
