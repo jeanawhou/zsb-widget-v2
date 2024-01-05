@@ -20,6 +20,7 @@ export default defineConfig({
     alias: {
       src: '/src',
       components: '/src/components',
+      constants: '/src/constants',
       assets: '/src/assets',
       lib: '/src/lib',
       store: '/src/store',
