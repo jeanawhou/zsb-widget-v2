@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 
-import { extractDisplayAnswer } from 'src/store/helpers/messages';
 import { StyledFlexRowLeft, StyledReplyMessageContent } from './StyledComponents';
 import { cssVariables } from 'src/styles/variables';
 
@@ -16,7 +15,7 @@ const ChatBubble = ({ content, messageIcon, children, feedback, isForm }) => {
         ) : (
           <span
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(extractDisplayAnswer(content || children)),
+              __html: DOMPurify.sanitize(content || children),
             }}
           />
         )}
