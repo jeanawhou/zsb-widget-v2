@@ -15,10 +15,12 @@ import { REACTIONS } from 'src/constants/chat';
 import { cssVariables } from 'src/styles/variables';
 import { handOffLabelSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
 import { generateUUID } from 'src/store/utils';
+import useReply from './hooks/useReply';
 
 const QuickReplies = (props) => {
   const { quickReplies } = props;
   const [, dispatch] = useContext(Context);
+  const { addResponse } = useReply();
   const hasQuickReply = useSelector(hasQuickReplySelector);
   const publicKeys = useSelector(publicKeysSelector);
   const user = useSelector(userSelector);
@@ -35,8 +37,8 @@ const QuickReplies = (props) => {
     });
     if (reply.answer) {
       setTimeout(() => {
-        dispatch({ type: ADD_REPLY, payload: { reply: { ...reply.answer } } });
-      }, 1000);
+        addResponse(reply.answer);
+      }, 500);
     }
   };
 
