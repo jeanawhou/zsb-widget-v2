@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 
 import { Context } from 'store/store';
 import { MINIMIZE_WIDGET } from 'store/action';
-import { ADD_ERROR_REPLY, ADD_REPLY, SEND_NEW_MESSAGE } from '../../store/action';
+import { ADD_ERROR_REPLY, SEND_NEW_MESSAGE } from '../../store/action';
 import useSelector from 'store/useSelector';
 import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { apiService } from 'src/services/api.service';
@@ -10,8 +10,10 @@ import { publicKeysSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { generateUUID } from 'src/store/utils';
+import useReply from '../hooks/useReply';
 
 export const useMessageInput = () => {
+  const { addResponse } = useReply()
   const [, dispatch] = useContext(Context);
   const [newMessage, setNewMessage] = useState('');
   const isExpanded = useSelector(isWidgetExpandedSelector);
@@ -34,10 +36,6 @@ export const useMessageInput = () => {
     } catch (error) {
       dispatch({ type: ADD_ERROR_REPLY });
     }
-  };
-
-  const addResponse = (reply) => {
-    dispatch({ type: ADD_REPLY, payload: { reply } });
   };
 
   const handleKeyDown = (e) => {

@@ -1,4 +1,4 @@
-import { isEmpty, omit } from 'lodash';
+import { isEmpty } from 'lodash';
 import {
   DECRYPT_BOT,
 } from '../action';
@@ -9,7 +9,7 @@ import { initialPublicKeys } from '../initialState';
 export const botReducer = (state, action) => {
   switch (action.type) {
     case DECRYPT_BOT: {
-      const { bot, ...rest } = action.payload
+      const { bot } = action.payload
       const decryptedBot = !isEmpty(bot) ? decrypt(bot) : {};
       const { pubAskedQuestion, url } = decryptedBot;
       const publicKeys = !isEmpty(pubAskedQuestion)
