@@ -15,7 +15,6 @@ import {
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
-import { ZSB_CHAT_BREAKER_ENCONDING } from '../constants/chat';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -73,19 +72,12 @@ export const uiReducer = (state, action) => {
     }
 
     case ADD_REPLY: {
-      const replyContext = action.payload.reply.context;
-      const newMessageCount = replyContext.show_html.reduce((acc, html) => {
-        if (String(html).includes(ZSB_CHAT_BREAKER_ENCONDING)) {
-          const splitted = html.split(ZSB_CHAT_BREAKER_ENCONDING);
-          return splitted.length + acc;
-        }
-        return acc + 1;
-      }, 0);
+      const { newMessageCount } = action.payload;
       return {
         ...state,
         ui: {
           ...state.ui,
-          newMessageCount,
+          newMessageCount: newMessageCount,
         },
       };
     }

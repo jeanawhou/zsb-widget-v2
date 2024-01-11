@@ -1,3 +1,5 @@
+import { MAX_DISLIKES } from 'src/constants/chat';
+
 export const initialMessages = [];
 
 export const initialChat = {
@@ -8,6 +10,7 @@ export const initialChat = {
   showLogoOnChat: false,
   bot: '',
   openWidget: false,
+  typing: false,
 };
 
 export const initialUI = {
@@ -37,7 +40,7 @@ export const initialUserState = {
 export const initialMetadata = {
   maxInteraction: null,
   interactionHistory: [],
-  maxDislikes: 3 || import.meta.env.VITE_MAX_DISLIKES,
+  maxDislikes: 3 || MAX_DISLIKES,
   enableTextToSpeech: false,
   dislikes: 0,
 };
