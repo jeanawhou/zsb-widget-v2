@@ -8,12 +8,16 @@ import { messagesSelector } from 'store/selectors/messages.js';
 import { chatStylesSelector, newMessageCountSelector } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector, shouldShowQuickRepliesSelector } from 'src/store/selectors/messages';
 import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
+import useCustomWebsocket from '../hooks/useWebsocket';
+import { websocketSelector } from 'src/store/selectors';
 
 const useChatWidget = () => {
   const [, dispatch] = useContext(Context);
+  const { connectionStatus, sendJsonMessage } = useCustomWebsocket();
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const messages = useSelector(messagesSelector);
   const chatStyles = useSelector(chatStylesSelector);
+  const websocket = useSelector(websocketSelector);
   const quickReplies = useSelector(lastMessageQuickReplySelector);
   const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
@@ -62,6 +66,24 @@ const useChatWidget = () => {
   const handleResize = () => {
     checkViewportHeight();
   };
+
+  useEffect(() => {
+    const clientConnectPayload = {
+      type: 'client_connect',
+      data: {},
+    };
+
+    switch (connectionStatus) {
+      case 'Open':
+        if (!websocket.channel) {
+          sendJsonMessage(clientConnectPayload);
+        }
+        break;
+
+      default:
+        break;
+    }
+  }, [connectionStatus, websocket?.channel]);
 
   useEffect(() => {
     checkViewportHeight();

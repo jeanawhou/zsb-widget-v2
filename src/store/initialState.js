@@ -30,6 +30,14 @@ export const initialPublicKeys = {
   key: null,
 };
 
+export const initialWebsocketState = {
+  channel: null,
+  askQuestionActiveAction: [],
+  askQuestionActions: [],
+  generatedAnswer: '',
+  sending: false,
+};
+
 export const initialUserState = {
   isAuthenticated: false,
   email: null,
@@ -58,4 +66,5 @@ export const initialState = {
     fbAccessToken: null,
   },
   metadata: initialMetadata,
+  websocket: initialWebsocketState,
 };
