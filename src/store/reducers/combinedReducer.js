@@ -2,6 +2,7 @@ import { botReducer } from './bot';
 import { messagesReducer } from './messages';
 import { uiReducer } from './ui';
 import { userReducer } from './user';
+import { websocketReducer } from './websocket';
 
 const combineReducers =
   (...reducers) =>
@@ -13,4 +14,5 @@ export const combinedReducers = combineReducers(
   botReducer,
   uiReducer,
   messagesReducer,
+  websocketReducer,
 );

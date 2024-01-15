@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 
 export const configURLSelector = (state) => state.configURL;
 
+export const websocketSelector = (state) => state.websocket;
+
 export const publicKeysSelector = (state) => state.publicKeys;
 
 export const isWidgetReadySelector = (state) => state.isWidgetReady;
