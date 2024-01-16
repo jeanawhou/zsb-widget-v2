@@ -20,6 +20,7 @@ export const messagesReducer = (state, action) => {
     }
     return msg;
   });
+
   switch (action.type) {
     case SEND_NEW_MESSAGE: {
       const { newMessage, interactionId } = action.payload;
@@ -41,18 +42,42 @@ export const messagesReducer = (state, action) => {
     }
 
     case ADD_REPLY: {
-      const { reply } = action.payload;
-      const { quick_reply } = reply.context;
+      const { text, isLastReplyItem, context, name, jid, ...rest } = action.payload;
+      const { quick_reply } = context;
       const quickReplies = quick_reply || { replies: [] };
       const messagesWithReplyLastMsg = messageState.map((msg, idx) => {
-        if (idx == messageState.length - 1) {
+        // match the jid payload passed
+        // message.reply.text shouldn't be empty
+        if (msg.answerId === jid) {
+          // text prop should be array now
+          const newReplies = msg.reply?.text ? [...msg.reply.text, text] : [text];
           return {
             ...msg,
-            reply: reply.context,
+            answerId: msg?.jid || jid,
+            reply: {
+              text: newReplies,
+              isLastReplyItem: Boolean(isLastReplyItem),
+            },
             timeReply: new Date(),
             lastUserReplied: 'bot',
             quickReply: quickReplies,
-            type: reply.name?.includes('default') ? 'default' : undefined,
+            type: name?.includes('default') ? 'default' : name,
+          };
+        }
+        // reply is undefined for the first item
+        else if (idx == messageState.length - 1 && msg.lastUserReplied === 'client' && !msg.answerId) {
+          return {
+            ...msg,
+            answerId: jid,
+            reply: {
+              // convert to array to map easily as a separate bubble
+              text: [text],
+              isLastReplyItem: Boolean(isLastReplyItem),
+            },
+            timeReply: new Date(),
+            lastUserReplied: 'bot',
+            quickReply: quickReplies,
+            type: name?.includes('default') ? 'default' : name,
           };
         }
         return msg;
@@ -60,6 +85,16 @@ export const messagesReducer = (state, action) => {
       return {
         ...state,
         messages: messagesWithReplyLastMsg,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: true,
+            },
+          },
+        },
       };
     }
 
