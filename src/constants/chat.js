@@ -34,3 +34,5 @@ export const DEFAULT_USER_FORM_FIELDS = [
     mandatory: true,
   },
 ];
+
+export const EMPTY_QUICK_REPLY = { replies: [] };

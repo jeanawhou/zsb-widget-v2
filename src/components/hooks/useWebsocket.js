@@ -1,13 +1,15 @@
 import { useContext, useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { SOCKET_URL, RECONNECT_MESSAGE, RECONNECT_INTERVAL_IN_MS } from 'src/constants/websocket';
-import { DISCONNECT_WEBSOCKET, SET_WS_CHANNEL } from 'src/store/action';
+import { DISCONNECT_WEBSOCKET, SET_WS_ASK_QUESTION_ACTION, SET_WS_CHANNEL } from 'src/store/action';
 import { websocketSelector } from 'src/store/selectors';
 import { Context } from 'src/store/store';
 import useSelector from 'src/store/useSelector';
+import useReply from './useReply';
 
 const useCustomWebsocket = () => {
   const [, dispatch] = useContext(Context);
+  const { addResponse } = useReply();
   const websocket = useSelector(websocketSelector);
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(SOCKET_URL, {
     shouldReconnect: () => true,
@@ -50,10 +52,14 @@ const useCustomWebsocket = () => {
           break;
 
         case 'ask_question':
-          // dispatch({
-          //   type: SET_WS_ASK_QUESTION_ACTION,
-          //   payload: wsData.data,
-          // });
+          if (wsData.data?.answer && wsData.data?.type === 'response') {
+            addResponse(wsData.data.answer);
+          } else {
+            dispatch({
+              type: SET_WS_ASK_QUESTION_ACTION,
+              payload: wsData.data,
+            });
+          }
           break;
 
         default:

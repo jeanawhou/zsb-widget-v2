@@ -13,7 +13,7 @@ export const apiService = {
     });
   },
 
-  askQuestion: function (input, publicKeys, user, interactionId, integration, ws = null) {
+  askQuestion: function (input, publicKeys, user, interactionId, integration, ws) {
     const { sentinel, key, graph, wlk } = publicKeys;
     const { isAuthenticated, visitorId, sessionId } = user;
     const interactionHistory = getLocalStorageItem('context') || [];
@@ -31,13 +31,13 @@ export const apiService = {
           interaction_id: interactionId,
           channel: integration.name,
           isAuthenticated,
-          ws_target: ws,
         },
-        is_async: ws ? true : false,
+        ws_target: ws || null,
         integration,
         api_name: 'ask_question',
         history: interactionHistory,
       },
+      is_async: ws ? true : false,
     });
   },
 

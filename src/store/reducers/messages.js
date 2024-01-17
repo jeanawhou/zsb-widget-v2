@@ -7,7 +7,7 @@ import {
   SHOW_AGENT_HANDOVER_FORM,
   SUBMIT_AGENT_HANDOVER_FORM,
 } from '../action';
-import { DEFAULT_AGENT_HANDOVER_MESSAGE, DEFAULT_USER_FORM_FIELDS } from '../../constants/chat';
+import { DEFAULT_AGENT_HANDOVER_MESSAGE, DEFAULT_USER_FORM_FIELDS, EMPTY_QUICK_REPLY } from '../../constants/chat';
 
 export const messagesReducer = (state, action) => {
   const messageState = state.messages;
@@ -44,11 +44,12 @@ export const messagesReducer = (state, action) => {
     case ADD_REPLY: {
       const { text, isLastReplyItem, context, name, jid, ...rest } = action.payload;
       const { quick_reply } = context;
-      const quickReplies = quick_reply || { replies: [] };
-      const messagesWithReplyLastMsg = messageState.map((msg, idx) => {
+      const quickReplies = quick_reply || EMPTY_QUICK_REPLY;
+      const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+        const lastMessage = idx == removeLastMessageStatus.length - 1;
         // match the jid payload passed
         // message.reply.text shouldn't be empty
-        if (msg.answerId === jid) {
+        if (lastMessage && msg.answerId === jid) {
           // text prop should be array now
           const newReplies = msg.reply?.text ? [...msg.reply.text, text] : [text];
           return {
@@ -62,10 +63,11 @@ export const messagesReducer = (state, action) => {
             lastUserReplied: 'bot',
             quickReply: quickReplies,
             type: name?.includes('default') ? 'default' : name,
+            isLastMessage: true,
           };
         }
         // reply is undefined for the first item
-        else if (idx == messageState.length - 1 && msg.lastUserReplied === 'client' && !msg.answerId) {
+        else if (lastMessage && msg.lastUserReplied === 'client' && !msg.answerId) {
           return {
             ...msg,
             answerId: jid,
@@ -78,6 +80,7 @@ export const messagesReducer = (state, action) => {
             lastUserReplied: 'bot',
             quickReply: quickReplies,
             type: name?.includes('default') ? 'default' : name,
+            isLastMessage: true,
           };
         }
         return msg;
@@ -91,7 +94,7 @@ export const messagesReducer = (state, action) => {
             ...state.ui.widgetConfig,
             chat: {
               ...state.ui.widgetConfig.chat,
-              typing: true,
+              typing: !isLastReplyItem,
             },
           },
         },
@@ -99,7 +102,7 @@ export const messagesReducer = (state, action) => {
     }
 
     case ADD_ERROR_REPLY: {
-      const messagesWithReplyLastMsg = messageState.map((msg, idx) => {
+      const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
         if (idx == messageState.length - 1) {
           return {
             ...msg,
@@ -108,6 +111,7 @@ export const messagesReducer = (state, action) => {
             lastUserReplied: 'bot',
             quickReply: { replies: [] },
             type: 'error',
+            isLastMessage: true,
           };
         }
         return msg;
@@ -134,8 +138,8 @@ export const messagesReducer = (state, action) => {
       if (!callbackEmail) {
         return state;
       }
-      const newMessages = messageState.map((msg, idx) => {
-        const lastMessage = messageState?.length - 1;
+      const newMessages = removeLastMessageStatus.map((msg, idx) => {
+        const lastMessage = removeLastMessageStatus?.length - 1;
         // attach reply to handoff label
         if (idx === lastMessage) {
           return {
@@ -147,6 +151,7 @@ export const messagesReducer = (state, action) => {
             reply: {
               text: formHeader,
             },
+            isLastMessage: true,
           };
         }
         return msg;
@@ -160,7 +165,7 @@ export const messagesReducer = (state, action) => {
     case CANCEL_AGENT_HANDOVER: {
       const config = state.ui?.widgetConfig?.chat || {};
       const cancelledFormMessage = config.cancelledFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.cancelledFormMessage;
-      const updatedMsg = messageState.map((msg) => {
+      const updatedMsg = removeLastMessageStatus.map((msg) => {
         if (msg.type === 'agent-handover') {
           return {
             ...msg,
@@ -168,6 +173,7 @@ export const messagesReducer = (state, action) => {
               text: cancelledFormMessage,
             },
             forms: undefined,
+            isLastMessage: true,
           };
         }
         return msg;
@@ -181,7 +187,7 @@ export const messagesReducer = (state, action) => {
     case SUBMIT_AGENT_HANDOVER_FORM: {
       const config = state.ui?.widgetConfig?.chat || {};
       const submittedFormMessage = config.submittedFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.submittedFormMessage;
-      const updatedMsg = messageState.map((msg) => {
+      const updatedMsg = removeLastMessageStatus.map((msg) => {
         if (msg.type === 'agent-handover') {
           return {
             ...msg,
@@ -189,6 +195,7 @@ export const messagesReducer = (state, action) => {
               text: submittedFormMessage,
             },
             forms: undefined,
+            isLastMessage: true,
           };
         }
         return msg;

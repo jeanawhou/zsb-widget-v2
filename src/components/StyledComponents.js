@@ -355,6 +355,7 @@ export const StyledMessage = styled.div`
 export const StyledClientMessage = styled(StyledMessage)`
   align-items: ${(props) => (props.quickreply === 'true' ? 'center' : 'flex-end')};
   width: ${(props) => (props.quickreply === 'true' ? '100%' : 'inherit')};
+  text-align: left;
 
   > span:first-child {
     max-width: ${(props) => (props.quickreply === 'true' ? '100%' : '80%')};
@@ -563,4 +564,11 @@ export const StyledMessageBadge = styled.span`
   width: 14px;
   font-size: 12px;
   color: #fff;
+`;
+
+export const StyledWSProcessStep = styled.span`
+  font-size: 11px;
+  color: ${(props) => props.color || cssVariables.zsbCyan};
+  font-style: italic;
+  text-transform: capitalize;
 `;

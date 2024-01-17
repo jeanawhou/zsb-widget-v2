@@ -9,7 +9,6 @@ export const widgetConfigSelector = createSelector(uiSelector, (ui) => ui.widget
 export const chatConfigSelector = createSelector(widgetConfigSelector, (widgetConfig) => widgetConfig.chat);
 
 export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig) => {
-  console.log('chatConfig', chatConfig);
   return Object.fromEntries(
     Object.entries(chatConfig).map(([key, value]) =>
       // filter out null, object and array types

@@ -2,33 +2,44 @@ import { useContext, useState } from 'react';
 
 import { Context } from 'store/store';
 import { MINIMIZE_WIDGET } from 'store/action';
-import { ADD_ERROR_REPLY, SEND_NEW_MESSAGE } from '../../store/action';
+import { ADD_ERROR_REPLY, CLEAR_NEW_MESSAGE_BADGE, SEND_NEW_MESSAGE } from '../../store/action';
 import useSelector from 'store/useSelector';
 import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { apiService } from 'src/services/api.service';
-import { publicKeysSelector } from 'src/store/selectors';
+import { publicKeysSelector, websocketSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { generateUUID } from 'src/store/utils';
 import useReply from '../hooks/useReply';
+import { chatConfigSelector, newMessageCountSelector } from 'src/store/selectors/ui';
 
 export const useMessageInput = () => {
-  const { addResponse } = useReply()
+  const { addResponse } = useReply();
   const [, dispatch] = useContext(Context);
   const [newMessage, setNewMessage] = useState('');
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const publicKeys = useSelector(publicKeysSelector);
   const user = useSelector(userSelector);
   const integration = useSelector(integrationSelector);
+  const websocket = useSelector(websocketSelector);
+  const chatConfig = useSelector(chatConfigSelector);
+  const newMessageCount = useSelector(newMessageCountSelector);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (newMessage.trim() === '') return;
+    if (newMessage.trim() === '' || chatConfig.typing) return;
     const interactionId = generateUUID();
     dispatch({ type: SEND_NEW_MESSAGE, payload: { newMessage, interactionId } });
     setNewMessage('');
     try {
-      const res = await apiService.askQuestion(newMessage, publicKeys, user, interactionId, integration);
+      const res = await apiService.askQuestion(
+        newMessage,
+        publicKeys,
+        user,
+        interactionId,
+        integration,
+        websocket.channel,
+      );
       if (res.data.success && res.data.report[0]) {
         const reply = res.data.report[0];
         addResponse(reply);
@@ -46,12 +57,21 @@ export const useMessageInput = () => {
     }
   };
 
+  const clearNewMessageBadge = () => {
+    if (newMessageCount) {
+      dispatch({ type: CLEAR_NEW_MESSAGE_BADGE });
+    }
+  };
+
   return {
-    handleKeyDown,
-    setNewMessage,
     addResponse,
-    newMessage,
+    chatConfig,
+    clearNewMessageBadge,
+    handleKeyDown,
     handleSendMessage,
     isExpanded,
+    newMessage,
+    newMessageCount,
+    setNewMessage,
   };
 };

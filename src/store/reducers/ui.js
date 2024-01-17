@@ -8,8 +8,10 @@ import {
   CLEAR_QUICK_REPLIES,
   EXPAND_WIDGET,
   MINIMIZE_WIDGET,
+  SEND_NEW_MESSAGE,
   SET_QUICK_REPLIES,
   SET_WIDGET_CONFIG,
+  SET_WS_ASK_QUESTION_ACTION,
   START_TYPING_MESSAGE,
   STOP_TYPING_MESSAGE,
 } from '../action';
@@ -67,6 +69,13 @@ export const uiReducer = (state, action) => {
         ui: {
           ...state.ui,
           newMessageCount: state.ui.newMessageCount + 1,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: false,
+            },
+          },
         },
       };
     }
@@ -160,6 +169,8 @@ export const uiReducer = (state, action) => {
       };
     }
 
+    case SET_WS_ASK_QUESTION_ACTION:
+    case SEND_NEW_MESSAGE:
     case START_TYPING_MESSAGE: {
       return {
         ...state,

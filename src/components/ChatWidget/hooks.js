@@ -39,12 +39,9 @@ const useChatWidget = () => {
     const viewportHeight = window.innerHeight;
     const screenHeight = window.screen.height;
     if (isExpanded) {
-      console.log('in isexpanded', widgetRef?.current?.clientHeight);
-
       if (!hideLauncher) {
         const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
         const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
-        console.log('not hidden', hideLauncher, 'isSmallScreen', isWidgetHeightSmall, isTouchingTopOfPage);
         if (isWidgetHeightSmall || (!isWidgetHeightSmall && isTouchingTopOfPage)) {
           setHideLauncher(true);
         } else {
@@ -53,7 +50,6 @@ const useChatWidget = () => {
       } else {
         const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
         const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
-        console.log('launcher is hidden', isWidgetHeightSmall, isTouchingTopOfPage);
         if (!isWidgetHeightSmall || !isTouchingTopOfPage) {
           setHideLauncher(false);
         }

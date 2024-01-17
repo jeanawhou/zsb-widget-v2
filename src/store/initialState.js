@@ -34,6 +34,7 @@ export const initialWebsocketState = {
   channel: null,
   askQuestionActiveAction: [],
   askQuestionActions: [],
+  steps: [],
   generatedAnswer: '',
   sending: false,
 };
