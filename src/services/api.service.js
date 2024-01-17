@@ -31,11 +31,12 @@ export const apiService = {
           interaction_id: interactionId,
           channel: integration.name,
           isAuthenticated,
+          ws_target: ws,
         },
+        is_async: ws ? true : false,
         integration,
         api_name: 'ask_question',
         history: interactionHistory,
-        ws_target: ws,
       },
     });
   },
