@@ -20,9 +20,7 @@ export const websocketReducer = (state, action) => {
     case DISCONNECT_WEBSOCKET: {
       return {
         ...state,
-        websocket: {
-          channel: null,
-        },
+        websocket: initialWebsocketState,
       };
     }
 
