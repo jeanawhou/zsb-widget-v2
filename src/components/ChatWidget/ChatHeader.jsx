@@ -9,19 +9,20 @@ import {
 } from '../StyledComponents';
 import WidgetIcon from '../WidgetIcon';
 import useSelector from 'src/store/useSelector';
-import { chatConfigSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
+import { chatConfigSelector, widgetThemeColorSelector, widgetTitleSelector } from 'src/store/selectors/ui';
 import ChatHeaderMenu from './ChatHeaderMenu';
 
 const ChatHeader = (props) => {
   const { toggleChat, showLogoOnChat, hideLauncher, ...rest } = props;
   const chatConfig = useSelector(chatConfigSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
+  const widgetTitle = useSelector(widgetTitleSelector);
 
   return (
     <StyledChatHeader hideLauncher={hideLauncher} color={widgetThemeColor} {...rest}>
       {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
-        <h3>{chatConfig.identifier || chatConfig.botTitle}</h3>
+        <h3>{widgetTitle}</h3>
         <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
       </StyledFlexColumnSpaceEvenly>
       <StyledChatHeaderActionIcons>

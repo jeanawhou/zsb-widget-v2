@@ -9,7 +9,8 @@ export const DEFAULT_AGENT_HANDOVER_MESSAGE = {
   formHeader: 'Please share your details so we can reach out to you.',
 };
 
-export const MAX_DISLIKES = import.meta.env.VITE_MAX_DISLIKES;
+// eslint-disable-next-line no-undef
+export const MAX_DISLIKES = __MAX_DISLIKES__;
 
 export const REACTIONS = [
   {

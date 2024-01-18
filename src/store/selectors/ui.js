@@ -7,6 +7,9 @@ export const isWidgetExpandedSelector = createSelector(uiSelector, (ui) => ui.is
 export const widgetConfigSelector = createSelector(uiSelector, (ui) => ui.widgetConfig);
 
 export const chatConfigSelector = createSelector(widgetConfigSelector, (widgetConfig) => widgetConfig.chat);
+export const widgetTitleSelector = createSelector(chatConfigSelector, (chatConfig) => {
+  return chatConfig.title || chatConfig.identifier || chatConfig.botTitle;
+});
 
 export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig) => {
   return Object.fromEntries(

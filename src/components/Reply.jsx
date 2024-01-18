@@ -30,7 +30,7 @@ const Reply = ({ message }) => {
   const WSStepProcess = () => {
     if (steps.length && isLastMessage) {
       return (
-        <StyledWSProcessStep>
+        <StyledWSProcessStep color={chatConfig.color}>
           <em>
             {steps[steps.length - 1]}
             {'...'}

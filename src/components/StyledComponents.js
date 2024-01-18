@@ -571,4 +571,8 @@ export const StyledWSProcessStep = styled.span`
   color: ${(props) => props.color || cssVariables.zsbCyan};
   font-style: italic;
   text-transform: capitalize;
+
+  > * {
+    color: ${(props) => props.color || cssVariables.zsbCyan};
+  }
 `;
