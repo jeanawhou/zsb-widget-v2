@@ -1,3 +1,5 @@
+import { startCase } from 'lodash';
+
 import { EMPTY_QUICK_REPLY } from 'src/constants/chat';
 import { ADD_REPLY, DISCONNECT_WEBSOCKET, SET_WS_ASK_QUESTION_ACTION, SET_WS_CHANNEL } from '../action';
 import { initialWebsocketState } from '../initialState';
@@ -43,7 +45,8 @@ export const websocketReducer = (state, action) => {
       const currentSteps = state.websocket.steps;
       const newGeneratedAnswer = data?.content || '';
       const generatedAnswer = state.websocket.generatedAnswer || '';
-      const wsProcess = currentSteps.length && currentSteps.includes(type) ? currentSteps : [...currentSteps, type];
+      const wsProcess =
+        currentSteps.length && currentSteps.includes(type) ? currentSteps : [...currentSteps, startCase(type)];
       const concatenatedAnswer = generatedAnswer + newGeneratedAnswer;
       const newReply = {
         reply: {
