@@ -50,15 +50,17 @@ const Reply = ({ message }) => {
           // - not the lastReplyItem (value from reducer)
           // - reply.text.length or show only below the last bubble
           const lastChatBubble = idx === reply.text.length - 1;
+          // like or dislike is only visible to last chat bubble
+          const theFeedBackIcon = reply?.isLastReplyItem && lastChatBubble ? feedback : undefined;
           const shouldShowTyping = chatConfig.typing && !reply.isLastReplyItem && lastChatBubble;
           // add typing component if reply doesnt contain alphanumeric
           // or only contains special chars
           if (!replyText.replace(ALPHANUMBERIC_REGEX, '').length) {
             if (steps.length) {
               return (
-                <StyledFlexColumnLeft key={`ws-step-${idx}`}>
-                  <WSStepProcess key={idx} />
-                  <Typing key={idx} />
+                <StyledFlexColumnLeft key={`chat-bubble-${idx}-ws-step-${steps}`}>
+                  <WSStepProcess />
+                  <Typing />
                 </StyledFlexColumnLeft>
               );
             }
@@ -68,31 +70,19 @@ const Reply = ({ message }) => {
               return (
                 <StyledFlexColumnLeft key={`chat-bubble-${timeReply}-${idx}`}>
                   <WSStepProcess />
-                  <ChatBubble
-                    content={replyText}
-                    feedback={reply?.isLastReplyItem && lastChatBubble ? feedback : undefined}
-                  />
+                  <ChatBubble content={replyText} feedback={theFeedBackIcon} />
                   <Typing />
                 </StyledFlexColumnLeft>
               );
             }
             return (
               <StyledFlexColumnLeft key={`chat-bubble-${timeReply}-${idx}`}>
-                <ChatBubble
-                  content={replyText}
-                  feedback={reply?.isLastReplyItem && lastChatBubble ? feedback : undefined}
-                />
+                <ChatBubble content={replyText} feedback={theFeedBackIcon} />
                 <Typing />
               </StyledFlexColumnLeft>
             );
           }
-          return (
-            <ChatBubble
-              key={`chat-bubble-${timeReply}-${idx}`}
-              content={replyText}
-              feedback={reply?.isLastReplyItem && lastChatBubble ? feedback : undefined}
-            />
-          );
+          return <ChatBubble key={`chat-bubble-${timeReply}-${idx}`} content={replyText} feedback={theFeedBackIcon} />;
         });
       } else if (!reply.text.replace(ALPHANUMBERIC_REGEX, '').length) {
         return <Typing />;
