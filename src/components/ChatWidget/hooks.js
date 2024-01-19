@@ -115,6 +115,18 @@ const useChatWidget = () => {
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (messagesRef.current) {
+        messagesRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   return {
     isExpanded,
     messages,
@@ -128,6 +140,7 @@ const useChatWidget = () => {
     shouldShowQuickReply,
     newMessageCount,
     handleScroll,
+    isMobile,
   };
 };
 

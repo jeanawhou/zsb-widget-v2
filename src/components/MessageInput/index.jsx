@@ -9,10 +9,10 @@ const MessageInput = (props) => {
     useMessageInput({
       props,
     });
-  const { placeholder, typing, ...rest } = chatConfig;
+  const { placeholder, color, typing, ...rest } = chatConfig;
 
   return (
-    <StyledInputWrapper {...rest}>
+    <StyledInputWrapper color={color}>
       <textarea
         rows={1}
         placeholder={placeholder}

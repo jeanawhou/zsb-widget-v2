@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
 import {
@@ -31,21 +31,10 @@ const ChatWidget = (props) => {
     quickReplies,
     shouldShowQuickReply,
     newMessageCount,
-    handleScroll,
     messages,
+    isMobile,
   } = useChatWidget(props);
-
-  useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (messagesRef.current) {
-        messagesRef.current.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, []);
+  const { position, color, shape, textColor, height } = chatStyles;
 
   const renderQuickReply = useCallback(() => {
     return shouldShowQuickReply ? <QuickReplies quickReplies={quickReplies} /> : <></>;
@@ -53,9 +42,12 @@ const ChatWidget = (props) => {
 
   return (
     <StyledWidgetWrapper
-      hideLauncher={hideLauncher}
+      hidelauncher={hideLauncher ? 'true' : 'false'}
+      position={position}
+      color={color}
+      shape={shape}
+      height={height}
       ref={widgetRef}
-      {...chatStyles}
       minimized={!isExpanded ? 'true' : 'false'}
       style={props.style}
     >
@@ -72,11 +64,12 @@ const ChatWidget = (props) => {
       {isExpanded ? <ChatHeader hideLauncher={hideLauncher} toggleChat={toggleChat} showLogoOnChat /> : null}
       {isExpanded ? (
         <StyledChatWrapper
-          hideLauncher={hideLauncher}
-          height={chatStyles.height}
+          hidelauncher={hideLauncher ? 'true' : 'false'}
+          height={height}
           minimized={!isExpanded ? 'true' : 'false'}
+          textcolor={textColor}
         >
-          <StyledMessagesWrapper ref={messagesRef}>
+          <StyledMessagesWrapper ref={messagesRef} hidelauncher={hideLauncher ? 'true' : 'false'}>
             {messages.map((message, index) => {
               return (
                 <div key={`message-${index}`}>
