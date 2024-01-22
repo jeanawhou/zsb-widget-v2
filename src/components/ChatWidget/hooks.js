@@ -10,10 +10,13 @@ import { lastMessageQuickReplySelector, shouldShowQuickRepliesSelector } from 's
 import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { websocketSelector } from 'src/store/selectors';
+import { MOBILE_USER_AGENT_REGEX } from 'src/constants';
 
 const useChatWidget = () => {
   const [, dispatch] = useContext(Context);
   const { connectionStatus, sendJsonMessage } = useCustomWebsocket();
+
+  // selectors
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const messages = useSelector(messagesSelector);
   const chatStyles = useSelector(chatStylesSelector);
@@ -22,10 +25,21 @@ const useChatWidget = () => {
   const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
 
+  // refs
   const messagesRef = useRef();
   const widgetRef = useRef(null);
 
+  // component state
   const [hideLauncher, setHideLauncher] = useState(false);
+
+  // CONSTANTS
+  // window and widget sizes
+  const viewportHeight = window.innerHeight;
+  const isSmallScreen = viewportHeight < 650;
+  const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
+  const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
+
+  const isMobile = MOBILE_USER_AGENT_REGEX.test(navigator.userAgent);
 
   const toggleChat = () => {
     if (isExpanded) {
