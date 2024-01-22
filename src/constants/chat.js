@@ -37,3 +37,6 @@ export const DEFAULT_USER_FORM_FIELDS = [
 ];
 
 export const EMPTY_QUICK_REPLY = { replies: [] };
+
+export const DEFAULT_HEIGHT = '350px';
+export const DEFAULT_WIDTH = '300px';

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
@@ -40,6 +40,7 @@ const useChatWidget = () => {
   const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
 
   const isMobile = MOBILE_USER_AGENT_REGEX.test(navigator.userAgent);
+  const isIpad = navigator.userAgent.includes('iPad');
 
   const toggleChat = () => {
     if (isExpanded) {
@@ -49,32 +50,44 @@ const useChatWidget = () => {
     }
   };
 
-  const checkViewportHeight = () => {
-    const viewportHeight = window.innerHeight;
-    const screenHeight = window.screen.height;
-    if (isExpanded) {
-      if (!hideLauncher) {
-        const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
-        const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
-        if (isWidgetHeightSmall || (!isWidgetHeightSmall && isTouchingTopOfPage)) {
+  const shouldShowLauncher = useCallback(() => {
+    if (!hideLauncher) {
+      if (isTouchingTopOfPage) {
+        if (isWidgetHeightSmall || isSmallScreen) {
+          setHideLauncher(true);
+        }
+      } else {
+        if (isWidgetHeightSmall || isSmallScreen) {
+          setHideLauncher(true);
+        } else {
+          setHideLauncher(false);
+        }
+      }
+    } else {
+      if (isTouchingTopOfPage) {
+        if (isWidgetHeightSmall || isSmallScreen) {
           setHideLauncher(true);
         } else {
           setHideLauncher(false);
         }
       } else {
-        const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
-        const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
-        if (!isWidgetHeightSmall || !isTouchingTopOfPage) {
+        if (!isWidgetHeightSmall || !isSmallScreen) {
           setHideLauncher(false);
         }
+      }
+    }
+  }, [isMobile, isSmallScreen, isWidgetHeightSmall, isTouchingTopOfPage]);
+
+  const checkViewportHeight = () => {
+    if (isExpanded) {
+      if (isMobile) {
+        setHideLauncher(true);
+      } else {
+        shouldShowLauncher(isTouchingTopOfPage, isWidgetHeightSmall, isSmallScreen);
       }
     } else {
       setHideLauncher(false);
     }
-  };
-
-  const handleResize = () => {
-    checkViewportHeight();
   };
 
   useEffect(() => {
@@ -96,17 +109,18 @@ const useChatWidget = () => {
   }, [connectionStatus, websocket?.channel]);
 
   useEffect(() => {
-    checkViewportHeight();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+    if (isMobile) {
+      shouldShowLauncher();
+    }
+  }, [isExpanded, isMobile]);
 
   useEffect(() => {
-    checkViewportHeight();
-  }, [isExpanded]);
+    if (navigator?.userAgent && isMobile && isExpanded) {
+      setHideLauncher(true);
+    }
+    // listens on resize event
+    window.addEventListener('resize', checkViewportHeight);
+  }, [isExpanded, hideLauncher, widgetRef?.current, navigator?.userAgent]);
 
   const noOperation = async () => ({});
 

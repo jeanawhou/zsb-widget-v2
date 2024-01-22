@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 import { cssVariables } from '../styles/variables';
+import { DESKTOP_HEIGHT, MOBILE_HEIGHT } from 'src/constants/viewport';
+import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from 'src/constants/chat';
 
 export const StyledFlexRowCenter = styled.div`
   display: flex;
@@ -102,9 +104,6 @@ export const StyledSubtitle = styled.span`
 `;
 
 export const StyledChatWrapper = styled(StyledFlexColumn)`
-  height: ${(props) => {
-    return props.hidelauncher === 'true' ? '86%' : props.minimized === 'true' ? '0' : props.height || '350px';
-  }};
   display: flex;
   justify-content: space-between;
 
@@ -118,10 +117,10 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
       transform: translateY(0);
     }
   }
-
-  ${(props) =>
-    props.minimized === 'true'
+  ${(props) => {
+    return props.minimized === 'true'
       ? css`
+          height: 0px;
           .anticon {
             box-shadow: ${cssVariables.boxShadow};
             background-color: ${(props) => props.color || cssVariables.zsbCyan};
@@ -131,7 +130,8 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
             border-radius: 50%;
           }
         `
-      : css`
+      : // from here minimize is already false
+        css`
           width: ${(props) => props.width || '300px'};
           border: 1px solid #ccc;
           border-radius: 0 0 9px 9px;
@@ -146,7 +146,35 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
             position: absolute;
             right: 10px;
           }
-        `}
+
+          ${props.mobile === 'true'
+            ? css`
+                @media (max-height: ${MOBILE_HEIGHT.short}) {
+                  height: ${props.hidelauncher === 'true' ? '86%' : props.height || '86%'};
+                  width: 98%;
+                }
+
+                @media (max-height: ${MOBILE_HEIGHT.tall}) and (min-height: ${MOBILE_HEIGHT.short}) {
+                  height: ${props.hidelauncher === 'true' ? '89%' : props.height || '89%'};
+                  width: 98%;
+                }
+
+                @media (min-height: ${MOBILE_HEIGHT.tall}) {
+                  height: ${props.hidelauncher === 'true' ? '89%' : props.height || '86%'};
+                  width: 98%;
+                }
+              `
+            : css`
+                @media (max-height: ${DESKTOP_HEIGHT.tall}) {
+                  height: ${props.hidelauncher === 'true' ? '86%' : props.height || DEFAULT_HEIGHT};
+                }
+
+                @media (min-height: ${DESKTOP_HEIGHT.tall}) {
+                  height: ${props.hidelauncher === 'true' ? '89%' : props.height || DEFAULT_HEIGHT};
+                }
+              `}
+        `;
+  }};
 `;
 
 export const StyledLauncherWrapper = styled.div`
@@ -296,7 +324,6 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   background: ${(props) => props.color || cssVariables.zsbCyan};
   color: ${(props) => props.textColor || '#fff'};
   padding: 6px;
-  width: ${(props) => props.width || '300px'};
   border-radius: 5px 5px 0px 0px;
   box-shadow: ${cssVariables.boxShadow};
   height: ${(props) => (props.hidelauncher === 'true' ? '12%' : '80px')};
@@ -304,6 +331,20 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   align-items: center;
   text-overflow: ellipsis;
   animation: fadeIn 0.5s ease-in-out;
+
+  ${(props) => {
+    return props.mobile === 'true'
+      ? css`
+          width: 98%;
+        `
+      : props.width
+        ? css`
+            width: ${props.width};
+          `
+        : css`
+            width: ${DEFAULT_WIDTH};
+          `;
+  }}
 
   h3,
   h4 {

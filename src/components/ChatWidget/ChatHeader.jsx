@@ -13,7 +13,7 @@ import { chatConfigSelector, widgetThemeColorSelector, widgetTitleSelector } fro
 import ChatHeaderMenu from './ChatHeaderMenu';
 
 const ChatHeader = (props) => {
-  const { toggleChat, showLogoOnChat, hideLauncher, textColor, width } = props;
+  const { toggleChat, showLogoOnChat, hideLauncher, textColor, width, isMobile } = props;
   const chatConfig = useSelector(chatConfigSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const widgetTitle = useSelector(widgetTitleSelector);
@@ -24,6 +24,7 @@ const ChatHeader = (props) => {
       color={widgetThemeColor}
       textcolor={textColor}
       width={width}
+      mobile={isMobile ? 'true' : 'false'}
     >
       {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
@@ -44,6 +45,7 @@ ChatHeader.propTypes = {
   hideLauncher: PropTypes.bool,
   launcherIcon: PropTypes.any,
   textColor: PropTypes.string,
+  isMobile: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 

@@ -61,9 +61,12 @@ const ChatWidget = (props) => {
           {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
         </StyledLauncherWrapper>
       ) : null}
-      {isExpanded ? <ChatHeader hideLauncher={hideLauncher} toggleChat={toggleChat} showLogoOnChat /> : null}
+      {isExpanded ? (
+        <ChatHeader isMobile={isMobile} hideLauncher={hideLauncher} toggleChat={toggleChat} showLogoOnChat />
+      ) : null}
       {isExpanded ? (
         <StyledChatWrapper
+          mobile={isMobile ? 'true' : 'false'}
           hidelauncher={hideLauncher ? 'true' : 'false'}
           height={height}
           minimized={!isExpanded ? 'true' : 'false'}
