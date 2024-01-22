@@ -103,7 +103,7 @@ export const StyledSubtitle = styled.span`
 
 export const StyledChatWrapper = styled(StyledFlexColumn)`
   height: ${(props) => {
-    return props.hideLauncher ? '86%' : props.minimized === 'true' ? '0' : props.height || '350px';
+    return props.hidelauncher === 'true' ? '86%' : props.minimized === 'true' ? '0' : props.height || '350px';
   }};
   display: flex;
   justify-content: space-between;
@@ -125,7 +125,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
           .anticon {
             box-shadow: ${cssVariables.boxShadow};
             background-color: ${(props) => props.color || cssVariables.zsbCyan};
-            color: ${(props) => props.textColor || '#fff'};
+            color: ${(props) => props.textcolor || '#fff'};
             font-size: 36px;
             padding: 10px;
             border-radius: 50%;
@@ -142,7 +142,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
           animation: fadeIn 0.25s ease-in-out;
 
           .anticon-close {
-            color: ${(props) => props.textColor || '#fff'};
+            color: ${(props) => props.textcolor || '#fff'};
             position: absolute;
             right: 10px;
           }
@@ -192,28 +192,28 @@ export const StyledWidgetWrapper = styled.div`
   font-size: 16px;
 
   font-family: Roboto, sans-serif !important;
-  height: ${(props) => (props.hideLauncher ? '100%' : props.minimized === 'true' ? 'auto' : 'inherit')};
+  height: ${(props) => (props.hidelauncher === 'true' ? '100%' : props.minimized === 'true' ? 'auto' : 'inherit')};
   position: fixed;
   bottom: ${(props) =>
-    props.hideLauncher && (props.position?.includes('bottom') || props.position?.includes('top'))
+    props.hidelauncher === 'true' && (props.position?.includes('bottom') || props.position?.includes('top'))
       ? '0px'
       : props.position?.includes('bottom')
         ? '20px'
         : 'inherit'};
   right: ${(props) =>
-    props.hideLauncher && (props.position?.includes('right') || props.position?.includes('left'))
+    props.hidelauncher === 'true' && (props.position?.includes('right') || props.position?.includes('left'))
       ? '0px'
       : props.position?.includes('right')
         ? '20px'
         : 'inherit'};
   top: ${(props) =>
-    props.hideLauncher && (props.position?.includes('top') || props.position?.includes('bottom'))
+    props.hidelauncher === 'true' && (props.position?.includes('top') || props.position?.includes('bottom'))
       ? '0px'
       : props.position?.includes('top')
         ? '20px'
         : 'inherit'};
   left: ${(props) =>
-    props.hideLauncher && (props.position?.includes('left') || props.position?.includes('right'))
+    props.hidelauncher === 'true' && (props.position?.includes('left') || props.position?.includes('right'))
       ? '0px'
       : props.position?.includes('left')
         ? '20px'
@@ -299,7 +299,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   width: ${(props) => props.width || '300px'};
   border-radius: 5px 5px 0px 0px;
   box-shadow: ${cssVariables.boxShadow};
-  height: ${(props) => (props.hideLauncher ? '12%' : '80px')};
+  height: ${(props) => (props.hidelauncher === 'true' ? '12%' : '80px')};
   max-height: 80px;
   align-items: center;
   text-overflow: ellipsis;
@@ -326,8 +326,8 @@ export const StyledMessagesWrapper = styled.div`
   width: 100%;
   display: ${(props) => (props.minimized ? 'none' : 'flex')};
   overflow-y: auto;
-  min-height: ${(props) => (props.hideLauncher ? '5%' : '220px')};
-  height: ${(props) => (props.hideLauncher ? '100%' : props.minimized !== 'true' ? '100%' : 'auto')};
+  min-height: ${(props) => (props.hidelauncher === 'true' ? '5%' : '220px')};
+  height: ${(props) => (props.hidelauncher === 'true' ? '100%' : props.minimized !== 'true' ? '100%' : 'auto')};
   flex-direction: column;
 
   > :first-child {
