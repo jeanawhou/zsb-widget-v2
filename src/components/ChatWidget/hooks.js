@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
@@ -11,6 +11,7 @@ import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { websocketSelector } from 'src/store/selectors';
 import { MOBILE_USER_AGENT_REGEX } from 'src/constants';
+import { WIDTH } from 'src/constants/viewport';
 
 const useChatWidget = () => {
   const [, dispatch] = useContext(Context);
