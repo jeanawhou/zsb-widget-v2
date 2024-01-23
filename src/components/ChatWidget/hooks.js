@@ -32,60 +32,44 @@ const useChatWidget = () => {
   // component state
   const [hideLauncher, setHideLauncher] = useState(false);
 
-  // CONSTANTS
-  // window and widget sizes
-  const viewportHeight = window.innerHeight;
-  const isSmallScreen = viewportHeight < 650;
-  const isWidgetHeightSmall = widgetRef?.current?.clientHeight < 450;
-  const isTouchingTopOfPage = widgetRef?.current?.offsetTop < 10;
-
-  const isMobile = MOBILE_USER_AGENT_REGEX.test(navigator.userAgent);
-  const isIpad = navigator.userAgent.includes('iPad');
-
-  const toggleChat = () => {
-    if (isExpanded) {
-      dispatch({ type: MINIMIZE_WIDGET });
-    } else {
-      dispatch({ type: EXPAND_WIDGET });
-    }
-  };
+  const isMobile = useMemo(() => MOBILE_USER_AGENT_REGEX.test(navigator.userAgent), [navigator?.userAgent]);
+  const isTablet = useMemo(() => {
+    const parsedWidth = Number(WIDTH.mobile.replace('px', ''));
+    const isWidgetSmall = widgetRef.current?.clientWidth <= parsedWidth;
+    return (isMobile && isWidgetSmall) || navigator.userAgent.includes('iPad');
+  }, [isMobile, navigator?.userAgent]);
 
   const shouldShowLauncher = useCallback(() => {
-    if (!hideLauncher) {
-      if (isTouchingTopOfPage) {
-        if (isWidgetHeightSmall || isSmallScreen) {
-          setHideLauncher(true);
-        }
-      } else {
-        if (isWidgetHeightSmall || isSmallScreen) {
-          setHideLauncher(true);
-        } else {
-          setHideLauncher(false);
-        }
-      }
-    } else {
-      if (isTouchingTopOfPage) {
-        if (isWidgetHeightSmall || isSmallScreen) {
+    const viewportHeight = window.innerHeight;
+    const isSmallScreen = viewportHeight < 650;
+
+    if (widgetRef?.current) {
+      const isWidgetHeightSmall = widgetRef.current?.clientHeight < 450;
+      const isTouchingTopOfPage = widgetRef.current?.offsetTop < 10;
+      if (!hideLauncher) {
+        if (isTouchingTopOfPage && (isSmallScreen || isWidgetHeightSmall)) {
           setHideLauncher(true);
         } else {
           setHideLauncher(false);
         }
       } else {
-        if (!isWidgetHeightSmall || !isSmallScreen) {
+        if (isWidgetHeightSmall || isSmallScreen) {
+          setHideLauncher(true);
+        } else {
           setHideLauncher(false);
         }
       }
     }
-  }, [isMobile, isSmallScreen, isWidgetHeightSmall, isTouchingTopOfPage]);
+  }, [isMobile, widgetRef?.current]);
 
   const checkViewportHeight = () => {
     if (isExpanded) {
       if (isMobile) {
         setHideLauncher(true);
       } else {
-        shouldShowLauncher(isTouchingTopOfPage, isWidgetHeightSmall, isSmallScreen);
+        shouldShowLauncher();
       }
-    } else {
+    } else if (hideLauncher) {
       setHideLauncher(false);
     }
   };
@@ -132,6 +116,14 @@ const useChatWidget = () => {
       if (isMessagesWrapperScrolled) {
         dispatch({ type: CLEAR_NEW_MESSAGE_BADGE });
       }
+    }
+  };
+
+  const toggleChat = () => {
+    if (isExpanded) {
+      dispatch({ type: MINIMIZE_WIDGET });
+    } else {
+      dispatch({ type: EXPAND_WIDGET });
     }
   };
 

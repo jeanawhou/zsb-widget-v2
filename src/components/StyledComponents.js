@@ -147,13 +147,8 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
             right: 10px;
           }
 
-          ${props.mobile === 'true'
+          ${props.mobile === 'true' && props.expanded === 'true'
             ? css`
-                @media (max-height: ${MOBILE_HEIGHT.short}) {
-                  height: ${props.hidelauncher === 'true' ? '86%' : props.height || '86%'};
-                  width: 98%;
-                }
-
                 @media (max-height: ${MOBILE_HEIGHT.tall}) and (min-height: ${MOBILE_HEIGHT.short}) {
                   height: ${props.hidelauncher === 'true' ? '89%' : props.height || '89%'};
                   width: 98%;
@@ -161,6 +156,11 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
 
                 @media (min-height: ${MOBILE_HEIGHT.tall}) {
                   height: ${props.hidelauncher === 'true' ? '89%' : props.height || '86%'};
+                  width: 98%;
+                }
+
+                @media (max-height: ${MOBILE_HEIGHT.short}) {
+                  height: ${props.hidelauncher === 'true' ? '86%' : props.height || '86%'};
                   width: 98%;
                 }
               `
@@ -220,28 +220,38 @@ export const StyledWidgetWrapper = styled.div`
   font-size: 16px;
 
   font-family: Roboto, sans-serif !important;
+  /* TODO: cleanup */
   height: ${(props) => (props.hidelauncher === 'true' ? '100%' : props.minimized === 'true' ? 'auto' : 'inherit')};
-  position: fixed;
+  position: ${(props) =>
+    props.mobile === 'true' && props.minimized === 'false'
+      ? 'fixed'
+      : props.mobile === 'true' && props.minimized === 'true'
+        ? 'relative'
+        : 'fixed'};
   bottom: ${(props) =>
-    props.hidelauncher === 'true' && (props.position?.includes('bottom') || props.position?.includes('top'))
+    (props.hidelauncher === 'true' && (props.position?.includes('bottom') || props.position?.includes('top'))) ||
+    (props.mobile === 'true' && props.minimized === 'true')
       ? '0px'
       : props.position?.includes('bottom')
         ? '20px'
         : 'inherit'};
   right: ${(props) =>
-    props.hidelauncher === 'true' && (props.position?.includes('right') || props.position?.includes('left'))
+    (props.hidelauncher === 'true' && (props.position?.includes('right') || props.position?.includes('left'))) ||
+    (props.mobile === 'true' && props.minimized === 'true')
       ? '0px'
       : props.position?.includes('right')
         ? '20px'
         : 'inherit'};
   top: ${(props) =>
-    props.hidelauncher === 'true' && (props.position?.includes('top') || props.position?.includes('bottom'))
+    (props.hidelauncher === 'true' && (props.position?.includes('top') || props.position?.includes('bottom'))) ||
+    (props.mobile === 'true' && props.minimized === 'true')
       ? '0px'
       : props.position?.includes('top')
         ? '20px'
         : 'inherit'};
   left: ${(props) =>
-    props.hidelauncher === 'true' && (props.position?.includes('left') || props.position?.includes('right'))
+    (props.hidelauncher === 'true' && (props.position?.includes('left') || props.position?.includes('right'))) ||
+    (props.mobile === 'true' && props.minimized === 'true')
       ? '0px'
       : props.position?.includes('left')
         ? '20px'
@@ -249,6 +259,9 @@ export const StyledWidgetWrapper = styled.div`
 
   text-align: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
   text-align: ${(props) => (props.position?.includes('right') ? '-webkit-right' : '-webkit-left')};
+  display: flex;
+  flex-direction: column;
+  align-items: ${(props) => (props.position?.includes('left') ? 'flex-start' : 'flex-end')};
 
   @keyframes rotate {
     from {

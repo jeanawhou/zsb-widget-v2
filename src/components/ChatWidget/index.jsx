@@ -49,6 +49,7 @@ const ChatWidget = (props) => {
       height={height}
       ref={widgetRef}
       minimized={!isExpanded ? 'true' : 'false'}
+      mobile={isMobile ? 'true' : 'false'}
       style={props.style}
     >
       {(!isExpanded || !hideLauncher) && chatStyles.position?.includes('top') ? (
@@ -68,6 +69,7 @@ const ChatWidget = (props) => {
         <StyledChatWrapper
           mobile={isMobile ? 'true' : 'false'}
           hidelauncher={hideLauncher ? 'true' : 'false'}
+          expanded={isExpanded ? 'true' : 'false'}
           height={height}
           minimized={!isExpanded ? 'true' : 'false'}
           textcolor={textColor}
