@@ -113,7 +113,7 @@ export const uiReducer = (state, action) => {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon: icon || state.ui.widgetConfig.icon,
+            icon: icon || `${window.location.origin}${state.ui.widgetConfig.icon}`,
             chat: {
               ...restOfUI,
             },
