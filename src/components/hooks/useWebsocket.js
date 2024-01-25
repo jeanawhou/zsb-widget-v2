@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { SOCKET_URL, RECONNECT_INTERVAL_IN_MS } from 'src/constants/websocket';
+import { SOCKET_URL, RECONNECT_INTERVAL, UNIT_OF_TIME } from 'src/constants/websocket';
 import { DISCONNECT_WEBSOCKET, SET_WS_ASK_QUESTION_ACTION, SET_WS_CHANNEL } from 'src/store/action';
 import { websocketSelector } from 'src/store/selectors';
 import { Context } from 'src/store/store';
@@ -14,7 +14,7 @@ const useCustomWebsocket = () => {
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(SOCKET_URL, {
     shouldReconnect: () => true,
     retryOnError: () => true,
-    reconnectInterval: RECONNECT_INTERVAL_IN_MS,
+    reconnectInterval: RECONNECT_INTERVAL,
     onError: (e) => {
       console.log(getReconnectMessage('error'), e?.reason);
       dispatch({
@@ -32,7 +32,7 @@ const useCustomWebsocket = () => {
 
   const getReconnectMessage = (status) => {
     return `Socket ${status === 'closed' ? 'is closed' : 'throws an error'}. Reconnect will be attempted in ${
-      RECONNECT_INTERVAL_IN_MS / 1000
+      RECONNECT_INTERVAL / UNIT_OF_TIME
     } second.`;
   };
 

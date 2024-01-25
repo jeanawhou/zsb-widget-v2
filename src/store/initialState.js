@@ -1,5 +1,4 @@
 import { MAX_DISLIKES } from '../constants/chat';
-import DEFAULT_ZSB_ICON from '@assets/zsb-icon-faded-small.svg';
 
 export const initialMessages = [];
 
@@ -19,7 +18,6 @@ export const initialUI = {
   widgetType: 'chat',
   newMessageCount: null,
   widgetConfig: {
-    icon: DEFAULT_ZSB_ICON,
     chat: initialChat,
   },
 };

@@ -4,4 +4,6 @@ export const WEBSOCKET_WS = __WEBSOCKET_WS__;
 export const WEBSOCKET_URI = __WEBSOCKET_URI__;
 export const SOCKET_URL = `${WEBSOCKET_WS}${API_BASE_URL.replace('https', '')}${WEBSOCKET_URI}`;
 
-export const RECONNECT_INTERVAL_IN_MS = 1000;
+export const UNIT_OF_TIME = 1000;
+export const MULTIPLIER = 60;
+export const RECONNECT_INTERVAL = UNIT_OF_TIME * MULTIPLIER;

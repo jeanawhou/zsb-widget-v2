@@ -9,14 +9,19 @@ import {
   EXPAND_WIDGET,
   MINIMIZE_WIDGET,
   SEND_NEW_MESSAGE,
+  SET_WIDGET_TO_FULL_HEIGHT,
   SET_QUICK_REPLIES,
   SET_WIDGET_CONFIG,
   SET_WS_ASK_QUESTION_ACTION,
   START_TYPING_MESSAGE,
   STOP_TYPING_MESSAGE,
+  RESTORE_WIDGET_HEIGHT,
+  SET_WIDGET_TO_FULLSCREEN,
+  RESTORE_WIDGET_WIDTH,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
+import DEFAULT_ZSB_ICON from '@assets/zsb-icon-faded-small.svg';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -106,6 +111,7 @@ export const uiReducer = (state, action) => {
       const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
       const { icon, fbAccessToken, fbApiVersion, authenticatedUser, ...restOfUI } = widgetUI;
+      console.log(`${window.location.origin}${DEFAULT_ZSB_ICON}`);
 
       return {
         ...state,
@@ -113,7 +119,7 @@ export const uiReducer = (state, action) => {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon: icon || `${window.location.origin}${state.ui.widgetConfig.icon}`,
+            icon: icon || `${window.location.origin}${DEFAULT_ZSB_ICON}`,
             chat: {
               ...restOfUI,
             },
@@ -198,6 +204,58 @@ export const uiReducer = (state, action) => {
               ...state.ui.widgetConfig.chat,
               typing: false,
             },
+          },
+        },
+      };
+    }
+
+    case SET_WIDGET_TO_FULL_HEIGHT: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            isFullHeight: true,
+          },
+        },
+      };
+    }
+
+    case RESTORE_WIDGET_HEIGHT: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            isFullHeight: false,
+          },
+        },
+      };
+    }
+
+    case SET_WIDGET_TO_FULLSCREEN: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            isFullscreen: true,
+          },
+        },
+      };
+    }
+
+    case RESTORE_WIDGET_WIDTH: {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            isFullscreen: false,
           },
         },
       };
