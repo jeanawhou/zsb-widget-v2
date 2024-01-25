@@ -9,15 +9,11 @@ import {
   EXPAND_WIDGET,
   MINIMIZE_WIDGET,
   SEND_NEW_MESSAGE,
-  SET_WIDGET_TO_FULL_HEIGHT,
   SET_QUICK_REPLIES,
   SET_WIDGET_CONFIG,
   SET_WS_ASK_QUESTION_ACTION,
   START_TYPING_MESSAGE,
   STOP_TYPING_MESSAGE,
-  RESTORE_WIDGET_HEIGHT,
-  SET_WIDGET_TO_FULLSCREEN,
-  RESTORE_WIDGET_WIDTH,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
@@ -204,58 +200,6 @@ export const uiReducer = (state, action) => {
               ...state.ui.widgetConfig.chat,
               typing: false,
             },
-          },
-        },
-      };
-    }
-
-    case SET_WIDGET_TO_FULL_HEIGHT: {
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          widgetConfig: {
-            ...state.ui.widgetConfig,
-            isFullHeight: true,
-          },
-        },
-      };
-    }
-
-    case RESTORE_WIDGET_HEIGHT: {
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          widgetConfig: {
-            ...state.ui.widgetConfig,
-            isFullHeight: false,
-          },
-        },
-      };
-    }
-
-    case SET_WIDGET_TO_FULLSCREEN: {
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          widgetConfig: {
-            ...state.ui.widgetConfig,
-            isFullscreen: true,
-          },
-        },
-      };
-    }
-
-    case RESTORE_WIDGET_WIDTH: {
-      return {
-        ...state,
-        ui: {
-          ...state.ui,
-          widgetConfig: {
-            ...state.ui.widgetConfig,
-            isFullscreen: false,
           },
         },
       };
