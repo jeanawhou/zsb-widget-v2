@@ -36,10 +36,6 @@ const ChatWidget = (props) => {
   } = useChatWidget(props);
   const { position, color, shape, textColor, height } = chatStyles;
 
-  const renderQuickReply = useCallback(() => {
-    return shouldShowQuickReply ? <QuickReplies quickReplies={quickReplies} /> : <></>;
-  }, [quickReplies, shouldShowQuickReply]);
-
   return (
     <StyledWidgetWrapper
       hidelauncher={hideLauncher ? 'true' : 'false'}
@@ -85,7 +81,7 @@ const ChatWidget = (props) => {
             })}
           </StyledMessagesWrapper>
           <StyledFlexColumn>
-            {renderQuickReply()}
+            <QuickReplies quickReplies={quickReplies} />
             <MessageInput />
           </StyledFlexColumn>
         </StyledChatWrapper>

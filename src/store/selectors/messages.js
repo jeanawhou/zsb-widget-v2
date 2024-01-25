@@ -32,12 +32,13 @@ export const shouldShowQuickRepliesSelector = createSelector(
     // if last message has no feedback/reaction
     // if last message is not an error reply
     else if (
-      hasQuickReply ||
+      (hasQuickReply && Boolean(lastMessage?.reply?.isLastReplyItem)) ||
       (isPlainObject(lastMessage) &&
         lastMessage.lastUserReplied === 'bot' &&
         typeof lastMessage.text !== 'undefined' &&
         typeof lastMessage?.feedback === 'undefined' &&
-        lastMessage?.type !== 'error')
+        lastMessage?.type !== 'error' &&
+        Boolean(lastMessage?.reply?.isLastReplyItem))
     ) {
       return true;
     }

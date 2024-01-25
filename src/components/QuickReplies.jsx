@@ -6,7 +6,11 @@ import { StyledClientMessage, StyledQuickReplyWrapper } from './StyledComponents
 import { Context } from 'src/store/store';
 import { ADD_REACTION_TO_LAST_MESSAGE, SEND_NEW_MESSAGE, SHOW_AGENT_HANDOVER_FORM } from 'src/store/action';
 import useSelector from 'src/store/useSelector';
-import { hasQuickReplySelector, lastMessageSelector } from 'src/store/selectors/messages';
+import {
+  hasQuickReplySelector,
+  lastMessageSelector,
+  shouldShowQuickRepliesSelector,
+} from 'src/store/selectors/messages';
 import { apiService } from 'src/services/api.service';
 import { isMaxDislikesReachedSelector, publicKeysSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
@@ -29,6 +33,7 @@ const QuickReplies = (props) => {
   const maxDislikesReached = useSelector(isMaxDislikesReachedSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const handoffLabel = useSelector(handOffLabelSelector);
+  const shouldShowQuickReplies = useSelector(shouldShowQuickRepliesSelector);
 
   const handleAddQuickReply = async (reply) => {
     dispatch({
@@ -81,7 +86,7 @@ const QuickReplies = (props) => {
     }
   };
 
-  return (
+  return shouldShowQuickReplies ? (
     <StyledQuickReplyWrapper>
       {hasQuickReply ? (
         quickReplies.replies.map((qr, idx) => (
@@ -116,6 +121,8 @@ const QuickReplies = (props) => {
         ))
       )}
     </StyledQuickReplyWrapper>
+  ) : (
+    <></>
   );
 };
 
