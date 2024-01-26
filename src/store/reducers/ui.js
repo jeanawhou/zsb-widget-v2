@@ -107,6 +107,9 @@ export const uiReducer = (state, action) => {
       const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
       const { icon, fbAccessToken, fbApiVersion, authenticatedUser, ...restOfUI } = widgetUI;
+      const isProd = import.meta.env.PROD;
+      // eslint-disable-next-line no-undef
+      const fallbackIcon = isProd ? `${__BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
 
       return {
         ...state,
@@ -114,7 +117,7 @@ export const uiReducer = (state, action) => {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon: icon || DEFAULT_ZSB_ICON,
+            icon: icon || fallbackIcon,
             chat: {
               ...restOfUI,
             },
