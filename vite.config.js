@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         src: '/src',
+        '@': '/src',
         components: '/src/components',
         constants: '/src/constants',
         '@assets': '/src/assets',

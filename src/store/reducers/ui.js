@@ -17,7 +17,7 @@ import {
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
-import DEFAULT_ZSB_ICON from '@assets/zsb-icon-faded-small.svg';
+import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -107,7 +107,6 @@ export const uiReducer = (state, action) => {
       const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
       const { icon, fbAccessToken, fbApiVersion, authenticatedUser, ...restOfUI } = widgetUI;
-      console.log(`${window.location.origin}${DEFAULT_ZSB_ICON}`);
 
       return {
         ...state,
@@ -115,7 +114,7 @@ export const uiReducer = (state, action) => {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon: icon || `${window.location.origin}${DEFAULT_ZSB_ICON}`,
+            icon: icon || DEFAULT_ZSB_ICON,
             chat: {
               ...restOfUI,
             },
