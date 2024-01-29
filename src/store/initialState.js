@@ -7,7 +7,7 @@ export const initialChat = {
   subtitle: '',
   placeholder: 'Type your message...',
   theme: '',
-  showLogoOnChat: false,
+  showIconOnChatHeader: false,
   bot: '',
   openWidget: false,
   typing: false,
