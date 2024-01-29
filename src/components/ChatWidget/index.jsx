@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
 import {
@@ -25,20 +24,22 @@ const ChatWidget = (props) => {
     isExpanded,
     toggleChat,
     messagesRef,
-    hideLauncher,
+    fullHeight,
+    isFullscreen,
     widgetRef,
     chatStyles,
     quickReplies,
-    shouldShowQuickReply,
     newMessageCount,
     messages,
     isMobile,
+    isWidthHalfFullscreen,
   } = useChatWidget(props);
   const { position, color, shape, textColor, height } = chatStyles;
 
   return (
     <StyledWidgetWrapper
-      hidelauncher={hideLauncher ? 'true' : 'false'}
+      fullheight={fullHeight && isExpanded ? 'true' : 'false'}
+      fullscreen={isFullscreen && isExpanded ? 'true' : 'false'}
       position={position}
       color={color}
       shape={shape}
@@ -47,8 +48,10 @@ const ChatWidget = (props) => {
       minimized={!isExpanded ? 'true' : 'false'}
       mobile={isMobile ? 'true' : 'false'}
       style={props.style}
+      halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
     >
-      {(!isExpanded || !hideLauncher) && chatStyles.position?.includes('top') ? (
+      {(!isExpanded || (!(fullHeight || isFullscreen || isWidthHalfFullscreen) && isExpanded)) &&
+      chatStyles.position?.includes('top') ? (
         <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
           {isExpanded ? (
             <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
@@ -59,18 +62,23 @@ const ChatWidget = (props) => {
         </StyledLauncherWrapper>
       ) : null}
       {isExpanded ? (
-        <ChatHeader isMobile={isMobile} hideLauncher={hideLauncher} toggleChat={toggleChat} showLogoOnChat />
+        <ChatHeader isMobile={isMobile} fullHeight={fullHeight} toggleChat={toggleChat} showLogoOnChat />
       ) : null}
       {isExpanded ? (
         <StyledChatWrapper
           mobile={isMobile ? 'true' : 'false'}
-          hidelauncher={hideLauncher ? 'true' : 'false'}
-          expanded={isExpanded ? 'true' : 'false'}
+          fullheight={fullHeight && isExpanded ? 'true' : 'false'}
+          fullscreen={isFullscreen && isExpanded ? 'true' : 'false'}
           height={height}
           minimized={!isExpanded ? 'true' : 'false'}
           textcolor={textColor}
+          halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
         >
-          <StyledMessagesWrapper ref={messagesRef} hidelauncher={hideLauncher ? 'true' : 'false'}>
+          <StyledMessagesWrapper
+            ref={messagesRef}
+            fullheight={fullHeight && isExpanded ? 'true' : 'false'}
+            halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
+          >
             {messages.map((message, index) => {
               return (
                 <div key={`message-${index}`}>
@@ -86,7 +94,8 @@ const ChatWidget = (props) => {
           </StyledFlexColumn>
         </StyledChatWrapper>
       ) : null}
-      {(!isExpanded || !hideLauncher) && chatStyles.position?.includes('bottom') ? (
+      {(!isExpanded || (!(fullHeight || isFullscreen || isWidthHalfFullscreen) && isExpanded)) &&
+      chatStyles.position?.includes('bottom') ? (
         <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
           {chatStyles.shape?.includes('circle') ? (
             isExpanded ? (

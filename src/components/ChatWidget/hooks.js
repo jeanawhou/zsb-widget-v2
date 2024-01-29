@@ -1,21 +1,28 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
 import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { messagesSelector } from 'store/selectors/messages.js';
-import { chatStylesSelector, newMessageCountSelector } from 'src/store/selectors/ui';
-import { lastMessageQuickReplySelector, shouldShowQuickRepliesSelector } from 'src/store/selectors/messages';
-import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
+import {
+  chatStylesSelector,
+  isFullHeightSelector,
+  isFullscreenSelector,
+  isWidthHalfFullscreenSelector,
+  newMessageCountSelector,
+} from 'src/store/selectors/ui';
+import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
+import { CLEAR_NEW_MESSAGE_BADGE, SET_WIDGET_TO_FULLSCREEN, SET_WIDGET_TO_FULL_HEIGHT } from 'src/store/action';
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { websocketSelector } from 'src/store/selectors';
-import { MOBILE_USER_AGENT_REGEX } from 'src/constants';
-import { WIDTH } from 'src/constants/viewport';
+import useScreens from '../hooks/useScreens';
 
 const useChatWidget = () => {
+  // hooks
   const [, dispatch] = useContext(Context);
   const { connectionStatus, sendJsonMessage } = useCustomWebsocket();
+  const { isMobile, isTablet } = useScreens();
 
   // selectors
   const isExpanded = useSelector(isWidgetExpandedSelector);
@@ -23,55 +30,88 @@ const useChatWidget = () => {
   const chatStyles = useSelector(chatStylesSelector);
   const websocket = useSelector(websocketSelector);
   const quickReplies = useSelector(lastMessageQuickReplySelector);
-  const shouldShowQuickReply = useSelector(shouldShowQuickRepliesSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
+  const isFullHeight = useSelector(isFullHeightSelector);
+  const isFullscreen = useSelector(isFullscreenSelector);
+  const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
 
   // refs
   const messagesRef = useRef();
   const widgetRef = useRef(null);
 
   // component state
-  const [hideLauncher, setHideLauncher] = useState(false);
-
-  const isMobile = useMemo(() => MOBILE_USER_AGENT_REGEX.test(navigator.userAgent), [navigator?.userAgent]);
-  const isTablet = useMemo(() => {
-    const parsedWidth = Number(WIDTH.mobile.replace('px', ''));
-    const isWidgetSmall = widgetRef.current?.clientWidth <= parsedWidth;
-    return (isMobile && isWidgetSmall) || navigator.userAgent.includes('iPad');
-  }, [isMobile, navigator?.userAgent]);
+  const [fullHeight, setFullHeight] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
 
   const shouldShowLauncher = useCallback(() => {
     const viewportHeight = window.innerHeight;
     const isSmallScreen = viewportHeight < 650;
 
     if (widgetRef?.current) {
+      const isInvertedWidget = chatStyles.position?.includes('top');
+      // top of widget computation
       const isWidgetHeightSmall = widgetRef.current?.clientHeight < 450;
       const isTouchingTopOfPage = widgetRef.current?.offsetTop < 10;
-      if (!hideLauncher) {
-        if (isTouchingTopOfPage && (isSmallScreen || isWidgetHeightSmall)) {
-          setHideLauncher(true);
+
+      // bottom of widget computation
+      const widgetEl = widgetRef.current.getBoundingClientRect();
+      const isTouchingBottomOfPage = window.innerHeight - widgetEl.bottom < 10;
+
+      // check to not allow resize if both global state are false
+      if (!isFullscreen && !isFullHeight) {
+        // `fullHeight` is a component state
+        if (!fullHeight) {
+          if (isInvertedWidget) {
+            if (isTouchingBottomOfPage && (isSmallScreen || isWidgetHeightSmall)) {
+              setFullHeight(true);
+            } else {
+              setFullHeight(false);
+            }
+          } else {
+            if (isTouchingTopOfPage && (isSmallScreen || isWidgetHeightSmall)) {
+              setFullHeight(true);
+            } else {
+              setFullHeight(false);
+            }
+          }
         } else {
-          setHideLauncher(false);
-        }
-      } else {
-        if (isWidgetHeightSmall || isSmallScreen) {
-          setHideLauncher(true);
-        } else {
-          setHideLauncher(false);
+          if (isWidgetHeightSmall || isSmallScreen) {
+            setFullHeight(true);
+          } else {
+            setFullHeight(false);
+          }
         }
       }
     }
-  }, [isMobile, widgetRef?.current]);
+  }, [widgetRef?.current, isFullscreen, isFullHeight]);
+
+  console.log('ismobile', isMobile, 'istab', isTablet, 'isfullheight', isFullHeight, 'isfullscreen', isFullscreen);
+
+  useEffect(() => {
+    if (isFullHeight && !fullHeight) {
+      setFullHeight(true);
+    } else if (!isFullHeight && fullHeight) {
+      setFullHeight(false);
+    }
+  }, [isFullHeight]);
+
+  useEffect(() => {
+    if (isFullscreen && !fullscreen) {
+      setFullscreen(true);
+    } else if (!isFullscreen && fullscreen) {
+      setFullscreen(false);
+    }
+  }, [fullscreen, isFullscreen]);
 
   const checkViewportHeight = () => {
-    if (isExpanded) {
-      if (isMobile) {
-        setHideLauncher(true);
-      } else {
+    if (isExpanded && !isFullHeight && !isFullscreen) {
+      if (isMobile || isTablet) {
+        if (isMobile) {
+          dispatch({ type: SET_WIDGET_TO_FULLSCREEN });
+        }
+      } else if (!isFullHeight && !isFullscreen) {
         shouldShowLauncher();
       }
-    } else if (hideLauncher) {
-      setHideLauncher(false);
     }
   };
 
@@ -94,18 +134,22 @@ const useChatWidget = () => {
   }, [connectionStatus, websocket?.channel]);
 
   useEffect(() => {
-    if (isMobile) {
-      shouldShowLauncher();
+    if (!isFullHeight && !isFullscreen && isMobile && isExpanded) {
+      dispatch({ type: SET_WIDGET_TO_FULLSCREEN });
+    } else if (!isFullscreen && isMobile) {
+      dispatch({ type: SET_WIDGET_TO_FULLSCREEN });
     }
-  }, [isExpanded, isMobile]);
+  }, [isExpanded, isMobile, isFullHeight, isFullscreen]);
 
   useEffect(() => {
     if (navigator?.userAgent && isMobile && isExpanded) {
-      setHideLauncher(true);
+      setFullHeight(true);
     }
-    // listens on resize event
-    window.addEventListener('resize', checkViewportHeight);
-  }, [isExpanded, hideLauncher, widgetRef?.current, navigator?.userAgent]);
+    if (!isFullHeight && !isFullscreen) {
+      // listens on resize event
+      window.addEventListener('resize', checkViewportHeight);
+    }
+  }, [isExpanded, isFullHeight, isFullscreen, isMobile, checkViewportHeight]);
 
   const noOperation = async () => ({});
 
@@ -155,13 +199,14 @@ const useChatWidget = () => {
     toggleChat,
     messagesRef,
     widgetRef,
-    hideLauncher,
+    fullHeight,
+    isFullscreen,
     chatStyles,
     quickReplies,
-    shouldShowQuickReply,
     newMessageCount,
     handleScroll,
     isMobile,
+    isWidthHalfFullscreen,
   };
 };
 

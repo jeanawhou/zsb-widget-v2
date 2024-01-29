@@ -30,3 +30,21 @@ export const shouldSendCallbackEmailSelector = createSelector(chatConfigSelector
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);
 
 export const isTypingSelector = createSelector(chatConfigSelector, (chat) => chat.typing || false);
+
+export const isFullHeightSelector = createSelector(
+  widgetConfigSelector,
+  isWidgetExpandedSelector,
+  (widget, isExpanded) => (isExpanded && (widget.isFullHeight || widget.isFullscreen)) || false,
+);
+
+export const isFullscreenSelector = createSelector(
+  widgetConfigSelector,
+  isWidgetExpandedSelector,
+  (widget, isExpanded) => (isExpanded && widget.isFullscreen) || false,
+);
+
+export const isWidthHalfFullscreenSelector = createSelector(
+  widgetConfigSelector,
+  isWidgetExpandedSelector,
+  (widget, isExpanded) => (isExpanded && widget.isWidthHalfFullscreen) || false,
+);

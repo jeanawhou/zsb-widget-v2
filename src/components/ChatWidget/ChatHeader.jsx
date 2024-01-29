@@ -9,22 +9,32 @@ import {
 } from '../StyledComponents';
 import WidgetIcon from '../WidgetIcon';
 import useSelector from 'src/store/useSelector';
-import { chatConfigSelector, widgetThemeColorSelector, widgetTitleSelector } from 'src/store/selectors/ui';
+import {
+  chatConfigSelector,
+  isFullscreenSelector,
+  isWidthHalfFullscreenSelector,
+  widgetThemeColorSelector,
+  widgetTitleSelector,
+} from 'src/store/selectors/ui';
 import ChatHeaderMenu from './ChatHeaderMenu';
 
 const ChatHeader = (props) => {
-  const { toggleChat, showLogoOnChat, hideLauncher, textColor, width, isMobile } = props;
+  const { toggleChat, showLogoOnChat, fullHeight, textColor, width, isMobile } = props;
   const chatConfig = useSelector(chatConfigSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const widgetTitle = useSelector(widgetTitleSelector);
+  const isWidgetHalfScreen = useSelector(isWidthHalfFullscreenSelector);
+  const isFullscreen = useSelector(isFullscreenSelector);
 
   return (
     <StyledChatHeader
-      hidelauncher={hideLauncher ? 'true' : 'false'}
+      fullheight={fullHeight ? 'true' : 'false'}
+      fullscreen={isFullscreen ? 'true' : 'false'}
       color={widgetThemeColor}
       textcolor={textColor}
       width={width}
       mobile={isMobile ? 'true' : 'false'}
+      halfscreen={isWidgetHalfScreen ? 'true' : 'false'}
     >
       {showLogoOnChat ? <WidgetIcon isLogo /> : null}
       <StyledFlexColumnSpaceEvenly>
@@ -42,7 +52,7 @@ const ChatHeader = (props) => {
 ChatHeader.propTypes = {
   toggleChat: PropTypes.func.isRequired,
   showLogoOnChat: PropTypes.bool,
-  hideLauncher: PropTypes.bool,
+  fullHeight: PropTypes.bool,
   launcherIcon: PropTypes.any,
   textColor: PropTypes.string,
   isMobile: PropTypes.bool,
