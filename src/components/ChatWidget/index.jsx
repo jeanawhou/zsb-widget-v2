@@ -1,4 +1,5 @@
 import { CloseOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 
 import {
   StyledChatWrapper,
@@ -113,6 +114,10 @@ const ChatWidget = (props) => {
       ) : null}
     </StyledWidgetWrapper>
   );
+};
+
+ChatWidget.propTypes = {
+  style: PropTypes.object,
 };
 
 export default ChatWidget;

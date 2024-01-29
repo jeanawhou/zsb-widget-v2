@@ -13,7 +13,7 @@ import {
   newMessageCountSelector,
 } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
-import { CLEAR_NEW_MESSAGE_BADGE, SET_WIDGET_TO_FULLSCREEN, SET_WIDGET_TO_FULL_HEIGHT } from 'src/store/action';
+import { CLEAR_NEW_MESSAGE_BADGE, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { websocketSelector } from 'src/store/selectors';
 import useScreens from '../hooks/useScreens';

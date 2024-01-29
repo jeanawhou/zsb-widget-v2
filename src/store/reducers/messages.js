@@ -42,7 +42,7 @@ export const messagesReducer = (state, action) => {
     }
 
     case ADD_REPLY: {
-      const { text, isLastReplyItem, context, name, jid, ...rest } = action.payload;
+      const { text, isLastReplyItem, context, name, jid } = action.payload;
       const { quick_reply } = context;
       const quickReplies = quick_reply || EMPTY_QUICK_REPLY;
       const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {

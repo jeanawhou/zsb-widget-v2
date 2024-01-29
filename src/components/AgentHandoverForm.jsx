@@ -37,7 +37,7 @@ const AgentHandoverForms = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await apiService.logCallback(
+      await apiService.logCallback(
         publicKeys,
         formValues,
         message?.interactionId,
