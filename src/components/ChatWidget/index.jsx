@@ -35,7 +35,7 @@ const ChatWidget = (props) => {
     isMobile,
     isWidthHalfFullscreen,
   } = useChatWidget(props);
-  const { position, color, shape, textColor, height } = chatStyles;
+  const { position, color, shape, textColor, height, showIconOnChatHeader } = chatStyles;
 
   return (
     <StyledWidgetWrapper
@@ -63,7 +63,12 @@ const ChatWidget = (props) => {
         </StyledLauncherWrapper>
       ) : null}
       {isExpanded ? (
-        <ChatHeader isMobile={isMobile} fullHeight={fullHeight} toggleChat={toggleChat} showLogoOnChat />
+        <ChatHeader
+          isMobile={isMobile}
+          fullHeight={fullHeight}
+          toggleChat={toggleChat}
+          showIconOnChatHeader={showIconOnChatHeader}
+        />
       ) : null}
       {isExpanded ? (
         <StyledChatWrapper
