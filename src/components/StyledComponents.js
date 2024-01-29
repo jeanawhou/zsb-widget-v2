@@ -688,6 +688,10 @@ export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
   .anticon {
     cursor: pointer;
   }
+
+  &:has(> span:only-child) {
+    justify-content: flex-end;
+  }
 `;
 
 export const StyledMessageBadge = styled.span`
