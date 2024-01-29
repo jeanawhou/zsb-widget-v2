@@ -13,7 +13,7 @@ import {
 } from 'src/store/selectors/messages';
 import { apiService } from 'src/services/api.service';
 import { isMaxDislikesReachedSelector, publicKeysSelector } from 'src/store/selectors';
-import { userSelector } from 'src/store/selectors/user';
+import { hasSubmittedUserDetailsSelector, userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { REACTIONS } from 'src/constants/chat';
 import { cssVariables } from 'src/styles/variables';
@@ -34,6 +34,7 @@ const QuickReplies = (props) => {
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const handoffLabel = useSelector(handOffLabelSelector);
   const shouldShowQuickReplies = useSelector(shouldShowQuickRepliesSelector);
+  const hasSubmittedUserDetails = useSelector(hasSubmittedUserDetailsSelector);
 
   const handleAddQuickReply = async (reply) => {
     dispatch({
@@ -101,7 +102,7 @@ const QuickReplies = (props) => {
         ))
       ) : // if return default answer
       // render agent handover option
-      lastMessage?.type === 'default' ? (
+      lastMessage?.type === 'default' && !hasSubmittedUserDetails ? (
         <StyledClientMessage color={widgetThemeColor} quickreply="true" onClick={() => requestAgent()}>
           <span>{handoffLabel}</span>
         </StyledClientMessage>

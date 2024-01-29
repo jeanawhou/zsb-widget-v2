@@ -181,6 +181,16 @@ export const messagesReducer = (state, action) => {
       return {
         ...state,
         messages: updatedMsg,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: false,
+            },
+          },
+        },
       };
     }
 
@@ -203,6 +213,16 @@ export const messagesReducer = (state, action) => {
       return {
         ...state,
         messages: updatedMsg,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: false,
+            },
+          },
+        },
       };
     }
 
