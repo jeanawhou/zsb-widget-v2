@@ -11,6 +11,7 @@ export const initialChat = {
   bot: '',
   openWidget: false,
   typing: false,
+  position: 'bottom-right',
 };
 
 export const initialUI = {

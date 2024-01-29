@@ -92,7 +92,7 @@ const AgentHandoverForms = (props) => {
 };
 
 AgentHandoverForms.propTypes = {
-  message: PropTypes.array,
+  message: PropTypes.object,
   timeReply: PropTypes.instanceOf(Date),
 };
 
