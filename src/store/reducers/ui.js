@@ -245,6 +245,7 @@ export const uiReducer = (state, action) => {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
+            isWidthHalfFullscreen: false,
             isFullscreen: true,
           },
         },
