@@ -86,7 +86,7 @@ const ChatHeaderMenu = () => {
             label: isFullHeight ? 'Default height' : 'Full height',
             key: 'fullheight',
             icon: <ColumnHeightOutlined />,
-            disabled: isFullscreen,
+            disabled: isFullscreen || isWidgetHalfFullscreen,
             hidden: isMobile || isTablet,
           },
           {

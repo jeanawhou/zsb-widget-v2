@@ -42,7 +42,9 @@ const ChatHeader = (props) => {
         <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
       </StyledFlexColumnSpaceEvenly>
       <StyledChatHeaderActionIcons>
-        <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />
+        {chatConfig.showCloseButton ? (
+          <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />
+        ) : null}
         <ChatHeaderMenu />
       </StyledChatHeaderActionIcons>
     </StyledChatHeader>
