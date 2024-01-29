@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { cssVariables } from '../styles/variables';
-import { DESKTOP_HEIGHT, MOBILE_HEIGHT } from 'src/constants/viewport';
+import { DESKTOP_HEIGHT, MOBILE_HEIGHT, WIDTH } from 'src/constants/viewport';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from 'src/constants/chat';
 
 export const StyledFlexRowCenter = styled.div`
@@ -122,7 +122,6 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
       ? css`
           height: 0px;
           .anticon {
-            box-shadow: ${cssVariables.boxShadow};
             background-color: ${(props) => props.color || cssVariables.zsbCyan};
             color: ${(props) => props.textcolor || '#fff'};
             font-size: 36px;
@@ -132,13 +131,18 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
         `
       : // from here minimize is already false
         css`
-          width: ${(props) => props.width || '300px'};
+          width: ${(props) =>
+            props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+              ? '100%'
+              : props.width || '300px'};
           border: 1px solid #ccc;
-          border-radius: 0 0 9px 9px;
-          box-shadow: ${cssVariables.boxShadow};
+          border-radius: ${(props) =>
+            !(props.mobile === 'true' || props.fullscreen === 'true' || props.fullheight === 'true')
+              ? '0 0 9px 9px'
+              : '0px'};
+          /* box-shadow: ${cssVariables.boxShadow}; */
           min-height: 250px;
           background-color: #fff;
-          padding: 5px 5px 0px 5px;
           animation: fadeIn 0.25s ease-in-out;
 
           .anticon-close {
@@ -147,30 +151,51 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
             right: 10px;
           }
 
-          ${props.mobile === 'true' && props.expanded === 'true'
+          ${(props.mobile === 'true' || props.fullscreen === 'true') && props.minimized === 'true'
             ? css`
-                @media (max-height: ${MOBILE_HEIGHT.tall}) and (min-height: ${MOBILE_HEIGHT.short}) {
-                  height: ${props.hidelauncher === 'true' ? '89%' : props.height || '89%'};
-                  width: 98%;
-                }
-
                 @media (min-height: ${MOBILE_HEIGHT.tall}) {
-                  height: ${props.hidelauncher === 'true' ? '89%' : props.height || '86%'};
-                  width: 98%;
+                  height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+                    ? '98%'
+                    : props.height || '98%'};
+                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                    ? '100%'
+                    : props.width || DEFAULT_WIDTH};
                 }
 
                 @media (max-height: ${MOBILE_HEIGHT.short}) {
-                  height: ${props.hidelauncher === 'true' ? '86%' : props.height || '86%'};
-                  width: 98%;
+                  height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+                    ? '86%'
+                    : props.height || '86%'};
+                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                    ? '100%'
+                    : props.width || DEFAULT_WIDTH};
+                }
+                @media (max-height: ${MOBILE_HEIGHT.tall}) and (min-height: ${MOBILE_HEIGHT.short}) {
+                  height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+                    ? '95%'
+                    : props.height || '95%'};
+                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                    ? '100%'
+                    : props.width || DEFAULT_WIDTH};
                 }
               `
             : css`
                 @media (max-height: ${DESKTOP_HEIGHT.tall}) {
-                  height: ${props.hidelauncher === 'true' ? '86%' : props.height || DEFAULT_HEIGHT};
+                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                    ? '100%'
+                    : props.width || DEFAULT_WIDTH};
+                  height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+                    ? '86%'
+                    : props.height || DEFAULT_HEIGHT};
                 }
 
                 @media (min-height: ${DESKTOP_HEIGHT.tall}) {
-                  height: ${props.hidelauncher === 'true' ? '89%' : props.height || DEFAULT_HEIGHT};
+                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                    ? '100%'
+                    : props.width || DEFAULT_WIDTH};
+                  height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+                    ? '92%'
+                    : props.height || DEFAULT_HEIGHT};
                 }
               `}
         `;
@@ -192,11 +217,6 @@ export const StyledLauncherWrapper = styled.div`
   margin-right: ${(props) =>
     props.position?.includes('right') ? '0px' : props.position?.includes('left') ? '10px' : 'inherit'};
 
-  top: ${(props) => (props.position?.includes('top') ? '0px' : 'inherit')};
-  bottom: ${(props) => (props.position?.includes('bottom') ? '0px' : 'inherit')};
-  left: ${(props) => (props.position?.includes('left') ? '0px' : 'inherit')};
-  right: ${(props) => (props.position?.includes('right') ? '0px' : 'inherit')};
-
   float: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
   ${(props) =>
     props.position?.includes('left')
@@ -212,50 +232,83 @@ export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
   height: 40px;
   width: fit-content;
   padding: 0 10px;
-  border-radius: 5px;
+  border-radius: ${(props) =>
+    !(props.mobile === 'true' || props.fullscreen === 'true' || props.fullheight === 'true') ? '5px' : '0px'};
   background: ${(props) => props.color || cssVariables.zsbCyan};
 `;
 
 export const StyledWidgetWrapper = styled.div`
   font-size: 16px;
-
   font-family: Roboto, sans-serif !important;
   /* TODO: cleanup */
-  height: ${(props) => (props.hidelauncher === 'true' ? '100%' : props.minimized === 'true' ? 'auto' : 'inherit')};
-  position: ${(props) =>
-    props.mobile === 'true' && props.minimized === 'false'
-      ? 'fixed'
-      : props.mobile === 'true' && props.minimized === 'true'
-        ? 'relative'
-        : 'fixed'};
-  bottom: ${(props) =>
-    (props.hidelauncher === 'true' && (props.position?.includes('bottom') || props.position?.includes('top'))) ||
-    (props.mobile === 'true' && props.minimized === 'true')
-      ? '0px'
-      : props.position?.includes('bottom')
-        ? '20px'
+  height: ${(props) =>
+    props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+      ? '100%'
+      : props.minimized === 'true'
+        ? 'auto'
         : 'inherit'};
-  right: ${(props) =>
-    (props.hidelauncher === 'true' && (props.position?.includes('right') || props.position?.includes('left'))) ||
-    (props.mobile === 'true' && props.minimized === 'true')
-      ? '0px'
-      : props.position?.includes('right')
-        ? '20px'
-        : 'inherit'};
-  top: ${(props) =>
-    (props.hidelauncher === 'true' && (props.position?.includes('top') || props.position?.includes('bottom'))) ||
-    (props.mobile === 'true' && props.minimized === 'true')
-      ? '0px'
-      : props.position?.includes('top')
-        ? '20px'
-        : 'inherit'};
-  left: ${(props) =>
-    (props.hidelauncher === 'true' && (props.position?.includes('left') || props.position?.includes('right'))) ||
-    (props.mobile === 'true' && props.minimized === 'true')
-      ? '0px'
-      : props.position?.includes('left')
-        ? '20px'
-        : 'inherit'};
+  width: ${(props) =>
+    props.halfscreen === 'true'
+      ? '50%'
+      : props.fullscreen === 'true' || props.mobile === 'true'
+        ? '100%'
+        : props.minimized === 'true'
+          ? 'auto'
+          : props.width || DEFAULT_WIDTH};
+  position: fixed;
+  bottom: ${(props) => (props.position?.includes('bottom') ? '0px' : 'inherit')};
+  right: ${(props) => (props.position?.includes('right') ? '0px' : 'inherit')};
+  top: ${(props) => (props.position?.includes('top') ? '0px' : 'inherit')};
+  left: ${(props) => (props.position?.includes('left') ? '0px' : 'inherit')};
+  /* TODO: needs cleanup */
+  margin-bottom: ${(props) =>
+    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('bottom')
+      ? '10px'
+      : (props.minimized === 'true' ||
+            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
+          props.position?.includes('bottom')
+        ? '10px'
+        : props.minimized === 'false' &&
+            (props.fullheight === 'true' || props.fullscreen === 'true') &&
+            props.position?.includes('bottom')
+          ? '0px'
+          : 'inherit'};
+  margin-right: ${(props) =>
+    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('right')
+      ? '10px'
+      : (props.minimized === 'true' ||
+            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
+          props.position?.includes('right')
+        ? '10px'
+        : props.minimized === 'false' &&
+            (props.fullheight === 'true' || (props.fullheight === 'false' && props.fullscreen === 'false')) &&
+            props.position?.includes('right')
+          ? '0px'
+          : 'inherit'};
+  margin-top: ${(props) =>
+    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('top')
+      ? '10px'
+      : (props.minimized === 'true' ||
+            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
+          props.position?.includes('top')
+        ? '10px'
+        : props.minimized === 'false' &&
+            (props.fullheight === 'true' || props.fullscreen === 'true') &&
+            props.position?.includes('top')
+          ? '0px'
+          : 'inherit'};
+  margin-left: ${(props) =>
+    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('left')
+      ? '10px'
+      : (props.minimized === 'true' ||
+            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
+          props.position?.includes('left')
+        ? '10px'
+        : props.minimized === 'false' &&
+            (props.fullheight === 'true' || props.fullscreen === 'true') &&
+            props.position?.includes('left')
+          ? '0px'
+          : 'inherit'};
 
   text-align: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
   text-align: ${(props) => (props.position?.includes('right') ? '-webkit-right' : '-webkit-left')};
@@ -336,19 +389,31 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
 
   background: ${(props) => props.color || cssVariables.zsbCyan};
   color: ${(props) => props.textColor || '#fff'};
-  padding: 6px;
-  border-radius: 5px 5px 0px 0px;
-  box-shadow: ${cssVariables.boxShadow};
-  height: ${(props) => (props.hidelauncher === 'true' ? '12%' : '80px')};
+  padding: 6px 1px;
+  border-radius: ${(props) =>
+    !(
+      props.mobile === 'true' ||
+      props.fullscreen === 'true' ||
+      props.fullheight === 'true' ||
+      props.halfscreen === 'true'
+    )
+      ? '5px 5px 0px 0px'
+      : '0px'};
+  height: ${(props) => (props.fullheight === 'true' || props.fullscreen === 'true' ? '12%' : '80px')};
   max-height: 80px;
   align-items: center;
   text-overflow: ellipsis;
   animation: fadeIn 0.5s ease-in-out;
 
   ${(props) => {
-    return props.mobile === 'true'
+    return props.mobile === 'true' ||
+      props.fullscreen === 'true' ||
+      props.fullheight === 'true' ||
+      props.halfscreen === 'true'
       ? css`
-          width: 98%;
+          width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+            ? '100%'
+            : props.width || DEFAULT_WIDTH};
         `
       : props.width
         ? css`
@@ -374,14 +439,26 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   > :first-child {
     min-width: 16px;
   }
+
+  :first-child,
+  :last-child {
+    > * + * {
+      margin: 0px 5px;
+    }
+  }
 `;
 
 export const StyledMessagesWrapper = styled.div`
   width: 100%;
   display: ${(props) => (props.minimized ? 'none' : 'flex')};
   overflow-y: auto;
-  min-height: ${(props) => (props.hidelauncher === 'true' ? '5%' : '220px')};
-  height: ${(props) => (props.hidelauncher === 'true' ? '100%' : props.minimized !== 'true' ? '100%' : 'auto')};
+  min-height: ${(props) => (props.fullheight === 'true' || props.fullscreen === 'true' ? '5%' : '220px')};
+  height: ${(props) =>
+    props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+      ? '100%'
+      : props.minimized !== 'true'
+        ? '100%'
+        : 'auto'};
   flex-direction: column;
 
   > :first-child {
@@ -565,12 +642,16 @@ export const StyledReplyMessageContent = styled.span`
   input:not(:first-child) {
     margin-top: 5px;
   }
+
+  input {
+    border-bottom: 1px solid ${cssVariables.grayBorder};
+  }
 `;
 
 export const StyledInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 5px 10px 5px;
   width: 98%;
   border-top: 1.5px solid ${cssVariables.grayBorder};
 
@@ -582,6 +663,7 @@ export const StyledInputWrapper = styled.div`
     padding: 10px;
     font-family: Roboto, sans-serif;
     max-height: 100px;
+    margin-left: 5px;
   }
 
   .anticon-send {
