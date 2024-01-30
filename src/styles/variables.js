@@ -7,4 +7,5 @@ export const cssVariables = {
   redLike: '#FA3E3E',
   warning: '#faad14',
   grayBorder: '#c3c3c3',
+  defaultIconColor: '#E9E5E5',
 };
