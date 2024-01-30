@@ -36,9 +36,13 @@ export const icon4 = (iconColor) => {
   );
 };
 
-export const DefaultIcon = () => {
+export const DefaultIcon = (iconColor) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 569.58 556.98" fill="#e3e4e6">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 569.58 556.98"
+      fill={iconColor || cssVariables.defaultIconColor}
+    >
       <defs>
         <style></style>
       </defs>
