@@ -85,8 +85,6 @@ const useChatWidget = () => {
     }
   }, [widgetRef?.current, isFullscreen, isFullHeight]);
 
-  console.log('ismobile', isMobile, 'istab', isTablet, 'isfullheight', isFullHeight, 'isfullscreen', isFullscreen);
-
   useEffect(() => {
     if (isFullHeight && !fullHeight) {
       setFullHeight(true);
