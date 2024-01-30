@@ -37,7 +37,7 @@ export const websocketReducer = (state, action) => {
     }
 
     case SET_WS_ASK_QUESTION_ACTION: {
-      const { status, data, type, answer } = action.payload;
+      const { data, type, answer } = action.payload;
       const actionList = state.websocket?.askQuestionActions.length
         ? [...(state.websocket?.askQuestionActions || []), action.payload]
         : [action.payload];

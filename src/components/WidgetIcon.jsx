@@ -1,11 +1,11 @@
-import { cloneElement } from 'react'
+import { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import useSelector from 'src/store/useSelector';
 import { widgetIconSelector } from 'src/store/selectors/ui';
 
 const WidgetIcon = (props) => {
-  const { isLogo, ...rest} = props
-  const icon = useSelector(widgetIconSelector)
+  const { isLogo, ...rest } = props;
+  const icon = useSelector(widgetIconSelector);
   const classNames = `chat-launcher${isLogo ? ' isLogoOnly' : ''}`;
 
   return typeof icon === 'string' ? (
@@ -16,10 +16,10 @@ const WidgetIcon = (props) => {
       ...rest,
     })
   );
-}
+};
 
 WidgetIcon.propTypes = {
-  isLogo: PropTypes.bool
-}
+  isLogo: PropTypes.bool,
+};
 
-export default WidgetIcon
+export default WidgetIcon;
