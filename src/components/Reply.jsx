@@ -142,11 +142,13 @@ const Reply = ({ message }) => {
           {type === 'error' ? <WarningFilled style={{ color: cssVariables.warning }} /> : <UserOutlined />}
           <StyledFlexColumnLeft>{renderReply()}</StyledFlexColumnLeft>
         </StyledFlexRowLeft>
-        <StyledReplyFooter>
-          <em>
-            <TimeStamp time={timeReply} />
-          </em>
-        </StyledReplyFooter>
+        {reply?.isLastReplyItem ? (
+          <StyledReplyFooter>
+            <em>
+              <TimeStamp time={timeReply} />
+            </em>
+          </StyledReplyFooter>
+        ) : null}
       </StyledBotReply>
     </StyledMessage>
   );

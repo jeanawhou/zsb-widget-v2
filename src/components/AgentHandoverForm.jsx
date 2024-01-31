@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { StyledActionButtonsWrapper } from './StyledComponents';
-import { Button, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import useSelector from 'src/store/useSelector';
 import { shouldSendCallbackEmailSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
 import { apiService } from 'src/services/api.service';
@@ -20,6 +20,7 @@ const AgentHandoverForms = (props) => {
   const shouldSendCallbackEmail = useSelector(shouldSendCallbackEmailSelector);
 
   const [formValues, setFormValues] = useState(message.forms);
+  const [sending, setSending] = useState(false);
 
   const handleFormChange = (e, form) => {
     const updated = formValues.map((f) => {
@@ -36,6 +37,7 @@ const AgentHandoverForms = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSending(true);
     try {
       await apiService.logCallback(
         publicKeys,
@@ -46,7 +48,7 @@ const AgentHandoverForms = (props) => {
         user,
       );
 
-      dispatch({
+      await dispatch({
         type: SUBMIT_AGENT_HANDOVER_FORM,
         payload: {
           user: formValues,
@@ -57,6 +59,8 @@ const AgentHandoverForms = (props) => {
         type: ADD_ERROR_REPLY,
       });
     }
+    setFormValues([]);
+    setSending(false);
   };
 
   const handleCancel = async (e) => {
@@ -67,8 +71,10 @@ const AgentHandoverForms = (props) => {
   };
 
   return (
-    <>
+    <Form onFinish={handleSubmit}>
       {message.forms.map((form, idx) => {
+        const isMobileForm = form?.label?.toLowerCase()?.includes('number');
+        const isEmailForm = form?.label?.toLowerCase()?.includes('email');
         return (
           <Input
             key={`chat-bubble-${timeReply}-form-${idx}`}
@@ -76,6 +82,7 @@ const AgentHandoverForms = (props) => {
             onChange={(e) => handleFormChange(e, form)}
             required={form.mandatory}
             bordered={false}
+            type={isMobileForm ? 'tel' : isEmailForm ? 'email' : 'text'}
           />
         );
       })}
@@ -83,11 +90,11 @@ const AgentHandoverForms = (props) => {
         <Button onClick={handleCancel} type="default">
           {'Cancel'}
         </Button>
-        <Button onClick={handleSubmit} style={{ background: widgetThemeColor, color: '#fff' }}>
+        <Button loading={sending} onClick={handleSubmit} style={{ background: widgetThemeColor, color: '#fff' }}>
           {'Submit'}
         </Button>
       </StyledActionButtonsWrapper>
-    </>
+    </Form>
   );
 };
 
