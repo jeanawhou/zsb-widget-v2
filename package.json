@@ -11,6 +11,13 @@
     "prepare": "husky",
     "test": "npm run lint"
   },
+  "main": "dist/zsbv6.js",
+  "exports": {
+    ".": "./dist/zsbv6.js"
+  },
+  "files": [
+    "zsbv6.js"
+  ],
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@fingerprintjs/fingerprintjs": "^3.3.5",

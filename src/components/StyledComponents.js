@@ -388,7 +388,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   }
 
   background: ${(props) => props.color || cssVariables.zsbCyan};
-  color: ${(props) => props.textColor || '#fff'};
+  color: #fff;
   padding: 6px 1px;
   border-radius: ${(props) =>
     !(
@@ -426,6 +426,8 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
 
   h3,
   h4 {
+    color: #fff;
+    font-weight: bold;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -654,13 +656,16 @@ export const StyledInputWrapper = styled.div`
   padding: 10px 5px 10px 5px;
   width: 98%;
   border-top: 1.5px solid ${cssVariables.grayBorder};
+  height: inherit;
 
   textarea {
     border: none !important;
     resize: none;
     border-radius: 5px;
     width: 100%;
-    padding: 10px;
+    font-size: 14px;
+    line-height: normal;
+    padding: 8px 5px;
     font-family: Roboto, sans-serif;
     max-height: 100px;
     margin-left: 5px;
@@ -697,11 +702,10 @@ export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
 export const StyledMessageBadge = styled.span`
   text-align: center;
   background: ${cssVariables.redLike};
-  height: 14px;
+  height: 20px;
   border-radius: 50%;
   margin-left: -16px;
-  padding: 4px;
-  width: 14px;
+  width: 20px;
   font-size: 12px;
   color: #fff;
 `;
