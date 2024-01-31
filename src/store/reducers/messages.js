@@ -1,8 +1,11 @@
+import { isEmpty } from 'lodash';
+
 import {
   ADD_ERROR_REPLY,
   ADD_REPLY,
   CANCEL_AGENT_HANDOVER,
   CLEAR_CHAT_MESSAGES,
+  RETRIGGER_AGENT_HANDOVER,
   SEND_NEW_MESSAGE,
   SHOW_AGENT_HANDOVER_FORM,
   SUBMIT_AGENT_HANDOVER_FORM,
@@ -23,7 +26,7 @@ export const messagesReducer = (state, action) => {
 
   switch (action.type) {
     case SEND_NEW_MESSAGE: {
-      const { newMessage, interactionId } = action.payload;
+      const { newMessage, interactionId, ...rest } = action.payload;
       const allMessages = [
         ...removeLastMessageStatus,
         {
@@ -32,6 +35,7 @@ export const messagesReducer = (state, action) => {
           isLastMessage: true,
           timeMessageSent: new Date(),
           interactionId,
+          ...rest,
         },
       ];
 
@@ -44,7 +48,7 @@ export const messagesReducer = (state, action) => {
     case ADD_REPLY: {
       const { text, isLastReplyItem, context, name, jid } = action.payload;
       const { quick_reply } = context;
-      const quickReplies = quick_reply || EMPTY_QUICK_REPLY;
+      const quickReplies = isEmpty(quick_reply) ? EMPTY_QUICK_REPLY : quick_reply;
       const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
         const lastMessage = idx == removeLastMessageStatus.length - 1;
         // match the jid payload passed
@@ -149,7 +153,7 @@ export const messagesReducer = (state, action) => {
             lastUserReplied: 'bot',
             type: 'agent-handover',
             reply: {
-              text: formHeader,
+              text: [formHeader],
             },
             isLastMessage: true,
           };
@@ -194,6 +198,7 @@ export const messagesReducer = (state, action) => {
       };
     }
 
+    case RETRIGGER_AGENT_HANDOVER:
     case SUBMIT_AGENT_HANDOVER_FORM: {
       const config = state.ui?.widgetConfig?.chat || {};
       const submittedFormMessage = config.submittedFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.submittedFormMessage;
@@ -201,8 +206,10 @@ export const messagesReducer = (state, action) => {
         if (msg.type === 'agent-handover') {
           return {
             ...msg,
+            timeReply: new Date(),
             reply: {
-              text: submittedFormMessage,
+              text: [submittedFormMessage],
+              isLastReplyItem: true,
             },
             forms: undefined,
             isLastMessage: true,

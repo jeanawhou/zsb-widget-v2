@@ -4,21 +4,26 @@ import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 
 import { StyledFlexRowLeft, StyledReplyMessageContent } from './StyledComponents';
 import { cssVariables } from 'src/styles/variables';
+import { useCallback } from 'react';
 
 const ChatBubble = ({ content, messageIcon, children, feedback, isForm }) => {
+  const renderContent = useCallback(() => {
+    return isForm ? (
+      <span>{content}</span>
+    ) : (
+      <span
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(content || children),
+        }}
+      />
+    );
+  }, [children, content, isForm]);
+
   return (
     <StyledReplyMessageContent>
       <StyledFlexRowLeft>
         {messageIcon || null}
-        {isForm ? (
-          <span>{content}</span>
-        ) : (
-          <span
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(content || children),
-            }}
-          />
-        )}
+        {renderContent()}
       </StyledFlexRowLeft>
 
       {feedback === 1 ? (

@@ -69,8 +69,10 @@ export const apiService = {
     const { sentinel, key, graph, wlk } = publicKeys;
     const { sessionId } = user;
     const strippedUUID = graph.split(uuidPrefix).pop();
-    const EXCLUDED_FORM_INFO = ['mandatory'];
-    const filteredCustomerInfo = customerInfo.map((info) => omit(info, EXCLUDED_FORM_INFO));
+    const EXCLUDED_FORM_INFO = ['mandatory', 'label', 'attribute'];
+    const filteredCustomerInfo = customerInfo.reduce((acc, info) => {
+      return Object.assign(acc, omit(info, EXCLUDED_FORM_INFO));
+    }, {});
     return this.jacPrimeRun({
       snt: sentinel,
       key,

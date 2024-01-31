@@ -4,7 +4,12 @@ import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 
 import { StyledClientMessage, StyledQuickReplyWrapper } from './StyledComponents';
 import { Context } from 'src/store/store';
-import { ADD_REACTION_TO_LAST_MESSAGE, SEND_NEW_MESSAGE, SHOW_AGENT_HANDOVER_FORM } from 'src/store/action';
+import {
+  ADD_REACTION_TO_LAST_MESSAGE,
+  RETRIGGER_AGENT_HANDOVER,
+  SEND_NEW_MESSAGE,
+  SHOW_AGENT_HANDOVER_FORM,
+} from 'src/store/action';
 import useSelector from 'src/store/useSelector';
 import {
   hasQuickReplySelector,
@@ -51,13 +56,19 @@ const QuickReplies = (props) => {
   const requestAgent = async () => {
     await dispatch({
       type: SEND_NEW_MESSAGE,
-      payload: { newMessage: handoffLabel, interactionId: generateUUID() },
+      payload: {
+        newMessage: handoffLabel,
+        interactionId: generateUUID(),
+        type: hasSubmittedUserDetails ? 'agent-handover' : undefined,
+      },
     });
-    setTimeout(() => {
+    if (!hasSubmittedUserDetails) {
       dispatch({
         type: SHOW_AGENT_HANDOVER_FORM,
       });
-    }, 1000);
+    } else {
+      dispatch({ type: RETRIGGER_AGENT_HANDOVER });
+    }
   };
 
   useEffect(() => {
@@ -102,12 +113,11 @@ const QuickReplies = (props) => {
         ))
       ) : // if return default answer
       // render agent handover option
-      lastMessage?.type === 'default' && !hasSubmittedUserDetails ? (
-        <StyledClientMessage color={widgetThemeColor} quickreply="true" onClick={() => requestAgent()}>
+      lastMessage?.type === 'default' ? (
+        <StyledClientMessage color={widgetThemeColor} quickreply="true" onClick={requestAgent}>
           <span>{handoffLabel}</span>
         </StyledClientMessage>
       ) : // if lastmessage is agent handover message
-      //
       lastMessage?.type === 'agent-handover' ? null : (
         REACTIONS.map((qr, idx) => (
           <StyledClientMessage
