@@ -34,6 +34,7 @@ const ChatWidget = (props) => {
     messages,
     isMobile,
     isWidthHalfFullscreen,
+    isCircleLauncher,
   } = useChatWidget(props);
   const { position, color, shape, textColor, height, showIconOnChatHeader } = chatStyles;
 
@@ -50,60 +51,51 @@ const ChatWidget = (props) => {
       mobile={isMobile ? 'true' : 'false'}
       style={props.style}
       halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
+      mid={chatStyles.position?.includes('mid') ? 'true' : 'false'}
     >
-      {(!isExpanded || (!(fullHeight || isFullscreen || isWidthHalfFullscreen) && isExpanded)) &&
-      chatStyles.position?.includes('top') ? (
-        <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
-          {isExpanded ? (
-            <CloseOutlined onClick={toggleChat} size={30} className="chat-launcher" />
-          ) : (
-            <WidgetIcon onClick={toggleChat} />
-          )}
-          {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
-        </StyledLauncherWrapper>
-      ) : null}
-      {isExpanded ? (
-        <ChatHeader
-          isMobile={isMobile}
-          fullHeight={fullHeight}
-          toggleChat={toggleChat}
-          showIconOnChatHeader={showIconOnChatHeader}
-        />
-      ) : null}
-      {isExpanded ? (
-        <StyledChatWrapper
-          mobile={isMobile ? 'true' : 'false'}
-          fullheight={fullHeight && isExpanded ? 'true' : 'false'}
-          fullscreen={isFullscreen && isExpanded ? 'true' : 'false'}
-          height={height}
-          minimized={!isExpanded ? 'true' : 'false'}
-          textcolor={textColor}
-          halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
-        >
-          <StyledMessagesWrapper
-            ref={messagesRef}
+      <div>
+        {isExpanded && (
+          <ChatHeader
+            isMobile={isMobile}
+            fullHeight={fullHeight}
+            toggleChat={toggleChat}
+            showIconOnChatHeader={showIconOnChatHeader}
+          />
+        )}
+        {isExpanded ? (
+          <StyledChatWrapper
+            mobile={isMobile ? 'true' : 'false'}
             fullheight={fullHeight && isExpanded ? 'true' : 'false'}
+            fullscreen={isFullscreen && isExpanded ? 'true' : 'false'}
+            height={height}
+            minimized={!isExpanded ? 'true' : 'false'}
+            textcolor={textColor}
             halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
           >
-            {messages.map((message, index) => {
-              return (
-                <div key={`message-${index}`}>
-                  {message.text ? <UserMessage message={message} /> : null}
-                  {message.reply ? <Reply message={message} key={`reply-message-${index}`} /> : <Typing />}
-                </div>
-              );
-            })}
-          </StyledMessagesWrapper>
-          <StyledFlexColumn>
-            <QuickReplies quickReplies={quickReplies} />
-            <MessageInput />
-          </StyledFlexColumn>
-        </StyledChatWrapper>
-      ) : null}
-      {(!isExpanded || (!(fullHeight || isFullscreen || isWidthHalfFullscreen) && isExpanded)) &&
-      chatStyles.position?.includes('bottom') ? (
+            <StyledMessagesWrapper
+              ref={messagesRef}
+              fullheight={fullHeight && isExpanded ? 'true' : 'false'}
+              halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
+            >
+              {messages.map((message, index) => {
+                return (
+                  <div key={`message-${index}`}>
+                    {message.text ? <UserMessage message={message} /> : null}
+                    {message.reply ? <Reply message={message} key={`reply-message-${index}`} /> : <Typing />}
+                  </div>
+                );
+              })}
+            </StyledMessagesWrapper>
+            <StyledFlexColumn>
+              <QuickReplies quickReplies={quickReplies} />
+              <MessageInput />
+            </StyledFlexColumn>
+          </StyledChatWrapper>
+        ) : null}
+      </div>
+      {!isExpanded || (!(fullHeight || isFullscreen || isWidthHalfFullscreen) && isExpanded) ? (
         <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
-          {chatStyles.shape?.includes('circle') ? (
+          {isCircleLauncher ? (
             isExpanded ? (
               <CloseOutlined size={30} className="chat-launcher" />
             ) : (

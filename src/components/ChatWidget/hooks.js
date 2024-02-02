@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
-import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
+import { isCircleLauncherSelector, isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import { messagesSelector } from 'store/selectors/messages.js';
 import {
   chatStylesSelector,
@@ -34,6 +34,7 @@ const useChatWidget = () => {
   const isFullHeight = useSelector(isFullHeightSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
   const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
+  const isCircleLauncher = useSelector(isCircleLauncherSelector);
 
   // refs
   const messagesRef = useRef();
@@ -205,6 +206,7 @@ const useChatWidget = () => {
     handleScroll,
     isMobile,
     isWidthHalfFullscreen,
+    isCircleLauncher,
   };
 };
 
