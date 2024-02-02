@@ -77,6 +77,10 @@ export const StyledActionButtonsWrapper = styled(StyledFlexRowSpaceEvenly)`
   > button {
     width: 100%;
   }
+
+  .ant-form-item {
+    margin-bottom: 0px;
+  }
 `;
 
 export const StyledFlexColumn = styled.div`
@@ -209,15 +213,43 @@ export const StyledLauncherWrapper = styled.div`
   cursor: pointer;
 
   margin-top: ${(props) =>
-    props.position?.includes('top') ? '0px' : props.position?.includes('bottom') ? '10px' : 'inherit'};
+    props.position?.includes('top')
+      ? '0px'
+      : props.position?.includes('mid')
+        ? 'auto'
+        : props.position?.includes('bottom')
+          ? '10px'
+          : 'inherit'};
   margin-bottom: ${(props) =>
-    props.position?.includes('bottom') ? '0px' : props.position?.includes('top') ? '10px' : 'inherit'};
+    props.position?.includes('bottom')
+      ? '0px'
+      : props.position?.includes('mid')
+        ? 'auto'
+        : props.position?.includes('top')
+          ? '10px'
+          : 'inherit'};
   margin-left: ${(props) =>
-    props.position?.includes('left') ? '0px' : props.position?.includes('right') ? '10px' : 'inherit'};
+    props.position?.includes('left')
+      ? '0px'
+      : props.position?.includes('mid')
+        ? 'auto'
+        : props.position?.includes('right')
+          ? '10px'
+          : 'inherit'};
   margin-right: ${(props) =>
-    props.position?.includes('right') ? '0px' : props.position?.includes('left') ? '10px' : 'inherit'};
+    props.position?.includes('right')
+      ? '0px'
+      : props.position?.includes('mid')
+        ? 'auto'
+        : props.position?.includes('left')
+          ? '10px'
+          : 'inherit'};
 
   float: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
+  top: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
+  bottom: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
+  rotate: ${(props) =>
+    props.position?.includes('mid-right') ? '-90deg' : props.position?.includes('mid-left') ? '90deg' : 'none'};
   ${(props) =>
     props.position?.includes('left')
       ? css`
@@ -226,6 +258,9 @@ export const StyledLauncherWrapper = styled.div`
       : css`
           ${StyledFlexRowRight}
         `}
+
+  /* mid position needs more testing */
+  width: ${(props) => (props.position?.includes('mid') ? '40px' : 'auto')};
 `;
 
 export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
@@ -240,13 +275,12 @@ export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
 export const StyledWidgetWrapper = styled.div`
   font-size: 16px;
   font-family: Roboto, sans-serif !important;
-  /* TODO: cleanup */
   height: ${(props) =>
-    props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
+    props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true' || props.mid === 'true'
       ? '100%'
       : props.minimized === 'true'
         ? 'auto'
-        : 'inherit'};
+        : 'auto'};
   width: ${(props) =>
     props.halfscreen === 'true'
       ? '50%'
@@ -256,9 +290,21 @@ export const StyledWidgetWrapper = styled.div`
           ? 'auto'
           : props.width || DEFAULT_WIDTH};
   position: fixed;
-  bottom: ${(props) => (props.position?.includes('bottom') ? '0px' : 'inherit')};
+  bottom: ${(props) =>
+    props.position?.includes('bottom') ||
+    props.fullheight === 'true' ||
+    props.fullscreen === 'true' ||
+    props.halfscreen === 'true'
+      ? '0px'
+      : 'inherit'};
   right: ${(props) => (props.position?.includes('right') ? '0px' : 'inherit')};
-  top: ${(props) => (props.position?.includes('top') ? '0px' : 'inherit')};
+  top: ${(props) =>
+    props.position?.includes('top') ||
+    props.fullheight === 'true' ||
+    props.fullscreen === 'true' ||
+    props.halfscreen === 'true'
+      ? '0px'
+      : 'inherit'};
   left: ${(props) => (props.position?.includes('left') ? '0px' : 'inherit')};
   /* TODO: needs cleanup */
   margin-bottom: ${(props) =>
@@ -274,17 +320,19 @@ export const StyledWidgetWrapper = styled.div`
           ? '0px'
           : 'inherit'};
   margin-right: ${(props) =>
-    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('right')
-      ? '10px'
-      : (props.minimized === 'true' ||
-            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-          props.position?.includes('right')
+    props.position === 'mid-right' && props.minimized === 'true'
+      ? '-50px'
+      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('right')
         ? '10px'
-        : props.minimized === 'false' &&
-            (props.fullheight === 'true' || (props.fullheight === 'false' && props.fullscreen === 'false')) &&
+        : (props.minimized === 'true' ||
+              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
             props.position?.includes('right')
-          ? '0px'
-          : 'inherit'};
+          ? '10px'
+          : props.minimized === 'false' &&
+              (props.fullheight === 'true' || (props.fullheight === 'false' && props.fullscreen === 'false')) &&
+              props.position?.includes('right')
+            ? '0px'
+            : 'inherit'};
   margin-top: ${(props) =>
     props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('top')
       ? '10px'
@@ -298,23 +346,55 @@ export const StyledWidgetWrapper = styled.div`
           ? '0px'
           : 'inherit'};
   margin-left: ${(props) =>
-    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('left')
-      ? '10px'
-      : (props.minimized === 'true' ||
-            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-          props.position?.includes('left')
+    props.position === 'mid-left' && props.minimized === 'true'
+      ? '-50px'
+      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('left')
         ? '10px'
-        : props.minimized === 'false' &&
-            (props.fullheight === 'true' || props.fullscreen === 'true') &&
+        : (props.minimized === 'true' ||
+              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
             props.position?.includes('left')
-          ? '0px'
-          : 'inherit'};
+          ? '10px'
+          : props.minimized === 'false' &&
+              (props.fullheight === 'true' || props.fullscreen === 'true') &&
+              props.position?.includes('left')
+            ? '0px'
+            : 'inherit'};
 
   text-align: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
   text-align: ${(props) => (props.position?.includes('right') ? '-webkit-right' : '-webkit-left')};
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => (props.position?.includes('mid-right') ? 'row' : 'column')};
+  ${(props) => {
+    if (props.position?.includes('top')) {
+      return css`
+        flex-direction: column-reverse;
+      `;
+    } else if (props.position?.includes('bottom')) {
+      return css`
+        flex-direction: column;
+      `;
+    } else if (props.position?.includes('mid-right')) {
+      return css`
+        flex-direction: row;
+      `;
+    } else {
+      return css`
+        flex-direction: row-reverse;
+      `;
+    }
+  }}
   align-items: ${(props) => (props.position?.includes('left') ? 'flex-start' : 'flex-end')};
+
+  > * {
+    align-self: ${(props) => (props.position?.includes('mid') ? 'center' : 'auto')};
+    height: ${(props) =>
+      props.minimized === 'false' &&
+      (props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true')
+        ? '100%'
+        : 'auto'};
+    width: ${(props) =>
+      props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true' ? '100%' : 'auto'};
+  }
 
   @keyframes rotate {
     from {
@@ -647,6 +727,21 @@ export const StyledReplyMessageContent = styled.span`
 
   input {
     border-bottom: 1px solid ${cssVariables.grayBorder};
+    border-radius: 3px;
+  }
+
+  input.ant-input-status-error {
+    border-bottom: 1px solid ${cssVariables.redLike};
+  }
+
+  form#user-form {
+    > .ant-form-item {
+      margin-bottom: 5px;
+    }
+
+    .ant-form-item-explain-error {
+      font-size: 12px;
+    }
   }
 `;
 
