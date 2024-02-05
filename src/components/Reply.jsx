@@ -131,7 +131,7 @@ const Reply = ({ message }) => {
       case 'agent-handover':
         return renderAgentHandover();
       default:
-        return renderAgentHandover();
+        return renderBotReply();
     }
   };
 

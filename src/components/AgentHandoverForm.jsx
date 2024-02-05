@@ -7,7 +7,12 @@ import { shouldSendCallbackEmailSelector, widgetThemeColorSelector } from 'src/s
 import { apiService } from 'src/services/api.service';
 import { publicKeysSelector } from 'src/store/selectors';
 import { Context } from 'src/store/store';
-import { ADD_ERROR_REPLY, CANCEL_AGENT_HANDOVER, SUBMIT_AGENT_HANDOVER_FORM } from 'src/store/action';
+import {
+  ADD_ERROR_REPLY,
+  AGENT_HANDOVER_SUBMIT_FAIL,
+  CANCEL_AGENT_HANDOVER,
+  SUBMIT_AGENT_HANDOVER_FORM,
+} from 'src/store/action';
 import { hasSubmittedUserDetailsSelector, userSelector } from 'src/store/selectors/user';
 
 const AgentHandoverForms = (props) => {
@@ -39,7 +44,7 @@ const AgentHandoverForms = (props) => {
     e.preventDefault();
     setSending(true);
     try {
-      await apiService.logCallback(
+      const res = await apiService.logCallback(
         publicKeys,
         formValues,
         message?.interactionId,
@@ -48,14 +53,20 @@ const AgentHandoverForms = (props) => {
         user,
       );
 
-      await dispatch({
-        type: SUBMIT_AGENT_HANDOVER_FORM,
-        payload: {
-          user: formValues,
-        },
-      });
+      if (res.data.success) {
+        await dispatch({
+          type: SUBMIT_AGENT_HANDOVER_FORM,
+          payload: {
+            user: formValues,
+          },
+        });
+      } else {
+        await dispatch({
+          type: AGENT_HANDOVER_SUBMIT_FAIL,
+        });
+      }
     } catch (error) {
-      dispatch({
+      await dispatch({
         type: ADD_ERROR_REPLY,
       });
     }
@@ -71,28 +82,39 @@ const AgentHandoverForms = (props) => {
   };
 
   return (
-    <Form onFinish={handleSubmit}>
+    <Form onFinish={handleSubmit} name="user-form">
       {message.forms.map((form, idx) => {
         const isMobileForm = form?.label?.toLowerCase()?.includes('number');
         const isEmailForm = form?.label?.toLowerCase()?.includes('email');
         return (
-          <Input
+          <Form.Item
+            rules={[
+              {
+                required: form.mandatory === 'true' || form.mandatory ? true : false,
+                message: `${form.label} is required`,
+              },
+            ]}
             key={`chat-bubble-${timeReply}-form-${idx}`}
-            placeholder={form?.label}
-            onChange={(e) => handleFormChange(e, form)}
-            required={form.mandatory}
-            bordered={false}
-            type={isMobileForm ? 'tel' : isEmailForm ? 'email' : 'text'}
-          />
+            name={form.attribute}
+          >
+            <Input
+              placeholder={form?.label}
+              onChange={(e) => handleFormChange(e, form)}
+              bordered={false}
+              type={isMobileForm ? 'tel' : isEmailForm ? 'email' : 'text'}
+            />
+          </Form.Item>
         );
       })}
       <StyledActionButtonsWrapper>
         <Button onClick={handleCancel} type="default">
           {'Cancel'}
         </Button>
-        <Button loading={sending} onClick={handleSubmit} style={{ background: widgetThemeColor, color: '#fff' }}>
-          {'Submit'}
-        </Button>
+        <Form.Item>
+          <Button loading={sending} style={{ background: widgetThemeColor, color: '#fff' }} htmlType="submit">
+            {'Submit'}
+          </Button>
+        </Form.Item>
       </StyledActionButtonsWrapper>
     </Form>
   );
