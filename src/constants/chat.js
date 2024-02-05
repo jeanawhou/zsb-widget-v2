@@ -40,3 +40,6 @@ export const EMPTY_QUICK_REPLY = { replies: [] };
 
 export const DEFAULT_HEIGHT = '350px';
 export const DEFAULT_WIDTH = '300px';
+
+export const DEFAULT_ERROR_MESSAGE = `Sorry, I'm having trouble to look for the answer. Please try again later.`;
+export const SUBMIT_ERROR_MESSAGE = `Sorry, something went wrong while submitting your information. Please contact admin.`;
