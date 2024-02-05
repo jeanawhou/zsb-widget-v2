@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash';
 import {
   ADD_ERROR_REPLY,
   ADD_REPLY,
+  AGENT_HANDOVER_SUBMIT_FAIL,
   CANCEL_AGENT_HANDOVER,
   CLEAR_CHAT_MESSAGES,
   RETRIGGER_AGENT_HANDOVER,
@@ -10,7 +11,13 @@ import {
   SHOW_AGENT_HANDOVER_FORM,
   SUBMIT_AGENT_HANDOVER_FORM,
 } from '../action';
-import { DEFAULT_AGENT_HANDOVER_MESSAGE, DEFAULT_USER_FORM_FIELDS, EMPTY_QUICK_REPLY } from '../../constants/chat';
+import {
+  DEFAULT_AGENT_HANDOVER_MESSAGE,
+  DEFAULT_ERROR_MESSAGE,
+  DEFAULT_USER_FORM_FIELDS,
+  EMPTY_QUICK_REPLY,
+  SUBMIT_ERROR_MESSAGE,
+} from '../../constants/chat';
 
 export const messagesReducer = (state, action) => {
   const messageState = state.messages;
@@ -110,7 +117,7 @@ export const messagesReducer = (state, action) => {
         if (idx == messageState.length - 1) {
           return {
             ...msg,
-            reply: { text: `Sorry, I'm having trouble to look for the answer. Please try again later.` },
+            reply: { text: DEFAULT_ERROR_MESSAGE },
             timeReply: new Date(),
             lastUserReplied: 'bot',
             quickReply: { replies: [] },
@@ -169,8 +176,9 @@ export const messagesReducer = (state, action) => {
     case CANCEL_AGENT_HANDOVER: {
       const config = state.ui?.widgetConfig?.chat || {};
       const cancelledFormMessage = config.cancelledFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.cancelledFormMessage;
-      const updatedMsg = removeLastMessageStatus.map((msg) => {
-        if (msg.type === 'agent-handover') {
+      const lastMessage = removeLastMessageStatus?.length - 1;
+      const updatedMsg = removeLastMessageStatus.map((msg, idx) => {
+        if (msg.type === 'agent-handover' && idx === lastMessage) {
           return {
             ...msg,
             reply: {
@@ -202,8 +210,9 @@ export const messagesReducer = (state, action) => {
     case SUBMIT_AGENT_HANDOVER_FORM: {
       const config = state.ui?.widgetConfig?.chat || {};
       const submittedFormMessage = config.submittedFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.submittedFormMessage;
-      const updatedMsg = removeLastMessageStatus.map((msg) => {
-        if (msg.type === 'agent-handover') {
+      const lastMessage = removeLastMessageStatus?.length - 1;
+      const updatedMsg = removeLastMessageStatus.map((msg, idx) => {
+        if (msg.type === 'agent-handover' && idx === lastMessage) {
           return {
             ...msg,
             timeReply: new Date(),
@@ -212,6 +221,36 @@ export const messagesReducer = (state, action) => {
               isLastReplyItem: true,
             },
             forms: undefined,
+            isLastMessage: true,
+          };
+        }
+        return msg;
+      });
+      return {
+        ...state,
+        messages: updatedMsg,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: false,
+            },
+          },
+        },
+      };
+    }
+
+    case AGENT_HANDOVER_SUBMIT_FAIL: {
+      const updatedMsg = removeLastMessageStatus.map((msg, idx) => {
+        const lastMessage = removeLastMessageStatus?.length - 1;
+        if (msg.type === 'agent-handover' && idx === lastMessage) {
+          return {
+            ...msg,
+            forms: undefined,
+            reply: { text: action.payload?.error || SUBMIT_ERROR_MESSAGE },
+            type: 'error',
             isLastMessage: true,
           };
         }

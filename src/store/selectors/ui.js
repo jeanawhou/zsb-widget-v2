@@ -23,6 +23,10 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
 export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat) => chat.color);
 
 export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
+export const isCircleLauncherSelector = createSelector(
+  chatConfigSelector,
+  (chat) => chat.shape?.toLowerCase() === 'circle',
+);
 
 export const handOffLabelSelector = createSelector(chatConfigSelector, (chat) => chat.handoffLabel);
 export const shouldSendCallbackEmailSelector = createSelector(chatConfigSelector, (chat) => chat.callbackEmail);
