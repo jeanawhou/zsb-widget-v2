@@ -1,6 +1,5 @@
-import { resolve } from 'path';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
@@ -15,25 +14,18 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    plugins: [react(), splitVendorChunkPlugin()],
+    plugins: [react()],
     define: defineEnv,
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
-      lib: {
-        // eslint-disable-next-line no-undef
-        entry: resolve(__dirname, 'src/main.jsx'),
-        name: 'zsb widget v2',
-        fileName: 'zsbv6',
-      },
       rollupOptions: {
         output: {
           entryFileNames: 'zsbv6.js',
           globals: {
-            react: 'React ',
+            react: 'React',
           },
         },
-        external: ['react'],
       },
     },
     resolve: {
