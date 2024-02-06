@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 // eslint-disable-next-line no-undef
-const ZSB_COMPONENT = __CUSTOM_COMPONENT__ || 'zeroshot-bot';
+const ZSB_COMPONENT = __VITE_CUSTOM_COMPONENT__ || 'zeroshot-bot';
 
 class ReactElement extends HTMLElement {
   constructor() {

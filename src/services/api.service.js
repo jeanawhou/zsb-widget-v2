@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getLocalStorageItem } from './global.service';
 import { omit } from 'lodash';
 // eslint-disable-next-line no-undef
-const BASE_URL = __BASE_URL__;
+const BASE_URL = __VITE_BASE_URL__;
 
 export const apiService = {
   jacPrimeRun: function (data) {

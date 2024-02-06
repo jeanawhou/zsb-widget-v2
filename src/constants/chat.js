@@ -10,7 +10,7 @@ export const DEFAULT_AGENT_HANDOVER_MESSAGE = {
 };
 
 // eslint-disable-next-line no-undef
-export const MAX_DISLIKES = __MAX_DISLIKES__;
+export const MAX_DISLIKES = __VITE_MAX_DISLIKES__;
 
 export const REACTIONS = [
   {
