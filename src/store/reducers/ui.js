@@ -116,7 +116,7 @@ export const uiReducer = (state, action) => {
       const isProd = import.meta.env.PROD;
       const userIcon = extractUserIcon(avatar, iconColor);
       // eslint-disable-next-line no-undef
-      const fallbackIcon = isProd ? `${__BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
+      const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
 
       return {
         ...state,
