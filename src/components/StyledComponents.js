@@ -185,7 +185,8 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
               `
             : css`
                 @media (max-height: ${DESKTOP_HEIGHT.tall}) {
-                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                  width: ${(props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true') &&
+                  props.minimized === 'false'
                     ? '100%'
                     : props.width || DEFAULT_WIDTH};
                   height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
@@ -194,7 +195,8 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
                 }
 
                 @media (min-height: ${DESKTOP_HEIGHT.tall}) {
-                  width: ${props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true'
+                  width: ${(props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true') &&
+                  props.minimized === 'false'
                     ? '100%'
                     : props.width || DEFAULT_WIDTH};
                   height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
@@ -276,15 +278,19 @@ export const StyledWidgetWrapper = styled.div`
   font-size: 16px;
   font-family: Roboto, sans-serif !important;
   height: ${(props) =>
-    props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true' || props.mid === 'true'
+    (props.fullheight === 'true' ||
+      props.fullscreen === 'true' ||
+      props.halfscreen === 'true' ||
+      props.mid === 'true') &&
+    props.minimized === 'false'
       ? '100%'
       : props.minimized === 'true'
         ? 'auto'
         : 'auto'};
   width: ${(props) =>
-    props.halfscreen === 'true'
+    props.halfscreen === 'true' && props.minimized === 'false'
       ? '50%'
-      : props.fullscreen === 'true' || props.mobile === 'true'
+      : (props.fullscreen === 'true' || props.mobile === 'false') && props.minimized === 'true'
         ? '100%'
         : props.minimized === 'true'
           ? 'auto'
@@ -393,7 +399,10 @@ export const StyledWidgetWrapper = styled.div`
         ? '100%'
         : 'auto'};
     width: ${(props) =>
-      props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true' ? '100%' : 'auto'};
+      (props.fullscreen === 'true' || props.mobile === 'true' || props.halfscreen === 'true') &&
+      props.minimized === 'false'
+        ? '100%'
+        : 'auto'};
   }
 
   @keyframes rotate {
