@@ -1,5 +1,6 @@
+/* eslint-disable react/no-deprecated */
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
 
 // eslint-disable-next-line no-undef
@@ -36,13 +37,11 @@ class ReactElement extends HTMLElement {
       children: this.parseHtmlToFramework(this.innerHTML),
     };
 
-    createRoot(this).render(<App {...props} />);
+    ReactDOM.render(React.createElement(App, props), this);
   }
 
   unmount() {
-    if (this.root) {
-      this.root.unmount();
-    }
+    ReactDOM.unmountComponentAtNode(this);
   }
 
   parseHtmlToFramework(html) {

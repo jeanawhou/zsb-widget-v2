@@ -10,7 +10,11 @@ export default defineConfig(({ mode }) => {
 
   // add double underscore to the variables
   for (const key in env) {
-    defineEnv[`__${key}__`] = JSON.stringify(env[key]);
+    if (key.includes('VITE')) {
+      defineEnv[`__${key}__`] = JSON.stringify(env[key]);
+    } else {
+      defineEnv[key] = JSON.stringify(env[key]);
+    }
   }
 
   return {
@@ -19,11 +23,20 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
+      target: 'es2015',
+      lib: {
+        entry: 'src/main.jsx',
+        name: 'zsb widget v2',
+        fileName: 'zsbv6',
+      },
       rollupOptions: {
+        external: ['react', 'vue', 'angular'],
         output: {
           entryFileNames: 'zsbv6.js',
           globals: {
             react: 'React',
+            vue: 'Vue',
+            angular: 'angular',
           },
         },
       },
@@ -39,6 +52,9 @@ export default defineConfig(({ mode }) => {
         store: '/src/store',
         styles: '/src/styles',
       },
+    },
+    esbuild: {
+      jsxInject: `import 'react';`,
     },
   };
 });
