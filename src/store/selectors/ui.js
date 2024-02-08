@@ -25,7 +25,7 @@ export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat
 export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
 export const isCircleLauncherSelector = createSelector(
   chatConfigSelector,
-  (chat) => chat.shape?.toLowerCase() === 'circle',
+  (chat) => !chat.shape || chat.shape?.toLowerCase() === 'circle',
 );
 
 export const handOffLabelSelector = createSelector(chatConfigSelector, (chat) => chat.handoffLabel);
