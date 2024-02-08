@@ -10,7 +10,11 @@ export default defineConfig(({ mode }) => {
 
   // add double underscore to the variables
   for (const key in env) {
-    defineEnv[`__${key}__`] = JSON.stringify(env[key]);
+    if (key.includes('VITE')) {
+      defineEnv[`__${key}__`] = JSON.stringify(env[key]);
+    } else {
+      defineEnv[key] = JSON.stringify(env[key]);
+    }
   }
 
   return {
