@@ -40,8 +40,7 @@ const AgentHandoverForms = (props) => {
     setFormValues(updated);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setSending(true);
     try {
       const res = await apiService.logCallback(

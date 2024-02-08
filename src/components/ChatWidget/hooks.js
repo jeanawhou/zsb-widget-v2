@@ -3,17 +3,15 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
-import { isCircleLauncherSelector, isWidgetExpandedSelector } from 'store/selectors/ui.js';
-import { messagesSelector } from 'store/selectors/messages.js';
+import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import {
   chatStylesSelector,
   isFullHeightSelector,
   isFullscreenSelector,
   isWidthHalfFullscreenSelector,
-  newMessageCountSelector,
 } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
-import { CLEAR_NEW_MESSAGE_BADGE, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
+import { SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { websocketSelector } from 'src/store/selectors';
 import useScreens from '../hooks/useScreens';
@@ -26,18 +24,14 @@ const useChatWidget = () => {
 
   // selectors
   const isExpanded = useSelector(isWidgetExpandedSelector);
-  const messages = useSelector(messagesSelector);
   const chatStyles = useSelector(chatStylesSelector);
   const websocket = useSelector(websocketSelector);
   const quickReplies = useSelector(lastMessageQuickReplySelector);
-  const newMessageCount = useSelector(newMessageCountSelector);
   const isFullHeight = useSelector(isFullHeightSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
   const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
-  const isCircleLauncher = useSelector(isCircleLauncherSelector);
 
   // refs
-  const messagesRef = useRef();
   const widgetRef = useRef(null);
 
   // component state
@@ -102,7 +96,7 @@ const useChatWidget = () => {
     }
   }, [fullscreen, isFullscreen]);
 
-  const checkViewportHeight = () => {
+  const checkViewportHeight = useCallback(() => {
     if (isExpanded && !isFullHeight && !isFullscreen) {
       if (isMobile || isTablet) {
         if (isMobile) {
@@ -112,7 +106,7 @@ const useChatWidget = () => {
         shouldShowLauncher();
       }
     }
-  };
+  }, [dispatch, isExpanded, isFullHeight, isFullscreen, isMobile, isTablet, shouldShowLauncher]);
 
   useEffect(() => {
     const clientConnectPayload = {
@@ -150,19 +144,6 @@ const useChatWidget = () => {
     }
   }, [isExpanded, isFullHeight, isFullscreen, isMobile, checkViewportHeight]);
 
-  const noOperation = async () => ({});
-
-  const handleScroll = () => {
-    if (messagesRef.current) {
-      const element = messagesRef.current;
-      const isMessagesWrapperScrolled = element.scrollTop + element.clientHeight >= element.scrollHeight;
-
-      if (isMessagesWrapperScrolled) {
-        dispatch({ type: CLEAR_NEW_MESSAGE_BADGE });
-      }
-    }
-  };
-
   const toggleChat = () => {
     if (isExpanded) {
       dispatch({ type: MINIMIZE_WIDGET });
@@ -171,42 +152,16 @@ const useChatWidget = () => {
     }
   };
 
-  // scroll down if messages changed
-  useEffect(() => {
-    if (messages && messagesRef.current) {
-      const messageContainer = messagesRef.current;
-      setTimeout(() => (messageContainer.scrollTop = messageContainer.scrollHeight), 200);
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (messagesRef.current) {
-        messagesRef.current.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, []);
-
   return {
     isExpanded,
-    messages,
-    noOperation,
     toggleChat,
-    messagesRef,
-    widgetRef,
     fullHeight,
     isFullscreen,
+    widgetRef,
     chatStyles,
     quickReplies,
-    newMessageCount,
-    handleScroll,
     isMobile,
     isWidthHalfFullscreen,
-    isCircleLauncher,
   };
 };
 

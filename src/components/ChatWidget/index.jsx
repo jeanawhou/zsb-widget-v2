@@ -1,40 +1,24 @@
-import { CloseOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
-import {
-  StyledChatWrapper,
-  StyledFlexColumn,
-  StyledLauncherWrapper,
-  StyledMessageBadge,
-  StyledMessagesWrapper,
-  StyledWidgetLabel,
-  StyledWidgetWrapper,
-} from '../StyledComponents';
+import { StyledChatWrapper, StyledFlexColumn, StyledWidgetWrapper } from '../StyledComponents';
 import useChatWidget from './hooks';
-import UserMessage from '../UserMessage';
-import Reply from '../Reply';
-import Typing from '../Typing';
 import MessageInput from '../MessageInput';
 import ChatHeader from './ChatHeader';
 import QuickReplies from '../QuickReplies';
-import WidgetIcon from '../WidgetIcon';
-import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
+import Launcher from './Launcher';
+import MessageWrapper from './messages/MessageWrapper';
 
 const ChatWidget = (props) => {
   const {
     isExpanded,
     toggleChat,
-    messagesRef,
     fullHeight,
     isFullscreen,
     widgetRef,
     chatStyles,
     quickReplies,
-    newMessageCount,
-    messages,
     isMobile,
     isWidthHalfFullscreen,
-    isCircleLauncher,
   } = useChatWidget(props);
   const { position, color, shape, textColor, height, showIconOnChatHeader } = chatStyles;
 
@@ -72,20 +56,7 @@ const ChatWidget = (props) => {
             textcolor={textColor}
             halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
           >
-            <StyledMessagesWrapper
-              ref={messagesRef}
-              fullheight={fullHeight && isExpanded ? 'true' : 'false'}
-              halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
-            >
-              {messages.map((message, index) => {
-                return (
-                  <div key={`message-${index}`}>
-                    {message.text ? <UserMessage message={message} /> : null}
-                    {message.reply ? <Reply message={message} key={`reply-message-${index}`} /> : <Typing />}
-                  </div>
-                );
-              })}
-            </StyledMessagesWrapper>
+            <MessageWrapper fullHeight={fullHeight} />
             <StyledFlexColumn>
               <QuickReplies quickReplies={quickReplies} />
               <MessageInput />
@@ -93,22 +64,7 @@ const ChatWidget = (props) => {
           </StyledChatWrapper>
         ) : null}
       </div>
-      {!isExpanded || (!(fullHeight || isFullscreen || isWidthHalfFullscreen) && isExpanded) ? (
-        <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
-          {isCircleLauncher ? (
-            isExpanded ? (
-              <CloseOutlined size={30} className="chat-launcher" />
-            ) : (
-              <WidgetIcon />
-            )
-          ) : (
-            // if shape not circle
-            // render the label or fallback
-            <StyledWidgetLabel color={chatStyles.color}>{chatStyles.label || FALLBACK_WIDGET_LABEL}</StyledWidgetLabel>
-          )}
-          {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
-        </StyledLauncherWrapper>
-      ) : null}
+      <Launcher toggleChat={toggleChat} />
     </StyledWidgetWrapper>
   );
 };
