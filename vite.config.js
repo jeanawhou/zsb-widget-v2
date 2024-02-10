@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
@@ -12,13 +12,11 @@ export default defineConfig(({ mode }) => {
   for (const key in env) {
     if (key.includes('VITE')) {
       defineEnv[`__${key}__`] = JSON.stringify(env[key]);
-    } else {
-      defineEnv[key] = JSON.stringify(env[key]);
     }
   }
 
   return {
-    plugins: [react()],
+    plugins: [react(), splitVendorChunkPlugin()],
     define: defineEnv,
     build: {
       outDir: 'dist',
