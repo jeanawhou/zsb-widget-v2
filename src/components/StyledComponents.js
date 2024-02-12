@@ -155,7 +155,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
             right: 10px;
           }
 
-          ${(props.mobile === 'true' || props.fullscreen === 'true') && props.minimized === 'true'
+          ${(props.mobile === 'true' || props.fullscreen === 'true') && props.minimized === 'false'
             ? css`
                 @media (min-height: ${MOBILE_HEIGHT.tall}) {
                   height: ${props.fullheight === 'true' || props.fullscreen === 'true' || props.halfscreen === 'true'
@@ -210,8 +210,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
 
 export const StyledLauncherWrapper = styled.div`
   color: #fff;
-  width: fit-content;
-  display: flex;
+  width: fit-content !important;
   cursor: pointer;
 
   margin-top: ${(props) =>
@@ -290,7 +289,7 @@ export const StyledWidgetWrapper = styled.div`
   width: ${(props) =>
     props.halfscreen === 'true' && props.minimized === 'false'
       ? '50%'
-      : (props.fullscreen === 'true' || props.mobile === 'false') && props.minimized === 'true'
+      : (props.fullscreen === 'true' || props.mobile === 'false') && props.minimized === 'false'
         ? '100%'
         : props.minimized === 'true'
           ? 'auto'

@@ -37,7 +37,7 @@ const ChatWidget = (props) => {
       halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
       mid={chatStyles.position?.includes('mid') ? 'true' : 'false'}
     >
-      <div>
+      <StyledFlexColumn>
         {isExpanded && (
           <ChatHeader
             isMobile={isMobile}
@@ -63,8 +63,8 @@ const ChatWidget = (props) => {
             </StyledFlexColumn>
           </StyledChatWrapper>
         ) : null}
-      </div>
-      <Launcher toggleChat={toggleChat} />
+      </StyledFlexColumn>
+      {isFullscreen || fullHeight || isWidthHalfFullscreen ? null : <Launcher toggleChat={toggleChat} />}
     </StyledWidgetWrapper>
   );
 };
