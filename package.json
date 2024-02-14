@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "prepare": "husky",
     "build:test-library": "vite build && npm pack",
-    "build:production": "vite build && npm publish:production",
+    "build:production": "vite build && npm run publish:production",
     "publish:production": "npm login --userconfig .npmrc && npm publish --userconfig .npmrc",
     "test": "npm run lint"
   },
