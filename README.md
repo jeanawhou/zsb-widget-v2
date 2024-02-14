@@ -4,25 +4,25 @@ This project is built with Vite and React.
 
 ## Prerequisites
 
-Before you start, ensure you have Node.js 18 installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
+Before you start, ensure you have Node.js 16 installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
 
-### Installing Node.js 18 with NVM
+### Installing Node.js 16 with NVM
 
 If you don't have NVM installed, you can install it by following the instructions on the [NVM GitHub repository](https://github.com/nvm-sh/nvm).
 
-Once NVM is installed, you can install Node.js 18 by running the following command in your terminal:
+Once NVM is installed, you can install Node.js 16 by running the following command in your terminal:
 
 ```bash
-nvm install 18
+nvm install 16
 ```
 
-To switch to Node.js 18 for this project, use the following command:
+To switch to Node.js 16 for this project, use the following command:
 
 ```bash
-nvm use 18
+nvm use 16
 ```
 
-This ensures that you are using Node.js 18 for this specific project.
+This ensures that you are using Node.js 16 for this specific project.
 
 ### Project Setup
 
