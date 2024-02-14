@@ -1,7 +1,7 @@
 {
   "name": "zsb-widget-v2",
   "private": false,
-  "version": "1.1.0",
+  "version": "1.2.0-alpha.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,9 @@
     "lint": "eslint --fix",
     "preview": "vite preview",
     "prepare": "husky",
+    "build:test-library": "vite build && npm pack",
+    "build:production": "vite build && npm publish:production",
+    "publish:production": "npm login --userconfig .npmrc && npm publish --userconfig .npmrc",
     "test": "npm run lint"
   },
   "files": [
