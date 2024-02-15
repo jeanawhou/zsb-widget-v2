@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 import { defineConfig, loadEnv } from 'vite';
+import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  // eslint-disable-next-line no-undef
   const env = loadEnv(mode, process.cwd(), '');
   const defineEnv = {};
 
@@ -12,20 +13,29 @@ export default defineConfig(({ mode }) => {
   for (const key in env) {
     if (key.includes('VITE')) {
       defineEnv[`__${key}__`] = JSON.stringify(env[key]);
-    } else {
-      defineEnv[key] = JSON.stringify(env[key]);
     }
   }
 
-  return {
+  const commonConfig = {
     plugins: [react()],
     define: defineEnv,
+    optimizeDeps: {
+      include: ['linked-dep'],
+    },
     build: {
+      commonjsOptions: {
+        include: [/linked-dep/, /node_modules/],
+      },
       outDir: 'dist',
       assetsDir: 'assets',
       rollupOptions: {
+        input: {
+          main: resolve(__dirname, 'index.html'),
+        },
         output: {
           entryFileNames: 'zsbv6.js',
+          chunkFileNames: 'chunks/[name]-[hash].js',
+          assetFileNames: '[name].[ext]',
           globals: {
             react: 'React',
           },
@@ -45,4 +55,39 @@ export default defineConfig(({ mode }) => {
       },
     },
   };
+
+  if (mode === 'library') {
+    return {
+      ...commonConfig,
+      build: {
+        ...commonConfig.build,
+        lib: {
+          entry: resolve(__dirname, 'src/main.jsx'),
+          name: 'zsb-widget-v2',
+          fileName: 'zsbv6',
+        },
+        rollupOptions: {
+          ...commonConfig.build.rollupOptions,
+          external: ['react', 'vue', 'angular'],
+          output: {
+            entryFileNames: 'zsbv6.js',
+            globals: {
+              react: 'React',
+              vue: 'Vue',
+              angular: 'angular',
+            },
+          },
+        },
+      },
+    };
+  }
+
+  if (mode === 'vanillajs') {
+    return {
+      ...commonConfig,
+      plugins: [...commonConfig.plugins, { apply: 'build' }],
+    };
+  }
+
+  return commonConfig;
 });
