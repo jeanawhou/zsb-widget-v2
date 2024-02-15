@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - version/node-16
+      - release/**
 
 jobs:
   publish_node_16:
