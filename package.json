@@ -1,8 +1,9 @@
 {
   "name": "zsb-widget-v2",
   "private": false,
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "type": "module",
+  "license": "MIT",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
   "repository": {
     "url": "https://git.zeroshotbot.com/ZeroShotBot/zeroshotbot_widget_v2"
@@ -34,7 +35,6 @@
   "release": {
     "branches": [
       "main",
-      "release/**",
       "version/node-16"
     ],
     "plugins": [
