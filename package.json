@@ -1,7 +1,7 @@
 {
   "name": "zsb-widget-v2",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.0.0-alpha.1",
   "type": "module",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
   "repository": {
