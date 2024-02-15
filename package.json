@@ -1,6 +1,6 @@
 {
   "name": "zsb-widget-v2",
-  "private": true,
+  "private": false,
   "version": "2.0.0-alpha.1",
   "type": "module",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
@@ -17,7 +17,7 @@
     "lint": "eslint --fix",
     "preview": "vite preview",
     "prepare": "husky",
-    "publish:production": "npm login --userconfig .npmrc && npm publish --userconfig .npmrc",
+    "publish:production": "npm publish --userconfig .npmrc",
     "test": "npm run lint"
   },
   "files": [
