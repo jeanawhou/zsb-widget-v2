@@ -68,7 +68,7 @@ export default defineConfig(({ mode }) => {
         },
         rollupOptions: {
           ...commonConfig.build.rollupOptions,
-          external: ['react', 'vue', 'angular'],
+          external: ['react', 'vue', 'angular', 'next', 'gatsby', 'remix'],
           output: {
             entryFileNames: 'zsbv6.js',
             globals: {
