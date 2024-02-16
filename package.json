@@ -1,7 +1,7 @@
 {
   "name": "zsb-widget-v2",
   "private": false,
-  "version": "1.4.0",
+  "version": "1.5.0-beta.1",
   "type": "module",
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
@@ -14,7 +14,7 @@
     "lint": "eslint --fix",
     "preview": "vite preview",
     "prepare": "husky",
-    "build:test-library": "vite build && npm pack",
+    "build:test": "vite build && npm pack",
     "build:production": "vite build && npm run publish:production",
     "publish:production": "npm publish --userconfig .npmrc",
     "test": "npm run lint"
@@ -63,10 +63,6 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.1.0",
     "vite": "^4.4.5"
-  },
-  "peerDependencies": {
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
   },
   "browser": {
     "crypto": false
