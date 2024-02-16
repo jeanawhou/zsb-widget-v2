@@ -6,40 +6,46 @@ This project is built with Vite and React.
 
 Before you start, ensure you have Node.js 18 installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
 
-### Installing Node.js 18 with NVM
+You can use v1 version if your app is still in node 16.
 
-If you don't have NVM installed, you can install it by following the instructions on the [NVM GitHub repository](https://github.com/nvm-sh/nvm).
 
-Once NVM is installed, you can install Node.js 18 by running the following command in your terminal:
-
-```bash
-nvm install 18
-```
-
-To switch to Node.js 18 for this project, use the following command:
+## Usage
+### For Node 18+
 
 ```bash
-nvm use 18
+npm install zsb-widget-v2
 ```
-
-This ensures that you are using Node.js 18 for this specific project.
-
-### Project Setup
-
-1. **Clone this repository:**
+or
 ```bash
-git clone https://github.com/jeanawhou/zsb-widget-v2
+yarn add zsb-widget-v2
 ```
 
-2. **Navigate to the project directory:**
+### For Node 16
+
 ```bash
-cd zsb-widget-v2
+npm install zsb-widget-v2@v1.x
+```
+or
+```bash
+yarn add zsb-widget-v2@v1.x
 ```
 
-2. **Install dependencies:**
-```bash
-npm install
+Import to your component
+
+```js
+import 'zsb-widget-v2'
+
+const App = () => {
+  return (
+    <>
+      <zeroshot-bot bot="{bot-id-here}" color="#167BE7"> </zeroshot-bot>
+    </>
+  )
+}
+
 ```
+
+This will launch the development server, and you can view your React app at http://localhost:5173.
 
 ## Properties / Bot Configuration (props/variable name => Description/Functionality.)
 (Data type: String)
@@ -81,26 +87,6 @@ For Config File only
 zsb-widget- interactionHistory => Save the interaction history
 - maxInteraction => Maximum number of interaction to be stored
 
-## Usage
-```js
-import 'zsb-widget-v2'
-
-const App = () => {
-  return (
-    <>
-      <zeroshot-bot bot="{bot-id-here}" color="#167BE7"> </zeroshot-bot>
-    </>
-  )
-}
-
-```
-
-### Development
-To start the development server, run:
-```bash
-npm run dev
-```
-This will launch the development server, and you can view your React app at http://localhost:5173.
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
