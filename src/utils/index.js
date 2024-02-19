@@ -9,7 +9,7 @@ export const camelCaseKeys = (obj) => {
         if (isPlainObject(value)) {
           return camelCaseKeys(value);
         }
-        return value;
+        return value === 'true' || value === 'false' ? JSON.parse(value) : value;
       },
     );
   }
