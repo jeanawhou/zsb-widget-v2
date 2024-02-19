@@ -23,6 +23,11 @@ jobs:
           versionSpec: '16.x'
         displayName: 'Use Node.js 16.x'
 
+      - script: |
+          # Bump version
+          npm version patch
+        displayName: 'Bump Version'
+
       - script: npm install
         displayName: 'Install Dependencies'
 
@@ -43,6 +48,11 @@ jobs:
           versionSpec: 'lts/*'
           checkLatest: true
         displayName: 'Setup Node Environment'
+
+      - script: |
+          # Bump version
+          npm version patch
+        displayName: 'Bump Version'
 
       - script: npm install
         displayName: 'Install Dependencies'
