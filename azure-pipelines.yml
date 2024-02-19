@@ -1,52 +1,61 @@
 name: NPM Publish
 
-on:
-  push:
-    branches:
+trigger:
+  branches:
+    include:
       - main
       - version/node-16
 
 jobs:
-  publish_node_16:
-    name: Publish with Node.js 16
-    if: github.ref == 'refs/heads/version/node-16' # Only run on version/node-16 branch
-    runs-on: ubuntu-latest
+  - job: publish_node_16
+    displayName: Publish with Node.js 16
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/version/node-16'))
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        with:
-          ref: version/node-16 # Checkout the specific branch
+      - checkout: self
+        name: Checkout Repository
+        persistCredentials: true
+        clean: true
 
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Use Node.js 16.x'
 
-      - name: Install Dependencies
-        run: |
-          npm install
+      - script: |
+          # Bump version
+          npm version patch
+        displayName: 'Bump Version'
 
-      - name: Build Package
-        run: |
-          npm run build
+      - script: npm install
+        displayName: 'Install Dependencies'
 
-  publish_node_18:
-    name: Publish with Node.js 18
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+      - script: npm run build
+        displayName: 'Build Package'
+
+  - job: publish_latest_node
+    displayName: Publish with the latest Node.js version
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    pool:
+      vmImage: 'ubuntu-latest'
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - checkout: self
 
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.x
+      - task: NodeTool@0
+        inputs:
+          versionSpec: 'lts/*'
+          checkLatest: true
+        displayName: 'Setup Node Environment'
 
-      - name: Install Dependencies
-        run: |
-          npm install
+      - script: |
+          # Bump version
+          npm version patch
+        displayName: 'Bump Version'
 
-      - name: Build Package
-        run: |
-          npm run build
+      - script: npm install
+        displayName: 'Install Dependencies'
+
+      - script: npm run build
+        displayName: 'Build Package'
