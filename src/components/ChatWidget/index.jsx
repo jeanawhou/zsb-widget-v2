@@ -21,7 +21,7 @@ const ChatWidget = (props) => {
     isMobile,
     isWidthHalfFullscreen,
   } = useChatWidget(props);
-  const { position, color, shape, textColor, showIconOnChatHeader } = chatStyles;
+  const { position, color, shape, textColor, showIconOnChatHeader, showCloseButton } = chatStyles;
 
   return (
     <StyledWidgetWrapper
@@ -66,7 +66,9 @@ const ChatWidget = (props) => {
           </StyledChatWrapper>
         ) : null}
       </StyledFlexColumn>
-      {isFullscreen || fullHeight || isWidthHalfFullscreen ? null : <Launcher toggleChat={toggleChat} />}
+      {isFullscreen || fullHeight || isWidthHalfFullscreen || !(showCloseButton && isExpanded) ? null : (
+        <Launcher toggleChat={toggleChat} />
+      )}
     </StyledWidgetWrapper>
   );
 };

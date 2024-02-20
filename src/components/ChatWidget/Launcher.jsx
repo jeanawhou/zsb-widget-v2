@@ -18,11 +18,19 @@ const Launcher = (props) => {
   const newMessageCount = useSelector(newMessageCountSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
+  const disableClose = chatStyles.disableClose;
+
+  const noOperation = () => {};
+
   return (
-    <StyledLauncherWrapper onClick={toggleChat} position={chatStyles.position}>
+    <StyledLauncherWrapper
+      onClick={() => (disableClose ? noOperation() : toggleChat())}
+      position={chatStyles.position}
+      disableclose={disableClose ? 'true' : 'false'}
+    >
       {isCircleLauncher ? (
         isExpanded ? (
-          <CloseOutlined size={30} className="chat-launcher" />
+          <CloseOutlined size={30} className={`chat-launcher ${disableClose ? 'disableclose' : ''}`} />
         ) : (
           <WidgetIcon />
         )
