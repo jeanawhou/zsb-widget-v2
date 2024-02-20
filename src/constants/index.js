@@ -16,4 +16,6 @@ export const COMPONENT_PROPS = [
   'bubbleColor',
   'bubbleGradient',
   'visitorId',
+  'disableClose',
+  'hideWidgetMenu',
 ];
