@@ -30,6 +30,7 @@ const ChatWidget = (props) => {
       color={color}
       shape={shape}
       height={height}
+      id="zsb-widget-wrapper"
       ref={widgetRef}
       minimized={!isExpanded ? 'true' : 'false'}
       mobile={isMobile ? 'true' : 'false'}
