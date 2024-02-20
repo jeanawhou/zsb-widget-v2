@@ -2,9 +2,8 @@ import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Context } from 'src/store/store';
-import { DECRYPT_BOT, SET_VISITOR_ID, SET_WIDGET_CONFIG } from 'src/store/action';
+import { DECRYPT_BOT, SET_WIDGET_CONFIG } from 'src/store/action';
 import ChatWidget from './ChatWidget';
-import { fingerPrintJs } from 'src/services/global.service';
 import useSelector from 'src/store/useSelector';
 import { configURLSelector, isWidgetReadySelector } from 'src/store/selectors';
 
@@ -32,16 +31,6 @@ const ZSBWidget = (props) => {
   }, [configURL]);
 
   useEffect(() => {
-    if (props.visitorid && props.visitorid !== (null || 'null') && props.visitorid !== (undefined || 'undefined')) {
-      dispatch({ type: SET_VISITOR_ID, payload: props.visitorid });
-    } else {
-      fingerPrintJs().then((visitorId) => {
-        dispatch({ type: SET_VISITOR_ID, payload: visitorId });
-      });
-    }
-  }, [props?.visitorid]);
-
-  useEffect(() => {
     dispatch({ type: DECRYPT_BOT, payload: props });
   }, []);
 
@@ -65,7 +54,6 @@ ZSBWidget.propTypes = {
   handleSendMessage: PropTypes.func,
   handleAddReply: PropTypes.func,
   bot: PropTypes.string,
-  visitorid: PropTypes.string,
   type: PropTypes.string,
 };
 

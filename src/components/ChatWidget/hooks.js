@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
+import { fingerPrintJs } from 'src/services/global.service';
 import { Context } from 'store/store.jsx';
 import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
@@ -11,10 +12,11 @@ import {
   isWidthHalfFullscreenSelector,
 } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
-import { SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
+import { SET_RANDOM_GENERATED_ID, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { websocketSelector } from 'src/store/selectors';
 import useScreens from '../hooks/useScreens';
+import { visitorIdSelector } from 'src/store/selectors/user';
 
 const useChatWidget = () => {
   // hooks
@@ -30,6 +32,7 @@ const useChatWidget = () => {
   const isFullHeight = useSelector(isFullHeightSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
   const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
+  const componentVisitorId = useSelector(visitorIdSelector);
 
   // refs
   const widgetRef = useRef(null);
@@ -151,6 +154,15 @@ const useChatWidget = () => {
       dispatch({ type: EXPAND_WIDGET });
     }
   };
+
+  useEffect(() => {
+    if (!componentVisitorId) {
+      fingerPrintJs().then((visitorId) => {
+        dispatch({ type: SET_RANDOM_GENERATED_ID, payload: visitorId });
+      });
+    }
+    // since chat styles will only be populated after widget and config styles is merged
+  }, [chatStyles]);
 
   return {
     isExpanded,
