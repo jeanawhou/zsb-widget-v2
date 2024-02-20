@@ -66,7 +66,7 @@ const ChatWidget = (props) => {
           </StyledChatWrapper>
         ) : null}
       </StyledFlexColumn>
-      {isFullscreen || fullHeight || isWidthHalfFullscreen || !(showCloseButton && isExpanded) ? null : (
+      {(isFullscreen || fullHeight || isWidthHalfFullscreen || !showCloseButton) && isExpanded ? null : (
         <Launcher toggleChat={toggleChat} />
       )}
     </StyledWidgetWrapper>
