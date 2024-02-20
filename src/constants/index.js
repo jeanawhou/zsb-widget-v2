@@ -15,4 +15,5 @@ export const COMPONENT_PROPS = [
   'fontStyle',
   'bubbleColor',
   'bubbleGradient',
+  'visitorId',
 ];
