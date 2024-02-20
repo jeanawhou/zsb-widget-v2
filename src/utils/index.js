@@ -19,9 +19,7 @@ export const camelCaseKeys = (obj) => {
         if (isPlainObject(value)) {
           return camelCaseKeys(value);
         }
-        return value === 'true' || value === 'false' || value === 'null' || value === 'undefined'
-          ? JSON.parse(value)
-          : value;
+        return value === 'true' || value === 'false' ? JSON.parse(value) : value;
       },
     );
   }
