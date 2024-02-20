@@ -6,10 +6,11 @@ import { EXPAND_WIDGET, MINIMIZE_WIDGET } from 'store/action';
 import useSelector from 'store/useSelector';
 import { isWidgetExpandedSelector } from 'store/selectors/ui.js';
 import {
-  chatStylesSelector,
+  chatConfigSelector,
   isFullHeightSelector,
   isFullscreenSelector,
   isWidthHalfFullscreenSelector,
+  widgetHeightSelector,
 } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
 import { SET_RANDOM_GENERATED_ID, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
@@ -26,13 +27,14 @@ const useChatWidget = () => {
 
   // selectors
   const isExpanded = useSelector(isWidgetExpandedSelector);
-  const chatStyles = useSelector(chatStylesSelector);
+  const chatStyles = useSelector(chatConfigSelector);
   const websocket = useSelector(websocketSelector);
   const quickReplies = useSelector(lastMessageQuickReplySelector);
   const isFullHeight = useSelector(isFullHeightSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
   const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
   const componentVisitorId = useSelector(visitorIdSelector);
+  const height = useSelector(widgetHeightSelector);
 
   // refs
   const widgetRef = useRef(null);
@@ -165,6 +167,7 @@ const useChatWidget = () => {
   }, [chatStyles]);
 
   return {
+    height,
     isExpanded,
     toggleChat,
     fullHeight,

@@ -10,6 +10,7 @@ import MessageWrapper from './messages/MessageWrapper';
 
 const ChatWidget = (props) => {
   const {
+    height,
     isExpanded,
     toggleChat,
     fullHeight,
@@ -20,7 +21,7 @@ const ChatWidget = (props) => {
     isMobile,
     isWidthHalfFullscreen,
   } = useChatWidget(props);
-  const { position, color, shape, textColor, height, showIconOnChatHeader } = chatStyles;
+  const { position, color, shape, textColor, showIconOnChatHeader } = chatStyles;
 
   return (
     <StyledWidgetWrapper
