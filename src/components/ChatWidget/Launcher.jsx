@@ -18,7 +18,7 @@ const Launcher = (props) => {
   const newMessageCount = useSelector(newMessageCountSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
-  const disableClose = chatStyles.disableClose;
+  const disableClose = chatStyles.disableClose && isExpanded;
 
   const noOperation = () => {};
 
