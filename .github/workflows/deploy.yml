@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - version/node-16
-      - release/**
+      - release/2.0.0
 
 jobs:
   publish_node_16:
