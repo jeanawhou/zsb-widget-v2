@@ -289,7 +289,7 @@ export const StyledWidgetWrapper = styled.div`
   width: ${(props) =>
     props.halfscreen === 'true' && props.minimized === 'false'
       ? '50%'
-      : (props.fullscreen === 'true' || props.mobile === 'false') && props.minimized === 'false'
+      : (props.fullscreen === 'true' || props.mobile === 'true') && props.minimized === 'false'
         ? '100%'
         : props.minimized === 'true'
           ? 'auto'
