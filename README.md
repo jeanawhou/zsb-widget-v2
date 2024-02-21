@@ -45,7 +45,6 @@ const App = () => {
 
 ```
 
-This will launch the development server, and you can view your React app at http://localhost:5173.
 
 ## Properties / Bot Configuration (props/variable name => Description/Functionality.)
 (Data type: String)
