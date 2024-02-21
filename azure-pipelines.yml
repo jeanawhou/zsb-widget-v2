@@ -1,0 +1,61 @@
+name: NPM Publish
+
+trigger:
+  branches:
+    include:
+      - main
+      - version/node-16
+
+jobs:
+  - job: publish_node_16
+    displayName: Publish with Node.js 16
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/version/node-16'))
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - checkout: self
+        name: Checkout Repository
+        persistCredentials: true
+        clean: true
+
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Use Node.js 16.x'
+
+      - script: |
+          # Bump version
+          npm version patch
+        displayName: 'Bump Version'
+
+      - script: npm install
+        displayName: 'Install Dependencies'
+
+      - script: npm run build
+        displayName: 'Build Package'
+
+  - job: publish_latest_node
+    displayName: Publish with the latest Node.js version
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+      - checkout: self
+
+      - task: NodeTool@0
+        inputs:
+          versionSpec: 'lts/*'
+          checkLatest: true
+        displayName: 'Setup Node Environment'
+
+      - script: |
+          # Bump version
+          npm version prerelease
+        displayName: 'Bump Version'
+
+      - script: npm install
+        displayName: 'Install Dependencies'
+
+      - script: npm run build
+        displayName: 'Build Package'
