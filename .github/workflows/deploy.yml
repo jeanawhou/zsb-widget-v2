@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - version/node-16
-      - release/**
+      - release/2.0.0
 
 jobs:
   publish_node_16:
@@ -37,7 +37,7 @@ jobs:
 
   publish_node_18:
     name: Publish with Node.js 18
-    if: github.ref == 'refs/heads/release/**'
+    if: github.ref == 'refs/heads/release/2.0.0'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
