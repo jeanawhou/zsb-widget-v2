@@ -21,9 +21,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-      
+
       - name: 'Bump Version'
-      - run: |
+        run: |
           npm version patch
 
       - name: Install Dependencies
@@ -46,9 +46,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
-        
+
       - name: 'Bump Version'
-        - run: |
+        run: |
           npm version patch
 
       - name: Install Dependencies
