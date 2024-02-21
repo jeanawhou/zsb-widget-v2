@@ -112,7 +112,8 @@ export const uiReducer = (state, action) => {
       const { configJSON, widgetProps } = action.payload;
       const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
-      const { avatar, iconColor, fbAccessToken, fbApiVersion, authenticatedUser, openWidget, ...restOfUI } = widgetUI;
+      const { avatar, iconColor, fbAccessToken, fbApiVersion, authenticatedUser, openWidget, visitorId, ...restOfUI } =
+        widgetUI;
       const isProd = import.meta.env.PROD;
       const userIcon = extractUserIcon(avatar, iconColor);
       // eslint-disable-next-line no-undef
@@ -133,7 +134,8 @@ export const uiReducer = (state, action) => {
         },
         user: {
           ...state.user,
-          isAuthenticated: widgetProps.visitorId ? true : authenticatedUser,
+          isAuthenticated: visitorId ? true : authenticatedUser,
+          visitorId,
           sessionId,
         },
         fbConfig: {
