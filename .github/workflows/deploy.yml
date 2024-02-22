@@ -39,8 +39,8 @@ jobs:
         run: |
           npm run build
 
-  publish_node_18:
-    name: Publish with Node.js 18
+  publish_with_latest_node:
+    name: Publish with latest Node.js
     if: github.ref == 'refs/heads/release/2.0.0'
     runs-on: ubuntu-latest
     steps:
@@ -52,10 +52,10 @@ jobs:
           git config --global user.email "jeana.luisa@gmail.com.com"
           git config --global user.name "Jeana fernandez"
 
-      - name: Use Node.js 18.x
+      - name: Use latest Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 18.x
+          node-version: lts
 
       - name: Semantic Release
         run: npx semantic-release
