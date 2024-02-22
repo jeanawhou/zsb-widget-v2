@@ -9,13 +9,18 @@ on:
 jobs:
   publish_node_16:
     name: Publish with Node.js 16
-    if: github.ref == 'refs/heads/version/node-16' # Only run on version/node-16 branch
+    if: github.ref == 'refs/heads/version/node-16'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          ref: version/node-16 # Checkout the specific branch
+          ref: version/node-16
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.name "Jeana fernandez"
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -24,7 +29,7 @@ jobs:
 
       - name: 'Bump Version'
         run: |
-          npm version prerelease
+          npm version prerelease --force
 
       - name: Install Dependencies
         run: |
@@ -42,14 +47,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Configure Git
+        run: |
+          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.name "Jeana fernandez"
+
       - name: Use Node.js 18.x
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
 
-      - name: 'Bump Version'
-        run: |
-          npm version prerelease
+      - name: Semantic Release
+        run: npx semantic-release
 
       - name: Install Dependencies
         run: |
