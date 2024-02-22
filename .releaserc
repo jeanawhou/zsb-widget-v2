@@ -3,6 +3,7 @@
     "main",
     "version/node-16"
   ],
+  "repositoryUrl": "https://github.com/jeanawhou/zsb-widget-v2",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
