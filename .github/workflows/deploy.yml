@@ -57,12 +57,12 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: Semantic Release
-        run: npx semantic-release
-
       - name: Install Dependencies
         run: |
           npm install
+
+      - name: Semantic Release
+        run: npx semantic-release
 
       - name: Build Package
         run: |
