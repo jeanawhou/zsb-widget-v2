@@ -62,8 +62,10 @@ const App = () => {
 - fontStyle => Font Style of the conversation.
 - bubbleColor => Background color of the client message. (hex code - include #)
 - bubbleGradient => Background color of the bot message. (Gradient Color of the Bubble Color - RGBa)
+- disableClose => Prevent closing/minimizing the chat widget
+- hideWidgetMenu => Hide extra menu on chat header
 
-For Config File only
+For Config File props
 
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
