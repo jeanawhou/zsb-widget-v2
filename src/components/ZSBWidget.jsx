@@ -40,8 +40,8 @@ const ZSBWidget = (props) => {
 ZSBWidget.defaultProps = {
   title: '',
   subtitle: '',
-  placeholder: 'Type your message...',
-  bot: 'U2FsdGVkX1/beTGimooLgFsiDn9wgA2VG8iN1GFGr1S3HgNptSgDT/9/jLdsl8pX7nxxsFO0SqSwTZHo4B2KDYWKyBntVwpeQnp/T7mvfdhnHByIeA3tBbKAwSVKKuz05NLxOHR5qMA16qlHX6ywf5Aqqdj48+cKtVVmpfVkAW+UM/obcIrlnZ6Fas4hfHh66vkc/g1E1xuHm8Zg4GDyDfZyXkMF7JKHpswnPE8WQrSKz52a+wnKl/B/VDuKS5pHAS/CQVDhFiAGt/qEBOGcGsFRzVEvDJr/FsAV7QHTI41tySI0bVkG+8FZsuu7ZUZ5HCjfgvDYjjjGaoPZA6LxKqPw3G5Enx5uipzFBAJInHj2KulRLMPVjX6Kn66XPPunGrIQc8YvaQmkmoJ7iiVIVhU9UistTqXdgv8DT8gM5IebvAac5Fl2ZmCx9GF1eSdOuhTCG/MRiUVQahIq6RJtLt3+jnqep4qPfxCTm7MKD4SmIN5DGE9sB0HwGvdnmCjoNIkFBEBWnNw5NkzS3TI+MQ==',
+  placeholder: '',
+  bot: '',
 };
 
 ZSBWidget.propTypes = {

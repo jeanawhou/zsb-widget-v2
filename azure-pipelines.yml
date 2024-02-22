@@ -51,7 +51,7 @@ jobs:
 
       - script: |
           # Bump version
-          npm version prerelease
+          npm version patch
         displayName: 'Bump Version'
 
       - script: npm install
