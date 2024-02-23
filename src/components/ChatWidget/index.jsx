@@ -10,6 +10,7 @@ import MessageWrapper from './messages/MessageWrapper';
 
 const ChatWidget = (props) => {
   const {
+    height,
     isExpanded,
     toggleChat,
     fullHeight,
@@ -20,7 +21,7 @@ const ChatWidget = (props) => {
     isMobile,
     isWidthHalfFullscreen,
   } = useChatWidget(props);
-  const { position, color, shape, textColor, height, showIconOnChatHeader } = chatStyles;
+  const { position, color, shape, textColor, showIconOnChatHeader, showCloseButton } = chatStyles;
 
   return (
     <StyledWidgetWrapper
@@ -30,6 +31,7 @@ const ChatWidget = (props) => {
       color={color}
       shape={shape}
       height={height}
+      id="zsb-widget-wrapper"
       ref={widgetRef}
       minimized={!isExpanded ? 'true' : 'false'}
       mobile={isMobile ? 'true' : 'false'}
@@ -64,7 +66,9 @@ const ChatWidget = (props) => {
           </StyledChatWrapper>
         ) : null}
       </StyledFlexColumn>
-      {isFullscreen || fullHeight || isWidthHalfFullscreen ? null : <Launcher toggleChat={toggleChat} />}
+      {(isFullscreen || fullHeight || isWidthHalfFullscreen || !showCloseButton) && isExpanded ? null : (
+        <Launcher toggleChat={toggleChat} />
+      )}
     </StyledWidgetWrapper>
   );
 };

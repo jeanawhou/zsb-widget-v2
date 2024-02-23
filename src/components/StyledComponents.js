@@ -211,7 +211,6 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
 export const StyledLauncherWrapper = styled.div`
   color: #fff;
   width: fit-content !important;
-  cursor: pointer;
 
   margin-top: ${(props) =>
     props.position?.includes('top')
@@ -262,6 +261,7 @@ export const StyledLauncherWrapper = styled.div`
 
   /* mid position needs more testing */
   width: ${(props) => (props.position?.includes('mid') ? '40px' : 'auto')};
+  cursor: ${(props) => (props.disableclose === 'true' ? 'not-allowed' : 'pointer')};
 `;
 
 export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
@@ -289,7 +289,7 @@ export const StyledWidgetWrapper = styled.div`
   width: ${(props) =>
     props.halfscreen === 'true' && props.minimized === 'false'
       ? '50%'
-      : (props.fullscreen === 'true' || props.mobile === 'false') && props.minimized === 'false'
+      : (props.fullscreen === 'true' || props.mobile === 'true') && props.minimized === 'false'
         ? '100%'
         : props.minimized === 'true'
           ? 'auto'
@@ -430,6 +430,10 @@ export const StyledWidgetWrapper = styled.div`
     padding: 5px;
     border-radius: ${(props) => (props.shape?.includes('circle') ? '50%' : '5px')};
     box-shadow: ${cssVariables.boxShadow};
+
+    &.disableclose {
+      cursor: not-allowed;
+    }
 
     &.isLogoOnly {
       padding: 0px;
@@ -795,6 +799,10 @@ export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
 
   .anticon {
     cursor: pointer;
+
+    &.disableclose {
+      cursor: not-allowed;
+    }
   }
 
   &:has(> span:only-child) {

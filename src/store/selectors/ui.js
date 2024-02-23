@@ -21,6 +21,12 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
 });
 
 export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat) => chat.color);
+export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height }) => {
+  if (typeof height === 'string' && height?.endsWith('px')) {
+    return height;
+  }
+  return `${height}px`;
+});
 
 export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
 export const isCircleLauncherSelector = createSelector(
