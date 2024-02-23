@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { StyledMessagesWrapper } from 'src/components/StyledComponents';
-import UserMessage from 'src/components/UserMessage';
-import Reply from 'src/components/Reply';
+import { StyledMessagesWrapper } from 'src/components/ChatWidget/StyledComponents';
+import UserMessage from 'src/components/ChatWidget/UserMessage';
+import Reply from 'src/components/ChatWidget/Reply';
 import useMessagesWrapper from './hooks';
-import Typing from 'src/components/Typing';
+import Typing from 'src/components/ChatWidget/Typing';
 
 const MessageWrapper = (props) => {
   const { fullHeight } = props;

@@ -1,7 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
-import { StyledLauncherWrapper, StyledMessageBadge, StyledWidgetLabel } from '../StyledComponents';
+import { StyledLauncherWrapper, StyledMessageBadge, StyledWidgetLabel } from './StyledComponents';
 import WidgetIcon from '../WidgetIcon';
 import useSelector from 'src/store/useSelector';
 import {
