@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm version prerelease && vite build",
+    "build": "npm version patch --force && vite build",
     "lint": "eslint --fix",
     "preview": "vite preview",
     "prepare": "husky",
