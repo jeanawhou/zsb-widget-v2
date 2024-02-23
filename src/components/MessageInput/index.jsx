@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { SendOutlined } from '@ant-design/icons';
 
-import { StyledInputWrapper } from '../StyledComponents';
+import { StyledInputWrapper } from '../ChatWidget/StyledComponents';
 import { useMessageInput } from './hooks';
 
 const MessageInput = (props) => {

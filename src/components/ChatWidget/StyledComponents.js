@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { cssVariables } from '../styles/variables';
+import { cssVariables } from '../../styles/variables';
 import { DESKTOP_HEIGHT, MOBILE_HEIGHT } from 'src/constants/viewport';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from 'src/constants/chat';
 

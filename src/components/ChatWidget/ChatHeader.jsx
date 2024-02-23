@@ -6,7 +6,7 @@ import {
   StyledChatHeaderActionIcons,
   StyledFlexColumnSpaceEvenly,
   StyledSubtitle,
-} from '../StyledComponents';
+} from './StyledComponents';
 import WidgetIcon from '../WidgetIcon';
 import useSelector from 'src/store/useSelector';
 import {
