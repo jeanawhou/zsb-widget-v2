@@ -619,7 +619,7 @@ export const StyledBotReply = styled(StyledMessage)`
   max-width: 80%;
 
   &.typing {
-    background-color: #f0f0f0;
+    background: ${(props) => props.color || cssVariables.zsbCyan} !important;
     text-align: left;
     width: fit-content;
     padding: 10px 4px;
@@ -637,7 +637,7 @@ export const StyledBotReply = styled(StyledMessage)`
       content: '';
       animation: blink 1s infinite;
       animation-fill-mode: both;
-      background: ${(props) => props.color || cssVariables.zsbCyan} !important;
+      background: ${(props) => props.dotcolor || cssVariables.zsbCyan} !important;
       top: 5px;
       border-radius: 50% !important;
       text-align: center;
@@ -675,7 +675,7 @@ export const StyledBotReply = styled(StyledMessage)`
   }
 
   .anticon-user {
-    background: ${(props) => props.color || cssVariables.zsbCyan};
+    background: ${(props) => props.widgetthemecolor || cssVariables.zsbCyan};
     padding: 5px;
     border-radius: 50%;
     color: #fff;
@@ -696,7 +696,7 @@ export const StyledBotReply = styled(StyledMessage)`
 
 export const StyledReplyMessageContent = styled.span`
   border-radius: 10px;
-  background-color: #f0f0f0;
+  background: ${(props) => props.color || cssVariables.zsbCyan} !important;
   text-align: left;
   width: fit-content;
   padding: 8px;
@@ -806,6 +806,7 @@ export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
   }
 
   &:has(> span:only-child) {
+    margin: 5px;
     justify-content: flex-end;
   }
 `;
@@ -813,9 +814,11 @@ export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
 export const StyledMessageBadge = styled.span`
   text-align: center;
   background: ${cssVariables.redLike};
+  display: block;
   height: 20px;
   border-radius: 50%;
   margin-left: -16px;
+  margin-top: -10px;
   width: 20px;
   font-size: 12px;
   color: #fff;

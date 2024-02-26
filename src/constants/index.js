@@ -19,3 +19,11 @@ export const COMPONENT_PROPS = [
   'disableClose',
   'hideWidgetMenu',
 ];
+
+export const PROPS_TO_DEPRECATED = [
+  { old: 'openWidget', new: 'autoOpen' },
+  { old: 'headerResponseImgUrl', new: 'headerAndBotReplyAvatar' },
+  { old: 'widgetIconUrl', new: 'logo' },
+  { old: 'bubbleColor', new: 'clientBubbleColor' },
+  { old: 'bubbleGradient', new: 'replyBubbleGradient' },
+];
