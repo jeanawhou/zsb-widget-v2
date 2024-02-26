@@ -1,12 +1,13 @@
 import useSelector from 'src/store/useSelector';
 import { StyledBotReply, StyledMessage } from './StyledComponents';
-import { widgetThemeColorSelector } from 'src/store/selectors/ui';
+import { clientBubbleColorSelector, replyBubbleColorSelector } from 'src/store/selectors/ui';
 
 const Typing = () => {
-  const widgetThemeColor = useSelector(widgetThemeColorSelector);
+  const replyBubbleGradient = useSelector(replyBubbleColorSelector);
+  const clientBubbleColor = useSelector(clientBubbleColorSelector);
   return (
     <StyledMessage>
-      <StyledBotReply color={widgetThemeColor} className="typing">
+      <StyledBotReply color={replyBubbleGradient} dotcolor={clientBubbleColor} className="typing">
         <span></span>
         <span></span>
         <span></span>
