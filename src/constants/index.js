@@ -18,11 +18,12 @@ export const COMPONENT_PROPS = [
   'visitorId',
   'disableClose',
   'hideWidgetMenu',
+  'avatarPosition',
 ];
 
 export const PROPS_TO_DEPRECATED = [
   { old: 'openWidget', new: 'autoOpen' },
-  { old: 'headerResponseImgUrl', new: 'headerAndBotReplyAvatar' },
+  { old: 'headerResponseImgUrl', new: 'avatar' },
   { old: 'widgetIconUrl', new: 'logo' },
   { old: 'bubbleColor', new: 'clientBubbleColor' },
   { old: 'bubbleGradient', new: 'replyBubbleGradient' },
