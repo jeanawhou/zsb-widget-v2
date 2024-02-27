@@ -865,7 +865,6 @@ export const StyledWSProcessStep = styled.span`
 `;
 
 export const StyledChatHeaderAvatar = styled(WidgetIcon)`
-  height: 70px;
   width: 70px;
   margin-left: 5px;
 `;
