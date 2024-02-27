@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { cssVariables } from '../../styles/variables';
 import { DESKTOP_HEIGHT, MOBILE_HEIGHT } from 'src/constants/viewport';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from 'src/constants/chat';
+import WidgetIcon from '../WidgetIcon';
 
 export const StyledFlexRowCenter = styled.div`
   display: flex;
@@ -213,18 +214,18 @@ export const StyledLauncherWrapper = styled.div`
   width: fit-content !important;
 
   margin-top: ${(props) =>
-    props.position?.includes('top')
-      ? '0px'
-      : props.position?.includes('mid')
-        ? 'auto'
+    props.position?.includes('mid')
+      ? 'auto'
+      : props.position?.includes('top')
+        ? '0px'
         : props.position?.includes('bottom')
           ? '10px'
           : 'inherit'};
   margin-bottom: ${(props) =>
-    props.position?.includes('bottom')
-      ? '0px'
-      : props.position?.includes('mid')
-        ? 'auto'
+    props.position?.includes('mid')
+      ? 'auto'
+      : props.position?.includes('bottom')
+        ? '0px'
         : props.position?.includes('top')
           ? '10px'
           : 'inherit'};
@@ -296,34 +297,40 @@ export const StyledWidgetWrapper = styled.div`
           : props.width || DEFAULT_WIDTH};
   position: fixed;
   bottom: ${(props) =>
-    props.position?.includes('bottom') ||
-    props.fullheight === 'true' ||
-    props.fullscreen === 'true' ||
-    props.halfscreen === 'true'
-      ? '0px'
-      : 'inherit'};
+    props.position?.includes('mid')
+      ? 0
+      : props.position?.includes('bottom') ||
+          props.fullheight === 'true' ||
+          props.fullscreen === 'true' ||
+          props.halfscreen === 'true'
+        ? '0px'
+        : 'inherit'};
   right: ${(props) => (props.position?.includes('right') ? '0px' : 'inherit')};
   top: ${(props) =>
-    props.position?.includes('top') ||
-    props.fullheight === 'true' ||
-    props.fullscreen === 'true' ||
-    props.halfscreen === 'true'
-      ? '0px'
-      : 'inherit'};
+    props.position?.includes('mid')
+      ? 0
+      : props.position?.includes('top') ||
+          props.fullheight === 'true' ||
+          props.fullscreen === 'true' ||
+          props.halfscreen === 'true'
+        ? '0px'
+        : 'inherit'};
   left: ${(props) => (props.position?.includes('left') ? '0px' : 'inherit')};
   /* TODO: needs cleanup */
   margin-bottom: ${(props) =>
-    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('bottom')
-      ? '10px'
-      : (props.minimized === 'true' ||
-            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-          props.position?.includes('bottom')
+    props.position?.includes('mid')
+      ? 'auto'
+      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('bottom')
         ? '10px'
-        : props.minimized === 'false' &&
-            (props.fullheight === 'true' || props.fullscreen === 'true') &&
+        : (props.minimized === 'true' ||
+              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
             props.position?.includes('bottom')
-          ? '0px'
-          : 'inherit'};
+          ? '10px'
+          : props.minimized === 'false' &&
+              (props.fullheight === 'true' || props.fullscreen === 'true') &&
+              props.position?.includes('bottom')
+            ? '0px'
+            : 'inherit'};
   margin-right: ${(props) =>
     props.position === 'mid-right' && props.minimized === 'true'
       ? '-50px'
@@ -339,17 +346,19 @@ export const StyledWidgetWrapper = styled.div`
             ? '0px'
             : 'inherit'};
   margin-top: ${(props) =>
-    props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('top')
-      ? '10px'
-      : (props.minimized === 'true' ||
-            (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-          props.position?.includes('top')
+    props.position?.includes('mid')
+      ? 'auto'
+      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('top')
         ? '10px'
-        : props.minimized === 'false' &&
-            (props.fullheight === 'true' || props.fullscreen === 'true') &&
+        : (props.minimized === 'true' ||
+              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
             props.position?.includes('top')
-          ? '0px'
-          : 'inherit'};
+          ? '10px'
+          : props.minimized === 'false' &&
+              (props.fullheight === 'true' || props.fullscreen === 'true') &&
+              props.position?.includes('top')
+            ? '0px'
+            : 'inherit'};
   margin-left: ${(props) =>
     props.position === 'mid-left' && props.minimized === 'true'
       ? '-50px'
@@ -465,6 +474,14 @@ export const StyledWidgetWrapper = styled.div`
         : css`
             animation: reverseRotate 0.5s linear;
           `}
+  }
+
+  img.chat-launcher {
+    background: none;
+    padding: 0;
+    height: 50px;
+    width: 50px;
+    box-shadow: ${cssVariables.noPaddingShadow};
   }
 `;
 
@@ -662,6 +679,18 @@ export const StyledBotReply = styled(StyledMessage)`
     }
   }
 
+  img {
+    background: none;
+  }
+
+  img,
+  svg {
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    margin-left: -10px;
+  }
+
   .anticon-warning,
   .anticon-user {
     padding: 0;
@@ -833,4 +862,18 @@ export const StyledWSProcessStep = styled.span`
   > * {
     color: ${(props) => props.color || cssVariables.zsbCyan};
   }
+`;
+
+export const StyledChatHeaderAvatar = styled(WidgetIcon)`
+  height: 70px;
+  width: 70px;
+  margin-left: 5px;
+`;
+
+export const StyledChatReplyAvatar = styled(WidgetIcon)`
+  height: 43px;
+  width: 50px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color || 'none'};
 `;

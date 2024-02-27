@@ -9,14 +9,14 @@ export const initialChat = {
   theme: '',
   showIconOnChatHeader: false,
   bot: '',
-  openWidget: false,
+  autoOpen: false,
   typing: false,
   position: 'bottom-right',
 };
 
 export const initialUI = {
   isWidgetExpanded: false,
-  widgetType: 'chat',
+  widgetType: null,
   newMessageCount: null,
   widgetConfig: {
     chat: initialChat,
