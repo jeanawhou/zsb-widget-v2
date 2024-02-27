@@ -9,7 +9,7 @@ const camelCaseKeys = (key) => {
   if (componentPropIndex >= 0) {
     const deprecatedProp = PROPS_TO_DEPRECATED.find(({ old }) => old.toLowerCase() === key.toLowerCase());
     if (!isEmpty(deprecatedProp)) {
-      console.error(`Deprecated props warning. Please "${deprecatedProp.new}" instead of "${deprecatedProp.old}"`);
+      console.error(`Deprecated props warning. Please use "${deprecatedProp.new}" instead of "${deprecatedProp.old}"`);
       return deprecatedProp.new;
     }
     return COMPONENT_PROPS[componentPropIndex];
