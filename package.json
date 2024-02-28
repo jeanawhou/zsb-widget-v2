@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm version prerelease --preid=alpha --force && npm run build:library && npm run build:vanillajs",
+    "build": "npm run build:library && npm run build:vanillajs",
     "build:test": "npm run build:test-library && npm run build:vanillajs",
     "build:test-library": "vite build --mode library && npm pack",
     "build:library": "vite build --mode library && npm run publish:production",
