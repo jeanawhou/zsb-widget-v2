@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
-import { UserOutlined, WarningFilled } from '@ant-design/icons';
+import { WarningFilled } from '@ant-design/icons';
 
 import useSelector from 'src/store/useSelector';
-import { chatConfigSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
+import {
+  chatConfigSelector,
+  replyBubbleColorSelector,
+  showIconOnReplySelector,
+  widgetThemeColorSelector,
+} from 'src/store/selectors/ui';
 import { cssVariables } from 'src/styles/variables';
 
 import {
   StyledBotReply,
+  StyledChatReplyAvatar,
   StyledFlexColumnLeft,
   StyledFlexRowLeft,
   StyledMessage,
@@ -23,7 +29,9 @@ import { websocketSelector } from 'src/store/selectors';
 const Reply = ({ message }) => {
   const { timeReply, reply, type, feedback, isLastMessage } = message;
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
+  const replyBubbleGradient = useSelector(replyBubbleColorSelector);
   const chatConfig = useSelector(chatConfigSelector);
+  const showIconOnReply = useSelector(showIconOnReplySelector);
   const { steps } = useSelector(websocketSelector);
 
   const WSStepProcess = () => {
@@ -137,9 +145,13 @@ const Reply = ({ message }) => {
 
   return (
     <StyledMessage>
-      <StyledBotReply color={widgetThemeColor}>
+      <StyledBotReply color={replyBubbleGradient} widgetthemecolor={widgetThemeColor}>
         <StyledFlexRowLeft>
-          {type === 'error' ? <WarningFilled style={{ color: cssVariables.warning }} /> : <UserOutlined />}
+          {type === 'error' ? (
+            <WarningFilled style={{ color: cssVariables.warning }} />
+          ) : showIconOnReply ? (
+            <StyledChatReplyAvatar isLogo color={widgetThemeColor} />
+          ) : null}
           <StyledFlexColumnLeft>{renderReply()}</StyledFlexColumnLeft>
         </StyledFlexRowLeft>
         {reply?.isLastReplyItem ? (

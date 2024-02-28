@@ -1,0 +1,68 @@
+name: NPM Publish
+
+on:
+  push:
+    branches:
+      - release/**
+
+jobs:
+  publish_node_16:
+    name: Publish with Node.js 16
+    if: github.ref == 'refs/heads/release/node-16-**'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: version/node-16
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.name "Jeana fernandez"
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      - name: 'Bump Version'
+        run: |
+          npm version prerelease --force
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Build Package
+        run: |
+          npm run build
+
+  publish_with_latest_node:
+    name: Publish with latest Node.js
+    if: github.ref == 'refs/heads/release/latest-alpha'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.name "Jeana fernandez"
+
+      - name: Use latest Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.x
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Semantic Release
+        run: npx semantic-release
+
+      - name: Build Package
+        run: |
+          npm run build

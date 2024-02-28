@@ -25,17 +25,22 @@ const App = () => {
 
 
 - bot => Bot credentials.
-- color => Backround color of the widget. (in hex code - include #)
+- color => Background or theme color of the widget. (in hex code - include #)
 - textColor => Font/text color. (in hex code - include #)
-- height => Height of the widget. (in pixels - add px)
+- height => Height of the widget excluding the launcher and chat header. (in pixels - add px)
 - showCloseButton => Show or hide the close button on Mobile view/Small screen view. (OPT: true/false)
-- openWidget => Auto open the widget upon loading. (OPT: true/false)
-- headerResponseImgUrl => Image URL for the header logo.
-- widgetIconUrl => Image URL for the widget logo.
+- autoOpen => Auto open the widget upon loading. Previously *openWidget* (deprecated). (OPT: true/false)
+- avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
+- avatarPosition => Where the **avatar** will be reflected. (OPT: header/chat)
+- launcherLogo => Image URL for the widget logo. Previously *widgetIconUrl* (deprecated).
 - fontSize => Font size of conversation.(in pixels - add px)
 - fontStyle => Font Style of the conversation.
-- bubbleColor => Background color of the client message. (hex code - include #)
-- bubbleGradient => Background color of the bot message. (Gradient Color of the Bubble Color - RGBa)
+- clientBubbleColor => Background color of the client message. Previously *bubbleColor* (deprecated)  (hex code - include #)
+- replyBubbleGradient => **Alpha** of the *clientBubbleColor*. Adapts the background color of bubbleColor. Previously *bubbleGradient* (deprecated).
+  - Example:
+    - (replyBubbleGradient: '0.15')
+    - (output: rgba('clientBubbleColor', '0.15'))
+
 - disableClose => Prevent closing/minimizing the chat widget
 - hideWidgetMenu => Hide extra menu on chat header
 
@@ -59,7 +64,7 @@ For Config File props
 - componentTitle => Title of the bot.
 - category => Widget UI (OPT: text or image)
 - headerLogoPosition => Icon Position in the header (OPT: left, right, center)
-zsb-widget- interactionHistory => Save the interaction history
+- interactionHistory => Save the interaction history
 - maxInteraction => Maximum number of interaction to be stored
 
 

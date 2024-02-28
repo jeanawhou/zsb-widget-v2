@@ -26,3 +26,9 @@ dist-ssr
 
 # Local Netlify folder
 .netlify
+
+# Files to maintain node 16 build
+src/main.jsx
+vite.config.js
+package.json
+README.md

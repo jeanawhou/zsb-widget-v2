@@ -1,4 +1,4 @@
-import { camelCaseKeys } from 'src/utils';
+import { reconcileProps } from 'src/utils';
 
 export const extractPublicKeys = (pub) => {
   return {
@@ -10,8 +10,8 @@ export const extractPublicKeys = (pub) => {
 };
 
 export const extractWidgetUI = (config = {}, props = {}) => {
-  const configProps = camelCaseKeys(config);
-  const widgetProps = camelCaseKeys(props);
+  const configProps = reconcileProps(config);
+  const widgetProps = reconcileProps(props);
   return {
     // overwrite config props with component props
     ...configProps,
