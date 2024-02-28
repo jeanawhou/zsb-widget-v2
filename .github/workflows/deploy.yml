@@ -28,7 +28,7 @@ jobs:
 
       - name: 'Bump Version'
         run: |
-          npm version prerelease --force
+          npm version prerelease --preid=alpha --force
 
       - name: Install Dependencies
         run: |
@@ -62,6 +62,10 @@ jobs:
 
       - name: Semantic Release
         run: npx semantic-release
+
+      - name: 'Bump Version'
+        run: |
+          npm version prerelease --preid=alpha --force
 
       - name: Build Package
         run: |
