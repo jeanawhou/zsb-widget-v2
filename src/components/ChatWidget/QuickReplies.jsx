@@ -24,7 +24,7 @@ import { REACTIONS } from 'src/constants/chat';
 import { cssVariables } from 'src/styles/variables';
 import { handOffLabelSelector, widgetThemeColorSelector } from 'src/store/selectors/ui';
 import { generateUUID } from 'src/store/utils';
-import useReply from './hooks/useReply';
+import useReply from '../hooks/useReply';
 
 const QuickReplies = (props) => {
   const { quickReplies } = props;

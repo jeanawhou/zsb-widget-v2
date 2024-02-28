@@ -44,41 +44,43 @@ const useChatWidget = () => {
   const [fullscreen, setFullscreen] = useState(false);
 
   const shouldShowLauncher = useCallback(() => {
-    const viewportHeight = window.innerHeight;
-    const isSmallScreen = viewportHeight < 650;
+    if (typeof window !== 'undefined') {
+      const viewportHeight = window.innerHeight;
+      const isSmallScreen = viewportHeight < 650;
 
-    if (widgetRef?.current) {
-      const isInvertedWidget = chatStyles.position?.includes('top');
-      // top of widget computation
-      const isWidgetHeightSmall = widgetRef.current?.clientHeight < 450;
-      const isTouchingTopOfPage = widgetRef.current?.offsetTop < 10;
+      if (widgetRef?.current) {
+        const isInvertedWidget = chatStyles.position?.includes('top');
+        // top of widget computation
+        const isWidgetHeightSmall = widgetRef.current?.clientHeight < 450;
+        const isTouchingTopOfPage = widgetRef.current?.offsetTop < 10;
 
-      // bottom of widget computation
-      const widgetEl = widgetRef.current.getBoundingClientRect();
-      const isTouchingBottomOfPage = window.innerHeight - widgetEl.bottom < 10;
+        // bottom of widget computation
+        const widgetEl = widgetRef.current.getBoundingClientRect();
+        const isTouchingBottomOfPage = window.innerHeight - widgetEl.bottom < 10;
 
-      // check to not allow resize if both global state are false
-      if (!isFullscreen && !isFullHeight) {
-        // `fullHeight` is a component state
-        if (!fullHeight) {
-          if (isInvertedWidget) {
-            if (isTouchingBottomOfPage && (isSmallScreen || isWidgetHeightSmall)) {
+        // check to not allow resize if both global state are false
+        if (!isFullscreen && !isFullHeight) {
+          // `fullHeight` is a component state
+          if (!fullHeight) {
+            if (isInvertedWidget) {
+              if (isTouchingBottomOfPage && (isSmallScreen || isWidgetHeightSmall)) {
+                setFullHeight(true);
+              } else {
+                setFullHeight(false);
+              }
+            } else {
+              if (isTouchingTopOfPage && (isSmallScreen || isWidgetHeightSmall)) {
+                setFullHeight(true);
+              } else {
+                setFullHeight(false);
+              }
+            }
+          } else {
+            if (isWidgetHeightSmall || isSmallScreen) {
               setFullHeight(true);
             } else {
               setFullHeight(false);
             }
-          } else {
-            if (isTouchingTopOfPage && (isSmallScreen || isWidgetHeightSmall)) {
-              setFullHeight(true);
-            } else {
-              setFullHeight(false);
-            }
-          }
-        } else {
-          if (isWidgetHeightSmall || isSmallScreen) {
-            setFullHeight(true);
-          } else {
-            setFullHeight(false);
           }
         }
       }
@@ -140,12 +142,15 @@ const useChatWidget = () => {
   }, [isExpanded, isMobile, isFullHeight, isFullscreen]);
 
   useEffect(() => {
-    if (navigator?.userAgent && isMobile && isExpanded) {
-      setFullHeight(true);
-    }
-    if (!isFullHeight && !isFullscreen) {
-      // listens on resize event
+    if (typeof window !== 'undefined') {
+      if (navigator?.userAgent && isMobile && isExpanded) {
+        setFullHeight(true);
+      }
       window.addEventListener('resize', checkViewportHeight);
+
+      return () => {
+        window.removeEventListener('resize', checkViewportHeight);
+      };
     }
   }, [isExpanded, isFullHeight, isFullscreen, isMobile, checkViewportHeight]);
 

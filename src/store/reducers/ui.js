@@ -112,8 +112,17 @@ export const uiReducer = (state, action) => {
       const { configJSON, widgetProps } = action.payload;
       const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
-      const { avatar, iconColor, fbAccessToken, fbApiVersion, authenticatedUser, openWidget, visitorId, ...restOfUI } =
-        widgetUI;
+      const {
+        avatar,
+        iconColor,
+        fbAccessToken,
+        fbApiVersion,
+        authenticatedUser,
+        autoOpen,
+        visitorId,
+        type,
+        ...restOfUI
+      } = widgetUI;
       const isProd = import.meta.env.PROD;
       const userIcon = extractUserIcon(avatar, iconColor);
       // eslint-disable-next-line no-undef
@@ -123,7 +132,8 @@ export const uiReducer = (state, action) => {
         ...state,
         ui: {
           ...state.ui,
-          isWidgetExpanded: openWidget,
+          isWidgetExpanded: autoOpen,
+          widgetType: type || 'chat',
           widgetConfig: {
             ...state.ui.widgetConfig,
             icon: userIcon || fallbackIcon,

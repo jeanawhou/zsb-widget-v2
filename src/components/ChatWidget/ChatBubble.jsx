@@ -5,8 +5,12 @@ import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { StyledFlexRowLeft, StyledReplyMessageContent } from './StyledComponents';
 import { cssVariables } from 'src/styles/variables';
 import { useCallback } from 'react';
+import useSelector from 'src/store/useSelector';
+import { replyBubbleColorSelector } from 'src/store/selectors/ui';
 
 const ChatBubble = ({ content, messageIcon, children, feedback, isForm }) => {
+  const replyBubbleGradient = useSelector(replyBubbleColorSelector);
+
   const renderContent = useCallback(() => {
     return isForm ? (
       <span>{content}</span>
@@ -20,7 +24,7 @@ const ChatBubble = ({ content, messageIcon, children, feedback, isForm }) => {
   }, [children, content, isForm]);
 
   return (
-    <StyledReplyMessageContent>
+    <StyledReplyMessageContent color={replyBubbleGradient}>
       <StyledFlexRowLeft>
         {messageIcon || null}
         {renderContent()}

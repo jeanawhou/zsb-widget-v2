@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { convertRGBA, isHexColor } from 'src/utils/colors';
 
 export const uiSelector = (state) => state.ui;
 
@@ -7,6 +8,8 @@ export const isWidgetExpandedSelector = createSelector(uiSelector, (ui) => ui.is
 export const widgetConfigSelector = createSelector(uiSelector, (ui) => ui.widgetConfig);
 
 export const chatConfigSelector = createSelector(widgetConfigSelector, (widgetConfig) => widgetConfig.chat);
+export const widgetTypeSelector = createSelector(uiSelector, (ui) => ui.widgetType);
+export const isChatWidgetSelector = createSelector(widgetTypeSelector, (widgetType) => widgetType === 'chat');
 export const widgetTitleSelector = createSelector(chatConfigSelector, (chatConfig) => {
   return chatConfig.title || chatConfig.identifier || chatConfig.botTitle;
 });
@@ -21,6 +24,27 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
 });
 
 export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat) => chat.color);
+export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) =>
+  chat.avatarPosition === 'header' ? 'header' : 'chat',
+);
+export const clientBubbleColorSelector = createSelector(
+  chatConfigSelector,
+  widgetThemeColorSelector,
+  // fallback is the widgetThemeColor
+  (chat, widgetThemeColor) => chat?.clientBubbleColor || widgetThemeColor,
+);
+export const replyBubbleColorSelector = createSelector(
+  chatConfigSelector,
+  clientBubbleColorSelector,
+  widgetThemeColorSelector,
+  (chat, clientBubbleColor, widgetThemeColor) =>
+    // convert only to rgba if replyBubbleGradient AND clientBubbleColor
+    // is not null AND clientBubbleColor isHex
+    chat?.replyBubbleGradient && clientBubbleColor && isHexColor(clientBubbleColor)
+      ? `rgba(${convertRGBA(clientBubbleColor)}, ${chat?.replyBubbleGradient})`
+      : // else use current theme color
+        widgetThemeColor,
+);
 export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height }) => {
   if (typeof height === 'string' && height?.endsWith('px')) {
     return height;
@@ -29,6 +53,17 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
 });
 
 export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
+
+export const showIconOnChatHeaderSelector = createSelector(
+  widgetIconSelector,
+  avatarPositionSelector,
+  (icon, position) => {
+    return Boolean(icon) && position === 'header';
+  },
+);
+export const showIconOnReplySelector = createSelector(widgetIconSelector, avatarPositionSelector, (icon, position) => {
+  return icon && position === 'chat';
+});
 export const isCircleLauncherSelector = createSelector(
   chatConfigSelector,
   (chat) => !chat.shape || chat.shape?.toLowerCase() === 'circle',
