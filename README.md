@@ -56,9 +56,9 @@ const App = () => {
 - height => Height of the widget excluding the launcher and chat header. (in pixels - add px)
 - showCloseButton => Show or hide the close button on Mobile view/Small screen view. (OPT: true/false)
 - autoOpen => Auto open the widget upon loading. Previously *openWidget* (deprecated). (OPT: true/false)
-- avatar => Image URL for the header logo. Previously *headerResponseImgUrl* (deprecated).
-- avatarPosition => Where the avatar will be reflected. (OPT: header/chat)
-- logo => Image URL for the widget logo. Previously *widgetIconUrl* (deprecated).
+- avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
+- avatarPosition => Where the **avatar** will be reflected. (OPT: header/chat)
+- launcherLogo => Image URL for the widget logo. Previously *widgetIconUrl* (deprecated).
 - fontSize => Font size of conversation.(in pixels - add px)
 - fontStyle => Font Style of the conversation.
 - clientBubbleColor => Background color of the client message. Previously *bubbleColor* (deprecated)  (hex code - include #)
