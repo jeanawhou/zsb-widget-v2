@@ -52,17 +52,20 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
   return `${height}px`;
 });
 
-export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
+export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar);
 
 export const showIconOnChatHeaderSelector = createSelector(
-  widgetIconSelector,
+  avatarSelector,
   avatarPositionSelector,
-  (icon, position) => {
-    return Boolean(icon) && position === 'header';
+  (avatar, position) => {
+    return Boolean(avatar) && position === 'header';
   },
 );
-export const showIconOnReplySelector = createSelector(widgetIconSelector, avatarPositionSelector, (icon, position) => {
-  return icon && position === 'chat';
+export const showIconOnReplySelector = createSelector(avatarSelector, avatarPositionSelector, (avatar, position) => {
+  return Boolean(avatar) && position === 'chat';
+});
+export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat) => {
+  return chat.launcherIcon;
 });
 export const isCircleLauncherSelector = createSelector(
   chatConfigSelector,
