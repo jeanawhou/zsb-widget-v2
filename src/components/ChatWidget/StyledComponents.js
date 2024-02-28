@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { cssVariables } from '../../styles/variables';
 import { DESKTOP_HEIGHT, MOBILE_HEIGHT } from 'src/constants/viewport';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from 'src/constants/chat';
-import WidgetIcon from '../WidgetIcon';
+import Avatar from '../Avatar';
 
 export const StyledFlexRowCenter = styled.div`
   display: flex;
@@ -444,6 +444,16 @@ export const StyledWidgetWrapper = styled.div`
       cursor: not-allowed;
     }
 
+    > :first-child {
+      height: 100%;
+      width: 100%;
+    }
+
+    &:first-child.anticon-close svg {
+      height: 70%;
+      width: 70%;
+    }
+
     &.isLogoOnly {
       padding: 0px;
       margin: 0px;
@@ -479,7 +489,7 @@ export const StyledWidgetWrapper = styled.div`
   img.chat-launcher {
     background: none;
     padding: 0;
-    height: 50px;
+    height: 100%;
     width: 50px;
     box-shadow: ${cssVariables.noPaddingShadow};
   }
@@ -864,12 +874,12 @@ export const StyledWSProcessStep = styled.span`
   }
 `;
 
-export const StyledChatHeaderAvatar = styled(WidgetIcon)`
+export const StyledChatHeaderAvatar = styled(Avatar)`
   width: 70px;
   margin-left: 5px;
 `;
 
-export const StyledChatReplyAvatar = styled(WidgetIcon)`
+export const StyledChatReplyAvatar = styled(Avatar)`
   height: 43px;
   width: 50px;
   margin-right: 5px;
