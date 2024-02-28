@@ -8,7 +8,7 @@ on:
 jobs:
   publish_node_16:
     name: Publish with Node.js 16
-    if: github.ref =~ '^refs/heads/release/node-16'
+    if: github.ref == 'refs/heads/release/node-16**'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
