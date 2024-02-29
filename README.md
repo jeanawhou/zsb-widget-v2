@@ -64,11 +64,9 @@ const App = () => {
 - clientBubbleColor => Background color of the client message. Previously *bubbleColor* (deprecated)  (hex code - include #)
 - replyBubbleGradient => **Alpha** of the *clientBubbleColor*. Adapts the background color of bubbleColor. Previously *bubbleGradient* (deprecated).
 
-  - Example:
-
-    (replyBubbleGradient: '0.15')
-
-    (output: rgba('clientBubbleColor', '0.15'))
+  Example:
+    - (replyBubbleGradient: '0.15')
+    - (output: rgba('{clientBubbleColor}', '0.15'))
 
 - disableClose => Prevent closing/minimizing the chat widget
 - hideWidgetMenu => Hide extra menu on chat header
