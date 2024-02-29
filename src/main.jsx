@@ -100,7 +100,13 @@ class ReactElement extends HTMLElement {
   convert(attrName, attrValue) {
     let value = attrValue;
     if (attrName === 'style') {
-      value = this.convertStyleToObject(attrValue);
+      value =
+        typeof attrValue === 'string'
+          ? this.convertStyleToObject(attrValue)
+          : typeof attrValue === 'object'
+            ? attrValue
+            : // reject other data types
+              '';
     } else if (attrValue === 'true' || attrValue === 'false') {
       value = attrValue === 'true';
     } else if (!isNaN(attrValue) && attrValue !== '') {
