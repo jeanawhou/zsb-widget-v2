@@ -76,7 +76,7 @@ class ReactElement extends HTMLElement {
 
   getEvents() {
     return Object.values(this.attributes)
-      .filter((key) => /on([a-z].*)/.exec(key.name))
+      .filter((key) => /^on([a-z].*)/.exec(key.name))
       .reduce(
         (events, ev) => ({
           ...events,
