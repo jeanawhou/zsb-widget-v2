@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect';
+
+import { DEFAULT_FONT_SIZE } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
+import { websocketSelector } from '.';
 
 export const uiSelector = (state) => state.ui;
 
@@ -52,17 +55,23 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
   return `${height}px`;
 });
 
-export const widgetIconSelector = createSelector(widgetConfigSelector, (widget) => widget.icon);
+export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar);
+export const fontSizeSelector = createSelector(chatConfigSelector, (chat) =>
+  chat?.fontSize ? (chat.fontSize.includes('px') ? chat.fontSize : `${chat.fontSize}`) : DEFAULT_FONT_SIZE,
+);
 
 export const showIconOnChatHeaderSelector = createSelector(
-  widgetIconSelector,
+  avatarSelector,
   avatarPositionSelector,
-  (icon, position) => {
-    return Boolean(icon) && position === 'header';
+  (avatar, position) => {
+    return Boolean(avatar) && position === 'header';
   },
 );
-export const showIconOnReplySelector = createSelector(widgetIconSelector, avatarPositionSelector, (icon, position) => {
-  return icon && position === 'chat';
+export const showIconOnReplySelector = createSelector(avatarSelector, avatarPositionSelector, (avatar, position) => {
+  return Boolean(avatar) && position === 'chat';
+});
+export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat) => {
+  return chat.launcherIcon;
 });
 export const isCircleLauncherSelector = createSelector(
   chatConfigSelector,
@@ -73,8 +82,27 @@ export const handOffLabelSelector = createSelector(chatConfigSelector, (chat) =>
 export const shouldSendCallbackEmailSelector = createSelector(chatConfigSelector, (chat) => chat.callbackEmail);
 
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);
+export const userStyleSelector = createSelector(uiSelector, (ui) => ui.userStyle);
 
-export const isTypingSelector = createSelector(chatConfigSelector, (chat) => chat.typing || false);
+export const typingExperienceEnabledSelector = createSelector(
+  chatConfigSelector,
+  (chat) => chat.typingExperience || false,
+);
+export const isTypingSelector = createSelector(
+  chatConfigSelector,
+  typingExperienceEnabledSelector,
+  websocketSelector,
+  (chat, typingExperienceEnabled, websocket) => {
+    const isTyping = typingExperienceEnabled && chat.typing;
+    // hasn't got the answer yet
+    // hence, we're showing typing/loading indicator
+    if (websocket?.steps?.length === 1 && chat.typing) {
+      return true;
+    }
+    // should only be true
+    return isTyping || false;
+  },
+);
 
 export const isFullHeightSelector = createSelector(
   widgetConfigSelector,

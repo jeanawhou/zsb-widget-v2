@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { cssVariables } from '../../styles/variables';
 import { DESKTOP_HEIGHT, MOBILE_HEIGHT } from 'src/constants/viewport';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from 'src/constants/chat';
-import WidgetIcon from '../WidgetIcon';
+import Avatar from '../Avatar';
 
 export const StyledFlexRowCenter = styled.div`
   display: flex;
@@ -212,6 +212,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
 export const StyledLauncherWrapper = styled.div`
   color: #fff;
   width: fit-content !important;
+  position: ${(props) => (props.minimized === 'true' ? 'fixed' : 'unset')};
 
   margin-top: ${(props) =>
     props.position?.includes('mid')
@@ -247,17 +248,39 @@ export const StyledLauncherWrapper = styled.div`
           : 'inherit'};
 
   float: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
-  top: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
-  bottom: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
+  top: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('top')
+      ? '10px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  bottom: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('bottom')
+      ? '10px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  left: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
+      ? '-40px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  right: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
+      ? '-40px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
   rotate: ${(props) =>
     props.position?.includes('mid-right') ? '-90deg' : props.position?.includes('mid-left') ? '90deg' : 'none'};
   ${(props) =>
     props.position?.includes('left')
       ? css`
-          ${StyledFlexRowLeft}
+          ${StyledFlexRowLeft};
         `
       : css`
-          ${StyledFlexRowRight}
+          ${StyledFlexRowRight};
         `}
 
   /* mid position needs more testing */
@@ -295,7 +318,7 @@ export const StyledWidgetWrapper = styled.div`
         : props.minimized === 'true'
           ? 'auto'
           : props.width || DEFAULT_WIDTH};
-  position: fixed;
+  position: ${(props) => (props.minimized === 'false' ? 'fixed' : 'relative')};
   bottom: ${(props) =>
     props.position?.includes('mid')
       ? 0
@@ -444,6 +467,16 @@ export const StyledWidgetWrapper = styled.div`
       cursor: not-allowed;
     }
 
+    > :first-child {
+      height: 100%;
+      width: 100%;
+    }
+
+    &:first-child.anticon-close svg {
+      height: 70%;
+      width: 70%;
+    }
+
     &.isLogoOnly {
       padding: 0px;
       margin: 0px;
@@ -479,7 +512,7 @@ export const StyledWidgetWrapper = styled.div`
   img.chat-launcher {
     background: none;
     padding: 0;
-    height: 50px;
+    height: 100%;
     width: 50px;
     box-shadow: ${cssVariables.noPaddingShadow};
   }
@@ -582,7 +615,7 @@ export const StyledMessagesWrapper = styled.div`
 
 export const StyledMessage = styled.div`
   display: flex;
-  font-size: 14px;
+  font-size: ${(props) => props.$fontsize};
   flex-direction: column;
   word-break: break-word;
   margin-bottom: 5px;
@@ -864,12 +897,12 @@ export const StyledWSProcessStep = styled.span`
   }
 `;
 
-export const StyledChatHeaderAvatar = styled(WidgetIcon)`
+export const StyledChatHeaderAvatar = styled(Avatar)`
   width: 70px;
   margin-left: 5px;
 `;
 
-export const StyledChatReplyAvatar = styled(WidgetIcon)`
+export const StyledChatReplyAvatar = styled(Avatar)`
   height: 43px;
   width: 50px;
   margin-right: 5px;

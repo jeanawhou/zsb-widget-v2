@@ -32,14 +32,15 @@ const App = () => {
 - autoOpen => Auto open the widget upon loading. Previously *openWidget* (deprecated). (OPT: true/false)
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
 - avatarPosition => Where the **avatar** will be reflected. (OPT: header/chat)
-- launcherLogo => Image URL for the widget logo. Previously *widgetIconUrl* (deprecated).
+- launcherIcon => Accepts similar values with **avatar**. It will fallback to **avatar's** value if this prop is empty and will get default zsb logo if both avatar and launcherIcon are empty. Previously *widgetIconUrl* (deprecated).
 - fontSize => Font size of conversation.(in pixels - add px)
 - fontStyle => Font Style of the conversation.
 - clientBubbleColor => Background color of the client message. Previously *bubbleColor* (deprecated)  (hex code - include #)
 - replyBubbleGradient => **Alpha** of the *clientBubbleColor*. Adapts the background color of bubbleColor. Previously *bubbleGradient* (deprecated).
-  - Example:
+
+  Example:
     - (replyBubbleGradient: '0.15')
-    - (output: rgba('clientBubbleColor', '0.15'))
+    - (output: rgba('{clientBubbleColor}', '0.15'))
 
 - disableClose => Prevent closing/minimizing the chat widget
 - hideWidgetMenu => Hide extra menu on chat header

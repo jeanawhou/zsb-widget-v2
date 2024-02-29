@@ -120,13 +120,28 @@ export const uiReducer = (state, action) => {
         authenticatedUser,
         autoOpen,
         visitorId,
+        launcherIcon,
         type,
+        position,
         ...restOfUI
       } = widgetUI;
       const isProd = import.meta.env.PROD;
       const userIcon = extractUserIcon(avatar, iconColor);
+      const launcher = launcherIcon ? extractUserIcon(launcherIcon, iconColor) : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
+      const isChatWidget = !type || type === 'chat';
+      const isMid = position?.includes('mid');
+      const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
+
+      const chatPosition =
+        isChatWidget && isValidMidPosition
+          ? position
+          : isChatWidget && isMid && !isValidMidPosition && position?.includes('right')
+            ? 'bottom-right'
+            : position?.includes('left') && isMid
+              ? 'bottom-left'
+              : position;
 
       return {
         ...state,
@@ -136,8 +151,12 @@ export const uiReducer = (state, action) => {
           widgetType: type || 'chat',
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon: userIcon || fallbackIcon,
+            // posibility of being reused on component type
+            // hence moving it outside the chat object
+            avatar: userIcon,
             chat: {
+              launcherIcon: launcher || userIcon || fallbackIcon,
+              position: chatPosition,
               ...restOfUI,
             },
           },
