@@ -5,6 +5,7 @@ import {
   StyledChatHeader,
   StyledChatHeaderActionIcons,
   StyledChatHeaderAvatar,
+  StyledFlexColumnLeft,
   StyledFlexColumnSpaceEvenly,
   StyledSubtitle,
 } from './StyledComponents';
@@ -39,10 +40,17 @@ const ChatHeader = (props) => {
       halfscreen={isWidgetHalfScreen ? 'true' : 'false'}
     >
       {showIconOnChatHeader ? <StyledChatHeaderAvatar isLogo /> : null}
-      <StyledFlexColumnSpaceEvenly>
-        <h3>{widgetTitle}</h3>
-        <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-      </StyledFlexColumnSpaceEvenly>
+      {showIconOnChatHeader ? (
+        <StyledFlexColumnLeft>
+          <h3>{widgetTitle}</h3>
+          <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+        </StyledFlexColumnLeft>
+      ) : (
+        <StyledFlexColumnSpaceEvenly>
+          <h3>{widgetTitle}</h3>
+          <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+        </StyledFlexColumnSpaceEvenly>
+      )}
       <StyledChatHeaderActionIcons>
         {chatConfig.showCloseButton && (
           <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />

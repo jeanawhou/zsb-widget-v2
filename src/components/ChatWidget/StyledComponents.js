@@ -575,6 +575,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0px 5px;
+    margin-left: 0px;
     &:not(:last-child) {
       margin-bottom: 5px;
     }
