@@ -49,10 +49,6 @@ ZSBWidget.propTypes = {
   subtitle: PropTypes.string,
   placeholder: PropTypes.string,
   color: PropTypes.string,
-  style: PropTypes.any,
-  configProps: PropTypes.object,
-  handleSendMessage: PropTypes.func,
-  handleAddReply: PropTypes.func,
   bot: PropTypes.string,
   type: PropTypes.string,
 };
