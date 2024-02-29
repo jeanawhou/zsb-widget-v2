@@ -261,13 +261,13 @@ export const StyledLauncherWrapper = styled.div`
         ? '50%'
         : 'unset'};
   left: ${(props) =>
-    props.minimized === 'true' && props.position?.includes('left')
+    props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
       ? '-40px'
       : props.position?.includes('mid')
         ? '50%'
         : 'unset'};
   right: ${(props) =>
-    props.minimized === 'true' && props.position?.includes('right')
+    props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
       ? '-40px'
       : props.position?.includes('mid')
         ? '50%'
@@ -277,10 +277,10 @@ export const StyledLauncherWrapper = styled.div`
   ${(props) =>
     props.position?.includes('left')
       ? css`
-          ${StyledFlexRowLeft}
+          ${StyledFlexRowLeft};
         `
       : css`
-          ${StyledFlexRowRight}
+          ${StyledFlexRowRight};
         `}
 
   /* mid position needs more testing */
