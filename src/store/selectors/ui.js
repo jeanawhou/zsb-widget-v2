@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+
+import { DEFAULT_FONT_SIZE } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 
 export const uiSelector = (state) => state.ui;
@@ -53,6 +55,9 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
 });
 
 export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar);
+export const fontSizeSelector = createSelector(chatConfigSelector, (chat) =>
+  chat?.fontSize ? (chat.fontSize.includes('px') ? chat.fontSize : `${chat.fontSize}`) : DEFAULT_FONT_SIZE,
+);
 
 export const showIconOnChatHeaderSelector = createSelector(
   avatarSelector,
