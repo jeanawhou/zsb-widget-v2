@@ -1,7 +1,7 @@
 {
   "name": "zsb-widget-v2",
   "private": false,
-  "version": "1.5.0-beta.7",
+  "version": "1.5.0-beta.8",
   "type": "module",
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm version patch --force && vite build",
+    "build": "npm version prerelease --force && vite build",
     "lint": "eslint --fix",
     "preview": "vite preview",
     "prepare": "husky",
