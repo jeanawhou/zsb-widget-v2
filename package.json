@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "prepare": "husky",
     "build:test": "vite build && npm pack",
-    "build:production": "npm version prerelease --force && vite build && npm run publish:production",
+    "build:production": "npm run build && npm run publish:production",
     "publish:production": "npm publish --userconfig .npmrc",
     "test": "npm run lint"
   },
