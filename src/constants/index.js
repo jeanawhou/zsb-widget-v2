@@ -20,6 +20,10 @@ export const COMPONENT_PROPS = [
   'hideWidgetMenu',
   'avatarPosition',
   'launcherIcon',
+  'title',
+  'subtitle',
+  'placeholder',
+  'typingExperience',
 ];
 
 export const PROPS_TO_DEPRECATED = [
