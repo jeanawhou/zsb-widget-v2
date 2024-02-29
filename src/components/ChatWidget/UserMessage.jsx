@@ -12,7 +12,7 @@ const UserMessage = ({ message }) => {
   const fontSize = useSelector(fontSizeSelector);
 
   return (
-    <StyledMessage fontsize={fontSize}>
+    <StyledMessage $fontsize={fontSize}>
       <StyledClientMessage color={clientBubbleColor}>
         <span
           dangerouslySetInnerHTML={{

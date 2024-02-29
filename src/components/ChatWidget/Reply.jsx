@@ -146,7 +146,7 @@ const Reply = ({ message }) => {
   };
 
   return (
-    <StyledMessage fontsize={fontSize}>
+    <StyledMessage $fontsize={fontSize}>
       <StyledBotReply color={replyBubbleGradient} widgetthemecolor={widgetThemeColor}>
         <StyledFlexRowLeft>
           {type === 'error' ? (
