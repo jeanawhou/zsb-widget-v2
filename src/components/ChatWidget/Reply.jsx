@@ -4,6 +4,7 @@ import { WarningFilled } from '@ant-design/icons';
 import useSelector from 'src/store/useSelector';
 import {
   chatConfigSelector,
+  fontSizeSelector,
   replyBubbleColorSelector,
   showIconOnReplySelector,
   widgetThemeColorSelector,
@@ -32,6 +33,7 @@ const Reply = ({ message }) => {
   const replyBubbleGradient = useSelector(replyBubbleColorSelector);
   const chatConfig = useSelector(chatConfigSelector);
   const showIconOnReply = useSelector(showIconOnReplySelector);
+  const fontSize = useSelector(fontSizeSelector);
   const { steps } = useSelector(websocketSelector);
 
   const WSStepProcess = () => {
@@ -144,7 +146,7 @@ const Reply = ({ message }) => {
   };
 
   return (
-    <StyledMessage>
+    <StyledMessage fontsize={fontSize}>
       <StyledBotReply color={replyBubbleGradient} widgetthemecolor={widgetThemeColor}>
         <StyledFlexRowLeft>
           {type === 'error' ? (

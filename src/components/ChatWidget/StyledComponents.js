@@ -592,7 +592,7 @@ export const StyledMessagesWrapper = styled.div`
 
 export const StyledMessage = styled.div`
   display: flex;
-  font-size: 14px;
+  font-size: ${(props) => props.fontsize};
   flex-direction: column;
   word-break: break-word;
   margin-bottom: 5px;

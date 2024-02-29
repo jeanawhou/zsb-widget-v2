@@ -4,14 +4,15 @@ import { StyledClientMessage, StyledMessage } from './StyledComponents';
 import TimeStamp from './TimeStamp';
 import DOMPurify from 'dompurify';
 import useSelector from 'src/store/useSelector';
-import { clientBubbleColorSelector } from 'src/store/selectors/ui';
+import { clientBubbleColorSelector, fontSizeSelector } from 'src/store/selectors/ui';
 
 const UserMessage = ({ message }) => {
   const { timeMessageSent, text } = message;
   const clientBubbleColor = useSelector(clientBubbleColorSelector);
+  const fontSize = useSelector(fontSizeSelector);
 
   return (
-    <StyledMessage>
+    <StyledMessage fontsize={fontSize}>
       <StyledClientMessage color={clientBubbleColor}>
         <span
           dangerouslySetInnerHTML={{
