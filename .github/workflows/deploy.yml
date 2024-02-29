@@ -26,10 +26,6 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: 'Bump Version'
-        run: |
-          npm version prerelease --force
-
       - name: Install Dependencies
         run: |
           npm install
