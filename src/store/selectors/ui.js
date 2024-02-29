@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 import { DEFAULT_FONT_SIZE } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
+import { websocketSelector } from '.';
 
 export const uiSelector = (state) => state.ui;
 
@@ -81,8 +82,27 @@ export const handOffLabelSelector = createSelector(chatConfigSelector, (chat) =>
 export const shouldSendCallbackEmailSelector = createSelector(chatConfigSelector, (chat) => chat.callbackEmail);
 
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);
+export const userStyleSelector = createSelector(uiSelector, (ui) => ui.userStyle);
 
-export const isTypingSelector = createSelector(chatConfigSelector, (chat) => chat.typing || false);
+export const typingExperienceEnabledSelector = createSelector(
+  chatConfigSelector,
+  (chat) => chat.typingExperience || false,
+);
+export const isTypingSelector = createSelector(
+  chatConfigSelector,
+  typingExperienceEnabledSelector,
+  websocketSelector,
+  (chat, typingExperienceEnabled, websocket) => {
+    const isTyping = typingExperienceEnabled && chat.typing;
+    // hasn't got the answer yet
+    // hence, we're showing typing/loading indicator
+    if (websocket?.steps?.length === 1 && chat.typing) {
+      return true;
+    }
+    // should only be true
+    return isTyping || false;
+  },
+);
 
 export const isFullHeightSelector = createSelector(
   widgetConfigSelector,
