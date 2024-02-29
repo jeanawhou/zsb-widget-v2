@@ -212,6 +212,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
 export const StyledLauncherWrapper = styled.div`
   color: #fff;
   width: fit-content !important;
+  position: ${(props) => (props.minimized === 'true' ? 'fixed' : 'unset')};
 
   margin-top: ${(props) =>
     props.position?.includes('mid')
@@ -247,8 +248,30 @@ export const StyledLauncherWrapper = styled.div`
           : 'inherit'};
 
   float: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
-  top: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
-  bottom: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
+  top: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('top')
+      ? '10px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  bottom: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('bottom')
+      ? '10px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  left: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('left')
+      ? '-40px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  right: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('right')
+      ? '-40px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
   rotate: ${(props) =>
     props.position?.includes('mid-right') ? '-90deg' : props.position?.includes('mid-left') ? '90deg' : 'none'};
   ${(props) =>
@@ -295,7 +318,7 @@ export const StyledWidgetWrapper = styled.div`
         : props.minimized === 'true'
           ? 'auto'
           : props.width || DEFAULT_WIDTH};
-  position: fixed;
+  position: ${(props) => (props.minimized === 'false' ? 'fixed' : 'relative')};
   bottom: ${(props) =>
     props.position?.includes('mid')
       ? 0

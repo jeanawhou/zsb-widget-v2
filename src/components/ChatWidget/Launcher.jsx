@@ -29,6 +29,7 @@ const Launcher = (props) => {
       onClick={() => (disableClose ? noOperation() : toggleChat())}
       position={chatStyles.position}
       disableclose={disableClose ? 'true' : 'false'}
+      minimized={isExpanded ? 'false' : 'true'}
     >
       {isCircleLauncher ? (
         isExpanded ? (
