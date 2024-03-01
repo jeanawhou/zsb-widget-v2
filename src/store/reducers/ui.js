@@ -159,7 +159,7 @@ export const uiReducer = (state, action) => {
             chat: {
               launcherIcon: launcher || userIcon || fallbackIcon,
               position: chatPosition,
-              label: chatPosition.includes('mid') ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
+              label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
               ...restOfUI,
             },
           },
