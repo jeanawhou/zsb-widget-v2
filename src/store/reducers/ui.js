@@ -24,6 +24,7 @@ import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
+import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -123,6 +124,7 @@ export const uiReducer = (state, action) => {
         launcherIcon,
         type,
         position,
+        label,
         ...restOfUI
       } = widgetUI;
       const isProd = import.meta.env.PROD;
@@ -157,6 +159,7 @@ export const uiReducer = (state, action) => {
             chat: {
               launcherIcon: launcher || userIcon || fallbackIcon,
               position: chatPosition,
+              label: chatPosition.includes('mid') ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
               ...restOfUI,
             },
           },
