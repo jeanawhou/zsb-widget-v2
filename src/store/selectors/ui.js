@@ -72,11 +72,13 @@ export const headerImgPositionSelector = createSelector(
   showIconOnChatHeaderSelector,
   chatConfigSelector,
   (showChatHeaderIcon, chat) => {
-    return showChatHeaderIcon && chat.headerLogoPosition
-      ? HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
+    return showChatHeaderIcon
+      ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
         ? chat.headerLogoPosition
         : 'left'
-      : null;
+      : !chat.headerLogoPosition
+        ? 'left'
+        : null;
   },
 );
 
