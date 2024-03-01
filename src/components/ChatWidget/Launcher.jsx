@@ -5,7 +5,7 @@ import { StyledLauncherWrapper, StyledMessageBadge, StyledWidgetLabel } from './
 import Avatar from '../Avatar';
 import useSelector from 'src/store/useSelector';
 import {
-  chatStylesSelector,
+  chatConfigSelector,
   isCircleLauncherSelector,
   isWidgetExpandedSelector,
   launcherIconSelector,
@@ -15,7 +15,7 @@ import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
 const Launcher = (props) => {
   const { toggleChat } = props;
-  const chatStyles = useSelector(chatStylesSelector);
+  const chatStyles = useSelector(chatConfigSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
