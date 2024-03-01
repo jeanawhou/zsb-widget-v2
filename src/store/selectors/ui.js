@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { DEFAULT_FONT_SIZE } from 'src/constants/chat';
+import { DEFAULT_FONT_SIZE, HEADER_LOGO_POSITIONS } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
 
@@ -67,6 +67,19 @@ export const showIconOnChatHeaderSelector = createSelector(
     return Boolean(avatar) && position === 'header';
   },
 );
+
+export const headerImgPositionSelector = createSelector(
+  showIconOnChatHeaderSelector,
+  chatConfigSelector,
+  (showChatHeaderIcon, chat) => {
+    return showChatHeaderIcon && chat.headerLogoPosition
+      ? HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
+        ? chat.headerLogoPosition
+        : 'left'
+      : null;
+  },
+);
+
 export const showIconOnReplySelector = createSelector(avatarSelector, avatarPositionSelector, (avatar, position) => {
   return Boolean(avatar) && position === 'chat';
 });
