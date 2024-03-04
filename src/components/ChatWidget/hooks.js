@@ -14,21 +14,17 @@ import {
 } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
 import { SET_RANDOM_GENERATED_ID, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
-import useCustomWebsocket from '../hooks/useWebsocket';
-import { websocketSelector } from 'src/store/selectors';
 import useScreens from '../hooks/useScreens';
 import { visitorIdSelector } from 'src/store/selectors/user';
 
 const useChatWidget = () => {
   // hooks
   const [, dispatch] = useContext(Context);
-  const { connectionStatus, sendJsonMessage } = useCustomWebsocket();
   const { isMobile, isTablet } = useScreens();
 
   // selectors
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const chatStyles = useSelector(chatConfigSelector);
-  const websocket = useSelector(websocketSelector);
   const quickReplies = useSelector(lastMessageQuickReplySelector);
   const isFullHeight = useSelector(isFullHeightSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
@@ -114,24 +110,6 @@ const useChatWidget = () => {
       }
     }
   }, [dispatch, isExpanded, isFullHeight, isFullscreen, isMobile, isTablet, shouldShowLauncher]);
-
-  useEffect(() => {
-    const clientConnectPayload = {
-      type: 'client_connect',
-      data: {},
-    };
-
-    switch (connectionStatus) {
-      case 'Open':
-        if (!websocket.channel) {
-          sendJsonMessage(clientConnectPayload);
-        }
-        break;
-
-      default:
-        break;
-    }
-  }, [connectionStatus, websocket?.channel]);
 
   useEffect(() => {
     if (!isFullHeight && !isFullscreen && isMobile && isExpanded) {
