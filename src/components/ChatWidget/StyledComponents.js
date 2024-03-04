@@ -268,19 +268,21 @@ export const StyledLauncherWrapper = styled.div`
         ? '50%'
         : 'unset'};
   left: ${(props) => {
-    return props.position?.includes('mid') && typeof props.adjustment === 'number' && props.position?.includes('left')
-      ? props.adjustment < 0
-        ? `${Math.abs(props.adjustment)}px`
-        : `-${props.adjustment}px`
+    const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
+    return props.position?.includes('mid') && typeof parsedAdjustment === 'number' && props.position?.includes('left')
+      ? parsedAdjustment < 0
+        ? `${Math.abs(parsedAdjustment)}px`
+        : `-${parsedAdjustment}px`
       : props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
         ? '50%'
         : 'unset';
   }};
   right: ${(props) => {
-    return props.position?.includes('mid') && typeof props.adjustment === 'number' && props.position?.includes('right')
-      ? props.adjustment < 0
-        ? `${Math.abs(props.adjustment)}px`
-        : `-${props.adjustment}px`
+    const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
+    return props.position?.includes('mid') && typeof parsedAdjustment === 'number' && props.position?.includes('right')
+      ? parsedAdjustment < 0
+        ? `${Math.abs(parsedAdjustment)}px`
+        : `-${parsedAdjustment}px`
       : props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
         ? '50%'
         : 'unset';
