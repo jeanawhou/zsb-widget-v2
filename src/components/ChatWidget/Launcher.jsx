@@ -42,7 +42,7 @@ const Launcher = (props) => {
       position={chatStyles.position}
       disableclose={disableClose ? 'true' : 'false'}
       minimized={isExpanded ? 'false' : 'true'}
-      adjustment={adjustment}
+      adjustment={String(adjustment)}
     >
       {isCircleLauncher ? (
         isExpanded ? (
