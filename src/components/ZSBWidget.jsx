@@ -1,40 +1,13 @@
-import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Context } from 'src/store/store';
-import { DECRYPT_BOT, SET_WIDGET_CONFIG } from 'src/store/action';
 import ChatWidget from './ChatWidget';
-import useSelector from 'src/store/useSelector';
-import { configURLSelector, isWidgetReadySelector } from 'src/store/selectors';
+import ComponentWidget from './ComponentWidget';
+import useZSBWidget from './hooks';
 
 const ZSBWidget = (props) => {
-  const isChatWidget = props?.type === 'chat' || !props?.type;
-  const [, dispatch] = useContext(Context);
-  const configURL = useSelector(configURLSelector);
-  const isWidgetReady = useSelector(isWidgetReadySelector);
+  const { isChatWidget, isWidgetReady } = useZSBWidget({ props });
 
-  const fetchConfigProps = () => {
-    fetch(configURL)
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch({
-          type: SET_WIDGET_CONFIG,
-          payload: { configJSON: res, widgetProps: props },
-        });
-      });
-  };
-
-  useEffect(() => {
-    if (configURL) {
-      fetchConfigProps();
-    }
-  }, [configURL]);
-
-  useEffect(() => {
-    dispatch({ type: DECRYPT_BOT, payload: props });
-  }, []);
-
-  return isWidgetReady ? isChatWidget ? <ChatWidget {...props} /> : <div {...props}>ZSBWidget</div> : <div></div>;
+  return isWidgetReady ? isChatWidget ? <ChatWidget {...props} /> : <ComponentWidget /> : <div></div>;
 };
 
 ZSBWidget.defaultProps = {
