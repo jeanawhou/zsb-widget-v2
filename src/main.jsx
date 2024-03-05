@@ -55,17 +55,6 @@ class ReactElement extends HTMLElement {
     return styleObject;
   }
 
-  convertStyleToObject(styleString) {
-    const styleObject = {};
-    styleString.split(';').forEach((style) => {
-      const [key, value] = style.split(':').map((s) => s.trim());
-      if (key && value) {
-        styleObject[key] = value;
-      }
-    });
-    return styleObject;
-  }
-
   parseHtmlToFramework(html) {
     switch (window.React) {
       case 'react': {
