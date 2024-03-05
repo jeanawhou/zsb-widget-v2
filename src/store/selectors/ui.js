@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { DEFAULT_FONT_SIZE } from 'src/constants/chat';
+import { DEFAULT_FONT_SIZE, HEADER_LOGO_POSITIONS } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
+import { zsbIcon } from 'src/svg/Icons';
 
 export const uiSelector = (state) => state.ui;
 
@@ -55,7 +56,11 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
   return `${height}px`;
 });
 
-export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar);
+export const avatarSelector = createSelector(
+  widgetConfigSelector,
+  chatConfigSelector,
+  (widget) => widget.avatar || zsbIcon(),
+);
 export const fontSizeSelector = createSelector(chatConfigSelector, (chat) =>
   chat?.fontSize ? (chat.fontSize.includes('px') ? chat.fontSize : `${chat.fontSize}`) : DEFAULT_FONT_SIZE,
 );
@@ -67,6 +72,24 @@ export const showIconOnChatHeaderSelector = createSelector(
     return Boolean(avatar) && position === 'header';
   },
 );
+
+export const headerImgPositionSelector = createSelector(
+  showIconOnChatHeaderSelector,
+  chatConfigSelector,
+  avatarPositionSelector,
+  (showChatHeaderIcon, chat, position) => {
+    return !position || position === 'header'
+      ? showChatHeaderIcon
+        ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
+          ? chat.headerLogoPosition
+          : 'left'
+        : !chat.headerLogoPosition
+          ? 'left'
+          : null
+      : null;
+  },
+);
+
 export const showIconOnReplySelector = createSelector(avatarSelector, avatarPositionSelector, (avatar, position) => {
   return Boolean(avatar) && position === 'chat';
 });
@@ -96,7 +119,7 @@ export const isTypingSelector = createSelector(
     const isTyping = typingExperienceEnabled && chat.typing;
     // hasn't got the answer yet
     // hence, we're showing typing/loading indicator
-    if (websocket?.steps?.length === 1 && chat.typing) {
+    if (websocket?.steps?.length && chat.typing) {
       return true;
     }
     // should only be true

@@ -100,6 +100,13 @@ export const StyledFlexColumnLeft = styled(StyledFlexColumn)`
   align-items: start;
 `;
 
+export const StyledFlexColumnRight = styled(StyledFlexColumn)`
+  ${StyledFlexbox};
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+`;
+
 export const StyledSubtitle = styled.span`
   font-size: 16px;
   display: -webkit-box;
@@ -260,18 +267,26 @@ export const StyledLauncherWrapper = styled.div`
       : props.position?.includes('mid')
         ? '50%'
         : 'unset'};
-  left: ${(props) =>
-    props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
-      ? '-40px'
-      : props.position?.includes('mid')
+  left: ${(props) => {
+    const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
+    return props.position?.includes('mid') && typeof parsedAdjustment === 'number' && props.position?.includes('left')
+      ? parsedAdjustment < 0
+        ? `${Math.abs(parsedAdjustment)}px`
+        : `-${parsedAdjustment}px`
+      : props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
         ? '50%'
-        : 'unset'};
-  right: ${(props) =>
-    props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
-      ? '-40px'
-      : props.position?.includes('mid')
+        : 'unset';
+  }};
+  right: ${(props) => {
+    const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
+    return props.position?.includes('mid') && typeof parsedAdjustment === 'number' && props.position?.includes('right')
+      ? parsedAdjustment < 0
+        ? `${Math.abs(parsedAdjustment)}px`
+        : `-${parsedAdjustment}px`
+      : props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
         ? '50%'
-        : 'unset'};
+        : 'unset';
+  }};
   rotate: ${(props) =>
     props.position?.includes('mid-right') ? '-90deg' : props.position?.includes('mid-left') ? '90deg' : 'none'};
   ${(props) =>
@@ -289,9 +304,8 @@ export const StyledLauncherWrapper = styled.div`
 `;
 
 export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
-  height: 40px;
-  width: fit-content;
-  padding: 0 10px;
+  white-space: nowrap;
+  padding: 12px;
   border-radius: ${(props) =>
     !(props.mobile === 'true' || props.fullscreen === 'true' || props.fullheight === 'true') ? '5px' : '0px'};
   background: ${(props) => props.color || cssVariables.zsbCyan};
