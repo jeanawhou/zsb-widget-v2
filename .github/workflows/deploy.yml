@@ -18,7 +18,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.email "jeana.luisa@gmail.com"
           git config --global user.name "Jeana fernandez"
 
       - name: Use Node.js 16.x
@@ -32,7 +32,7 @@ jobs:
 
       - name: Build Package
         run: |
-          npm run build:production
+          npm run build
 
   publish_with_latest_node:
     name: Publish with latest Node.js
@@ -44,7 +44,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.email "jeana.luisa@gmail.com"
           git config --global user.name "Jeana fernandez"
 
       - name: Use latest Node.js
