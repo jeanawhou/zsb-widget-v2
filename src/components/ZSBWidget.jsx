@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 
 import ChatWidget from './ChatWidget';
-import ComponentWidget from './ComponentWidget';
 import useZSBWidget from './hooks';
 
 const ZSBWidget = (props) => {
   const { isChatWidget, isWidgetReady } = useZSBWidget({ props });
 
-  return isWidgetReady ? isChatWidget ? <ChatWidget {...props} /> : <ComponentWidget /> : <div></div>;
+  return isWidgetReady && isChatWidget ? <ChatWidget {...props} /> : <div></div>;
 };
 
 ZSBWidget.defaultProps = {
