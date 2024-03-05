@@ -6,15 +6,16 @@ import {
   StyledChatHeaderActionIcons,
   StyledChatHeaderAvatar,
   StyledFlexColumnLeft,
+  StyledFlexColumnRight,
   StyledFlexColumnSpaceEvenly,
   StyledSubtitle,
 } from './StyledComponents';
 import useSelector from 'src/store/useSelector';
 import {
   chatConfigSelector,
+  headerImgPositionSelector,
   isFullscreenSelector,
   isWidthHalfFullscreenSelector,
-  showIconOnChatHeaderSelector,
   widgetThemeColorSelector,
   widgetTitleSelector,
 } from 'src/store/selectors/ui';
@@ -26,8 +27,52 @@ const ChatHeader = (props) => {
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const widgetTitle = useSelector(widgetTitleSelector);
   const isWidgetHalfScreen = useSelector(isWidthHalfFullscreenSelector);
-  const showIconOnChatHeader = useSelector(showIconOnChatHeaderSelector);
+  const headerImgPosition = useSelector(headerImgPositionSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
+
+  const renderHeaderTitleText = () => {
+    switch (headerImgPosition) {
+      case 'left':
+        return (
+          <>
+            {headerImgPosition ? <StyledChatHeaderAvatar isLogo /> : null}
+            <StyledFlexColumnLeft>
+              <h3>{widgetTitle}</h3>
+              <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+            </StyledFlexColumnLeft>
+          </>
+        );
+
+      case 'right':
+        return (
+          <>
+            <StyledFlexColumnRight>
+              <h3>{widgetTitle}</h3>
+              <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+            </StyledFlexColumnRight>
+            {headerImgPosition ? <StyledChatHeaderAvatar isLogo /> : null}
+          </>
+        );
+
+      case 'center':
+        return (
+          <>
+            {headerImgPosition ? <StyledChatHeaderAvatar isLogo /> : null}
+            <StyledFlexColumnSpaceEvenly>
+              <h3>{widgetTitle}</h3>
+              <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+            </StyledFlexColumnSpaceEvenly>
+          </>
+        );
+      default:
+        return (
+          <StyledFlexColumnSpaceEvenly>
+            <h3>{widgetTitle}</h3>
+            <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+          </StyledFlexColumnSpaceEvenly>
+        );
+    }
+  };
 
   return (
     <StyledChatHeader
@@ -39,18 +84,7 @@ const ChatHeader = (props) => {
       mobile={isMobile ? 'true' : 'false'}
       halfscreen={isWidgetHalfScreen ? 'true' : 'false'}
     >
-      {showIconOnChatHeader ? <StyledChatHeaderAvatar isLogo /> : null}
-      {showIconOnChatHeader ? (
-        <StyledFlexColumnLeft>
-          <h3>{widgetTitle}</h3>
-          <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-        </StyledFlexColumnLeft>
-      ) : (
-        <StyledFlexColumnSpaceEvenly>
-          <h3>{widgetTitle}</h3>
-          <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-        </StyledFlexColumnSpaceEvenly>
-      )}
+      {renderHeaderTitleText()}
       <StyledChatHeaderActionIcons>
         {chatConfig.showCloseButton && (
           <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />
