@@ -3,13 +3,12 @@ name: NPM Publish
 on:
   push:
     branches:
-      - version/node-16
-      - release/2.0.0
+      - release/**
 
 jobs:
   publish_node_16:
     name: Publish with Node.js 16
-    if: github.ref == 'refs/heads/version/node-16'
+    if: github.ref == 'refs/heads/release/node-16'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -29,7 +28,7 @@ jobs:
 
       - name: 'Bump Version'
         run: |
-          npm version prerelease --force
+          npm version prerelease --preid=alpha --force
 
       - name: Install Dependencies
         run: |
@@ -37,11 +36,11 @@ jobs:
 
       - name: Build Package
         run: |
-          npm run build
+          npm run build:production
 
   publish_with_latest_node:
     name: Publish with latest Node.js
-    if: github.ref == 'refs/heads/release/2.0.0'
+    if: github.ref == 'refs/heads/release/latest-alpha'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

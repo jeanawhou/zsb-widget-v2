@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 
-import { StyledChatWrapper, StyledFlexColumn, StyledWidgetWrapper } from '../StyledComponents';
+import { StyledChatWrapper, StyledFlexColumn, StyledWidgetWrapper } from './StyledComponents';
 import useChatWidget from './hooks';
 import MessageInput from '../MessageInput';
 import ChatHeader from './ChatHeader';
-import QuickReplies from '../QuickReplies';
+import QuickReplies from './QuickReplies';
 import Launcher from './Launcher';
 import MessageWrapper from './messages/MessageWrapper';
 
