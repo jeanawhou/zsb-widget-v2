@@ -24,6 +24,7 @@ import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
+import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -122,6 +123,8 @@ export const uiReducer = (state, action) => {
         visitorId,
         launcherIcon,
         type,
+        position,
+        label,
         ...restOfUI
       } = widgetUI;
       const isProd = import.meta.env.PROD;
@@ -129,6 +132,18 @@ export const uiReducer = (state, action) => {
       const launcher = launcherIcon ? extractUserIcon(launcherIcon, iconColor) : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
+      const isChatWidget = !type || type === 'chat';
+      const isMid = position?.includes('mid');
+      const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
+
+      const chatPosition =
+        isChatWidget && isValidMidPosition
+          ? position
+          : isChatWidget && isMid && !isValidMidPosition && position?.includes('right')
+            ? 'bottom-right'
+            : position?.includes('left') && isMid
+              ? 'bottom-left'
+              : position;
 
       return {
         ...state,
@@ -143,6 +158,8 @@ export const uiReducer = (state, action) => {
             avatar: userIcon,
             chat: {
               launcherIcon: launcher || userIcon || fallbackIcon,
+              position: chatPosition,
+              label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
               ...restOfUI,
             },
           },

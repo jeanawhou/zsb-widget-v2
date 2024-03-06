@@ -100,6 +100,13 @@ export const StyledFlexColumnLeft = styled(StyledFlexColumn)`
   align-items: start;
 `;
 
+export const StyledFlexColumnRight = styled(StyledFlexColumn)`
+  ${StyledFlexbox};
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+`;
+
 export const StyledSubtitle = styled.span`
   font-size: 16px;
   display: -webkit-box;
@@ -212,6 +219,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
 export const StyledLauncherWrapper = styled.div`
   color: #fff;
   width: fit-content !important;
+  position: ${(props) => (props.minimized === 'true' ? 'fixed' : 'unset')};
 
   margin-top: ${(props) =>
     props.position?.includes('mid')
@@ -247,17 +255,47 @@ export const StyledLauncherWrapper = styled.div`
           : 'inherit'};
 
   float: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
-  top: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
-  bottom: ${(props) => (props.position?.includes('mid') ? '50%' : 'unset')};
+  top: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('top')
+      ? '10px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  bottom: ${(props) =>
+    props.minimized === 'true' && props.position?.includes('bottom')
+      ? '10px'
+      : props.position?.includes('mid')
+        ? '50%'
+        : 'unset'};
+  left: ${(props) => {
+    const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
+    return props.position?.includes('mid') && typeof parsedAdjustment === 'number' && props.position?.includes('left')
+      ? parsedAdjustment < 0
+        ? `${Math.abs(parsedAdjustment)}px`
+        : `-${parsedAdjustment}px`
+      : props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
+        ? '50%'
+        : 'unset';
+  }};
+  right: ${(props) => {
+    const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
+    return props.position?.includes('mid') && typeof parsedAdjustment === 'number' && props.position?.includes('right')
+      ? parsedAdjustment < 0
+        ? `${Math.abs(parsedAdjustment)}px`
+        : `-${parsedAdjustment}px`
+      : props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
+        ? '50%'
+        : 'unset';
+  }};
   rotate: ${(props) =>
     props.position?.includes('mid-right') ? '-90deg' : props.position?.includes('mid-left') ? '90deg' : 'none'};
   ${(props) =>
     props.position?.includes('left')
       ? css`
-          ${StyledFlexRowLeft}
+          ${StyledFlexRowLeft};
         `
       : css`
-          ${StyledFlexRowRight}
+          ${StyledFlexRowRight};
         `}
 
   /* mid position needs more testing */
@@ -266,9 +304,8 @@ export const StyledLauncherWrapper = styled.div`
 `;
 
 export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
-  height: 40px;
-  width: fit-content;
-  padding: 0 10px;
+  white-space: nowrap;
+  padding: 12px;
   border-radius: ${(props) =>
     !(props.mobile === 'true' || props.fullscreen === 'true' || props.fullheight === 'true') ? '5px' : '0px'};
   background: ${(props) => props.color || cssVariables.zsbCyan};
@@ -295,7 +332,7 @@ export const StyledWidgetWrapper = styled.div`
         : props.minimized === 'true'
           ? 'auto'
           : props.width || DEFAULT_WIDTH};
-  position: fixed;
+  position: ${(props) => (props.minimized === 'false' ? 'fixed' : 'relative')};
   bottom: ${(props) =>
     props.position?.includes('mid')
       ? 0
@@ -552,6 +589,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0px 5px;
+    margin-left: 0px;
     &:not(:last-child) {
       margin-bottom: 5px;
     }
@@ -592,7 +630,7 @@ export const StyledMessagesWrapper = styled.div`
 
 export const StyledMessage = styled.div`
   display: flex;
-  font-size: 14px;
+  font-size: ${(props) => props.$fontsize};
   flex-direction: column;
   word-break: break-word;
   margin-bottom: 5px;
