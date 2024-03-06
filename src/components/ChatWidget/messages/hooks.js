@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from 'react';
 import { CLEAR_NEW_MESSAGE_BADGE } from 'src/store/action';
-import { messagesSelector } from 'src/store/selectors/messages';
+import { historySelector } from 'src/store/selectors/history';
 import { isWidgetExpandedSelector, isWidthHalfFullscreenSelector } from 'src/store/selectors/ui';
 import { Context } from 'src/store/store';
 import useSelector from 'src/store/useSelector';
@@ -8,7 +8,7 @@ import useSelector from 'src/store/useSelector';
 const useMessagesWrapper = () => {
   const [, dispatch] = useContext(Context);
   const messagesRef = useRef(null);
-  const allMessages = useSelector(messagesSelector);
+  const allHistory = useSelector(historySelector);
   const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
 
@@ -25,11 +25,11 @@ const useMessagesWrapper = () => {
 
   // scroll down if messages changed
   useEffect(() => {
-    if (allMessages && messagesRef.current) {
+    if (allHistory && messagesRef.current) {
       const messageContainer = messagesRef.current;
       setTimeout(() => (messageContainer.scrollTop = messageContainer.scrollHeight), 200);
     }
-  }, [allMessages]);
+  }, [allHistory]);
 
   useEffect(() => {
     if (messagesRef.current) {
@@ -43,7 +43,7 @@ const useMessagesWrapper = () => {
     };
   }, []);
   return {
-    allMessages,
+    allHistory,
     isExpanded,
     isWidthHalfFullscreen,
     messagesRef,

@@ -5,7 +5,7 @@ import {
   ADD_REPLY,
   AGENT_HANDOVER_SUBMIT_FAIL,
   CANCEL_AGENT_HANDOVER,
-  CLEAR_CHAT_MESSAGES,
+  CLEAR_HISTORY,
   RETRIGGER_AGENT_HANDOVER,
   SEND_NEW_MESSAGE,
   SHOW_AGENT_HANDOVER_FORM,
@@ -19,8 +19,8 @@ import {
   SUBMIT_ERROR_MESSAGE,
 } from '../../constants/chat';
 
-export const messagesReducer = (state, action) => {
-  const messageState = state.messages;
+export const historyReducer = (state, action) => {
+  const messageState = state.history || [];
   const removeLastMessageStatus = messageState.map((msg, idx) => {
     if (idx === messageState.length - 1) {
       return {
@@ -34,7 +34,7 @@ export const messagesReducer = (state, action) => {
   switch (action.type) {
     case SEND_NEW_MESSAGE: {
       const { newMessage, interactionId, ...rest } = action.payload;
-      const allMessages = [
+      const allHistory = [
         ...removeLastMessageStatus,
         {
           text: newMessage,
@@ -48,7 +48,7 @@ export const messagesReducer = (state, action) => {
 
       return {
         ...state,
-        messages: allMessages,
+        history: allHistory,
       };
     }
 
@@ -56,7 +56,7 @@ export const messagesReducer = (state, action) => {
       const { text, isLastReplyItem, context, name, jid } = action.payload;
       const { quick_reply } = context;
       const quickReplies = isEmpty(quick_reply) ? EMPTY_QUICK_REPLY : quick_reply;
-      const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
         const lastMessage = idx == removeLastMessageStatus.length - 1;
         // match the jid payload passed
         // message.reply.text shouldn't be empty
@@ -98,7 +98,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: messagesWithReplyLastMsg,
+        history: historyWithReplyLastMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -113,7 +113,7 @@ export const messagesReducer = (state, action) => {
     }
 
     case ADD_ERROR_REPLY: {
-      const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
         if (idx == messageState.length - 1) {
           return {
             ...msg,
@@ -129,14 +129,14 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: messagesWithReplyLastMsg,
+        history: historyWithReplyLastMsg,
       };
     }
 
-    case CLEAR_CHAT_MESSAGES: {
+    case CLEAR_HISTORY: {
       return {
         ...state,
-        messages: [],
+        history: [],
       };
     }
 
@@ -169,7 +169,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: newMessages,
+        history: newMessages,
       };
     }
 
@@ -192,7 +192,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: updatedMsg,
+        history: updatedMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -228,7 +228,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: updatedMsg,
+        history: updatedMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -258,7 +258,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: updatedMsg,
+        history: updatedMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
