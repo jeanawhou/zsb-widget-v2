@@ -32,7 +32,7 @@ jobs:
 
       - name: Build Package
         run: |
-          npm run build
+          npm run build:production
 
   publish_with_latest_node:
     name: Publish with latest Node.js
