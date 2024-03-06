@@ -3,6 +3,7 @@ name: NPM Publish
 on:
   push:
     branches:
+      - build
 
 jobs:
   publish_node_16:
