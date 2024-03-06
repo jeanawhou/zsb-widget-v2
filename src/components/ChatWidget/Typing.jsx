@@ -1,19 +1,26 @@
 import useSelector from 'src/store/useSelector';
 import { StyledBotReply, StyledMessage } from './StyledComponents';
-import { clientBubbleColorSelector, replyBubbleColorSelector } from 'src/store/selectors/ui';
+import {
+  clientBubbleColorSelector,
+  fontSizeSelector,
+  isTypingSelector,
+  replyBubbleColorSelector,
+} from 'src/store/selectors/ui';
 
 const Typing = () => {
   const replyBubbleGradient = useSelector(replyBubbleColorSelector);
   const clientBubbleColor = useSelector(clientBubbleColorSelector);
-  return (
-    <StyledMessage>
+  const fontSize = useSelector(fontSizeSelector);
+  const isTyping = useSelector(isTypingSelector);
+  return isTyping ? (
+    <StyledMessage $fontsize={fontSize}>
       <StyledBotReply color={replyBubbleGradient} dotcolor={clientBubbleColor} className="typing">
         <span></span>
         <span></span>
         <span></span>
       </StyledBotReply>
     </StyledMessage>
-  );
+  ) : null;
 };
 
 export default Typing;

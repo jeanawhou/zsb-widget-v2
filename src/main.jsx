@@ -45,6 +45,17 @@ class ReactElement extends HTMLElement {
     }
   }
 
+  convertStyleToObject(styleString) {
+    const styleObject = {};
+    styleString.split(';').forEach((style) => {
+      const [key, value] = style.split(':').map((s) => s.trim());
+      if (key && value) {
+        styleObject[key] = value;
+      }
+    });
+    return styleObject;
+  }
+
   parseHtmlToFramework(html) {
     switch (window.React) {
       case 'react': {
@@ -69,14 +80,14 @@ class ReactElement extends HTMLElement {
 
   getProps(attributes) {
     return [...attributes]
-      .filter((attr) => attr.name !== 'style' && attr.name !== 'framework')
+      .filter((attr) => attr.name !== 'framework')
       .map((attr) => this.convert(attr.name, attr.value))
       .reduce((props, prop) => ({ ...props, [prop.name]: prop.value }), {});
   }
 
   getEvents() {
     return Object.values(this.attributes)
-      .filter((key) => /on([a-z].*)/.exec(key.name))
+      .filter((key) => /^on([a-z].*)/.exec(key.name))
       .reduce(
         (events, ev) => ({
           ...events,
@@ -88,7 +99,15 @@ class ReactElement extends HTMLElement {
 
   convert(attrName, attrValue) {
     let value = attrValue;
-    if (attrValue === 'true' || attrValue === 'false') {
+    if (attrName === 'style') {
+      value =
+        typeof attrValue === 'string'
+          ? this.convertStyleToObject(attrValue)
+          : typeof attrValue === 'object'
+            ? attrValue
+            : // reject other data types
+              '';
+    } else if (attrValue === 'true' || attrValue === 'false') {
       value = attrValue === 'true';
     } else if (!isNaN(attrValue) && attrValue !== '') {
       value = +attrValue;
