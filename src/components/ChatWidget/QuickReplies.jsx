@@ -15,7 +15,7 @@ import {
   hasQuickReplySelector,
   lastMessageSelector,
   shouldShowQuickRepliesSelector,
-} from 'src/store/selectors/messages';
+} from 'src/store/selectors/history';
 import { apiService } from 'src/services/api.service';
 import { isMaxDislikesReachedSelector, publicKeysSelector } from 'src/store/selectors';
 import { hasSubmittedUserDetailsSelector, userSelector } from 'src/store/selectors/user';

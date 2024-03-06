@@ -7,7 +7,7 @@ import Typing from 'src/components/ChatWidget/Typing';
 
 const MessageWrapper = (props) => {
   const { fullHeight } = props;
-  const { allMessages, isExpanded, isWidthHalfFullscreen, messagesRef } = useMessagesWrapper();
+  const { allHistory, isExpanded, isWidthHalfFullscreen, messagesRef } = useMessagesWrapper();
 
   return (
     <StyledMessagesWrapper
@@ -15,7 +15,7 @@ const MessageWrapper = (props) => {
       fullheight={fullHeight && isExpanded ? 'true' : 'false'}
       halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
     >
-      {allMessages.map((message, index) => {
+      {allHistory.map((message, index) => {
         return (
           <div key={`message-${index}`}>
             {message.text ? <UserMessage message={message} /> : null}
