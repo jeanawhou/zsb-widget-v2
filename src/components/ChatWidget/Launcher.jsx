@@ -5,7 +5,7 @@ import { StyledLauncherWrapper, StyledMessageBadge, StyledWidgetLabel } from './
 import Avatar from '../Avatar';
 import useSelector from 'src/store/useSelector';
 import {
-  chatStylesSelector,
+  chatConfigSelector,
   isCircleLauncherSelector,
   isWidgetExpandedSelector,
   launcherIconSelector,
@@ -15,12 +15,24 @@ import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
 const Launcher = (props) => {
   const { toggleChat } = props;
-  const chatStyles = useSelector(chatStylesSelector);
+  const chatStyles = useSelector(chatConfigSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
   const launcherIcon = useSelector(launcherIconSelector);
   const disableClose = chatStyles.disableClose && isExpanded;
+  // TODO: needs more accurate computation
+  const adjustment =
+    2 * chatStyles.label?.length +
+    (chatStyles.label?.length > 30
+      ? chatStyles.label?.length - 2
+      : chatStyles.label?.length <= 10
+        ? chatStyles.label?.length - 20
+        : chatStyles.label?.length <= 20
+          ? chatStyles.label?.length - 14
+          : chatStyles.label?.length <= 30
+            ? chatStyles.label?.length
+            : -1);
 
   const noOperation = () => {};
 
@@ -29,6 +41,8 @@ const Launcher = (props) => {
       onClick={() => (disableClose ? noOperation() : toggleChat())}
       position={chatStyles.position}
       disableclose={disableClose ? 'true' : 'false'}
+      minimized={isExpanded ? 'false' : 'true'}
+      adjustment={String(adjustment)}
     >
       {isCircleLauncher ? (
         isExpanded ? (
