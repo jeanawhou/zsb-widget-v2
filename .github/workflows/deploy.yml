@@ -3,7 +3,7 @@ name: NPM Publish
 on:
   push:
     branches:
-      - build
+      - release/**
 
 jobs:
   publish_node_16:
@@ -18,7 +18,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.email "jeana.luisa@gmail.com"
           git config --global user.name "Jeana fernandez"
 
       - name: Use Node.js 16.x
@@ -48,7 +48,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "jeana.luisa@gmail.com.com"
+          git config --global user.email "jeana.luisa@gmail.com"
           git config --global user.name "Jeana fernandez"
 
       - name: Use latest Node.js
