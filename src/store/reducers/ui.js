@@ -24,6 +24,7 @@ import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
+import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -112,22 +113,53 @@ export const uiReducer = (state, action) => {
       const { configJSON, widgetProps } = action.payload;
       const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
-      const { avatar, iconColor, fbAccessToken, fbApiVersion, authenticatedUser, openWidget, visitorId, ...restOfUI } =
-        widgetUI;
+      const {
+        avatar,
+        iconColor,
+        fbAccessToken,
+        fbApiVersion,
+        authenticatedUser,
+        autoOpen,
+        visitorId,
+        launcherIcon,
+        type,
+        position,
+        label,
+        ...restOfUI
+      } = widgetUI;
       const isProd = import.meta.env.PROD;
       const userIcon = extractUserIcon(avatar, iconColor);
+      const launcher = launcherIcon ? extractUserIcon(launcherIcon, iconColor) : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
+      const isChatWidget = !type || type === 'chat';
+      const isMid = position?.includes('mid');
+      const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
+
+      const chatPosition =
+        isChatWidget && isValidMidPosition
+          ? position
+          : isChatWidget && isMid && !isValidMidPosition && position?.includes('right')
+            ? 'bottom-right'
+            : position?.includes('left') && isMid
+              ? 'bottom-left'
+              : position;
 
       return {
         ...state,
         ui: {
           ...state.ui,
-          isWidgetExpanded: openWidget,
+          isWidgetExpanded: autoOpen,
+          widgetType: type || 'chat',
           widgetConfig: {
             ...state.ui.widgetConfig,
-            icon: userIcon || fallbackIcon,
+            // posibility of being reused on component type
+            // hence moving it outside the chat object
+            avatar: userIcon,
             chat: {
+              launcherIcon: launcher || userIcon || fallbackIcon,
+              position: chatPosition,
+              label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
               ...restOfUI,
             },
           },
