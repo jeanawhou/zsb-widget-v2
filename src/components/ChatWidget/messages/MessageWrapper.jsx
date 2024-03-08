@@ -1,4 +1,6 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+
 import { StyledMessagesWrapper } from 'src/components/ChatWidget/StyledComponents';
 import UserMessage from 'src/components/ChatWidget/UserMessage';
 import Reply from 'src/components/ChatWidget/Reply';
