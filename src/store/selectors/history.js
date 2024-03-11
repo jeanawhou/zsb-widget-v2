@@ -1,23 +1,42 @@
-import { isPlainObject } from 'lodash';
+import { isEqual, isPlainObject, orderBy } from 'lodash';
 import { createSelector } from 'reselect';
 
 export const historySelector = (state) => state.history;
+export const historyDescSelector = (state) => {
+  const desc = orderBy(state.history, 'timeReply', 'desc');
+  return desc;
+};
 
 export const lastMessageQuickReplySelector = createSelector(historySelector, (history) => {
   const lastMessage = Array.isArray(history) ? history[history?.length - 1] : {};
   return lastMessage?.quickReply || {};
 });
 
-export const lastMessageSelector = createSelector(historySelector, (history) => {
+export const lastHistorySelector = createSelector(historySelector, (history) => {
   return Array.isArray(history) ? history[history?.length - 1] : {};
 });
+
+const valueSelector = (_state, value) => value;
+
+export const shouldShowHistoryTitleSelector = createSelector(
+  historySelector,
+  valueSelector,
+  lastHistorySelector,
+  (allHistory, value, lastHistory) => {
+    return isEqual(allHistory[allHistory.length - 1], lastHistory) &&
+      allHistory.length === 1 &&
+      value === lastHistory.text
+      ? false
+      : true;
+  },
+);
 
 export const hasQuickReplySelector = createSelector(lastMessageQuickReplySelector, (lastMessageReplies) => {
   return Boolean(lastMessageReplies.replies?.length);
 });
 
 export const shouldShowQuickRepliesSelector = createSelector(
-  lastMessageSelector,
+  lastHistorySelector,
   hasQuickReplySelector,
   historySelector,
   (lastMessage, hasQuickReply) => {

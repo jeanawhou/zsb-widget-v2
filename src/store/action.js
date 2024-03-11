@@ -4,7 +4,7 @@ export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE';
 export const DELETE_NEW_MESSAGE = 'DELETE_NEW_MESSAGE';
 export const REACT_TO_LAST_MESSAGE = 'REACT_TO_LAST_MESSAGE';
 export const SHOW_AGENT_FORM = 'SHOW_AGENT_FORM';
-export const ADD_REPLY = 'ADD_REPLY';
+export const ADD_ANSWER = 'ADD_ANSWER';
 export const ADD_ERROR_REPLY = 'ADD_ERROR_REPLY';
 export const CLEAR_HISTORY = 'CLEAR_HISTORY';
 

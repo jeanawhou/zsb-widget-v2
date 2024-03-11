@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash';
 
 import {
   ADD_ERROR_REPLY,
-  ADD_REPLY,
+  ADD_ANSWER,
   AGENT_HANDOVER_SUBMIT_FAIL,
   CANCEL_AGENT_HANDOVER,
   CLEAR_HISTORY,
@@ -10,6 +10,8 @@ import {
   SEND_NEW_MESSAGE,
   SHOW_AGENT_HANDOVER_FORM,
   SUBMIT_AGENT_HANDOVER_FORM,
+  START_SEARCH,
+  ADD_LAST_SEARCH_TO_HISTORY,
 } from '../action';
 import {
   DEFAULT_AGENT_HANDOVER_MESSAGE,
@@ -32,12 +34,13 @@ export const historyReducer = (state, action) => {
   });
 
   switch (action.type) {
+    case START_SEARCH:
     case SEND_NEW_MESSAGE: {
-      const { newMessage, interactionId, ...rest } = action.payload;
+      const { userInput, interactionId, ...rest } = action.payload;
       const allHistory = [
         ...removeLastMessageStatus,
         {
-          text: newMessage,
+          text: userInput,
           lastUserReplied: 'client',
           isLastMessage: true,
           timeMessageSent: new Date(),
@@ -52,7 +55,7 @@ export const historyReducer = (state, action) => {
       };
     }
 
-    case ADD_REPLY: {
+    case ADD_ANSWER: {
       const { text, isLastReplyItem, context, name, jid } = action.payload;
       const { quick_reply } = context;
       const quickReplies = isEmpty(quick_reply) ? EMPTY_QUICK_REPLY : quick_reply;
@@ -268,6 +271,15 @@ export const historyReducer = (state, action) => {
               typing: false,
             },
           },
+        },
+      };
+    }
+
+    case ADD_LAST_SEARCH_TO_HISTORY: {
+      return {
+        ...state,
+        history: {
+          ...state.history,
         },
       };
     }
