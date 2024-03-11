@@ -14,7 +14,7 @@ export const apiService = {
     });
   },
 
-  askQuestion: function (input, publicKeys, user, interactionId, integration, ws) {
+  askQuestion: function (input, publicKeys, user, widgetType, interactionId, integration, ws) {
     const { sentinel, key, graph, wlk } = publicKeys;
     const { isAuthenticated, visitorId, sessionId } = user;
     const interactionHistory = getLocalStorageItem('context') || [];
@@ -32,6 +32,7 @@ export const apiService = {
           interaction_id: interactionId,
           channel: integration.name,
           isAuthenticated,
+          widget_type: widgetType,
         },
         ws_target: ws || null,
         integration,
