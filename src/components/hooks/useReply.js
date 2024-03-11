@@ -1,6 +1,6 @@
 import { isPlainObject } from 'lodash';
 import { useContext } from 'react';
-import { ADD_ERROR_REPLY, ADD_REPLY } from 'src/store/action';
+import { ADD_ERROR_REPLY, ADD_ANSWER } from 'src/store/action';
 import { historySelector } from 'src/store/selectors/history';
 import { typingExperienceEnabledSelector } from 'src/store/selectors/ui';
 import { Context } from 'src/store/store';
@@ -18,7 +18,7 @@ const useReply = () => {
       setTimeout(
         () => {
           dispatch({
-            type: ADD_REPLY,
+            type: ADD_ANSWER,
             payload: {
               ...restOfResponse,
               context: context || {},
@@ -33,7 +33,7 @@ const useReply = () => {
       ); // Slightly more than 2s to account for the typing effect
     } else {
       dispatch({
-        type: ADD_REPLY,
+        type: ADD_ANSWER,
         payload: {
           context: {},
           // text prop will be the bot's answer
@@ -52,7 +52,10 @@ const useReply = () => {
       messageReplies.forEach((msg, index) => {
         addReply(messageReplies, msg, index, answer);
       });
-    } else if (typeof answer === 'string') {
+    }
+    // if answer is string
+    // we'll assume its an answerId
+    else if (typeof answer === 'string') {
       // find the message with same answer
       const messageWithMatchedAnswer = allHistory.find((msg) => msg?.answerId === answer);
       // get the reply prop

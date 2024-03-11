@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 
@@ -13,7 +13,7 @@ import {
 import useSelector from 'src/store/useSelector';
 import {
   hasQuickReplySelector,
-  lastMessageSelector,
+  lastHistorySelector,
   shouldShowQuickRepliesSelector,
 } from 'src/store/selectors/history';
 import { apiService } from 'src/services/api.service';
@@ -34,7 +34,7 @@ const QuickReplies = (props) => {
   const publicKeys = useSelector(publicKeysSelector);
   const user = useSelector(userSelector);
   const integration = useSelector(integrationSelector);
-  const lastMessage = useSelector(lastMessageSelector);
+  const lastMessage = useSelector(lastHistorySelector);
   const maxDislikesReached = useSelector(isMaxDislikesReachedSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const handoffLabel = useSelector(handOffLabelSelector);
@@ -44,7 +44,7 @@ const QuickReplies = (props) => {
   const handleAddQuickReply = async (reply) => {
     dispatch({
       type: SEND_NEW_MESSAGE,
-      payload: { newMessage: reply.display, interactionId: lastMessage.interactionId },
+      payload: { userInput: reply.display, interactionId: lastMessage.interactionId },
     });
     if (reply.answer) {
       setTimeout(() => {
@@ -57,7 +57,7 @@ const QuickReplies = (props) => {
     await dispatch({
       type: SEND_NEW_MESSAGE,
       payload: {
-        newMessage: handoffLabel,
+        userInput: handoffLabel,
         interactionId: generateUUID(),
         type: hasSubmittedUserDetails ? 'agent-handover' : undefined,
       },
