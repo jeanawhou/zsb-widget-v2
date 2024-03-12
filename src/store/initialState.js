@@ -1,6 +1,6 @@
 import { MAX_DISLIKES } from '../constants/chat';
 
-export const initialMessages = [];
+export const initialHistory = [];
 
 export const initialChat = {
   title: 'ZSB Chat',
@@ -55,7 +55,7 @@ export const initialMetadata = {
 };
 
 export const initialState = {
-  messages: initialMessages,
+  history: initialHistory,
   integration: {},
   ui: initialUI,
   publicKeys: initialPublicKeys,

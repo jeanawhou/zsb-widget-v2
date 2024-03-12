@@ -1,5 +1,5 @@
 import { botReducer } from './bot';
-import { messagesReducer } from './messages';
+import { historyReducer } from './history';
 import { uiReducer } from './ui';
 import { userReducer } from './user';
 import { websocketReducer } from './websocket';
@@ -9,10 +9,4 @@ const combineReducers =
   (state, action) =>
     reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
-export const combinedReducers = combineReducers(
-  userReducer,
-  botReducer,
-  uiReducer,
-  messagesReducer,
-  websocketReducer,
-);
+export const combinedReducers = combineReducers(userReducer, botReducer, uiReducer, historyReducer, websocketReducer);

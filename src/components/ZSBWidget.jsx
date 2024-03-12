@@ -1,12 +1,14 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import ChatWidget from './ChatWidget';
 import useZSBWidget from './hooks';
+import SearchComponent from './SearchComponent';
 
 const ZSBWidget = (props) => {
   const { isChatWidget, isWidgetReady } = useZSBWidget({ props });
 
-  return isWidgetReady && isChatWidget ? <ChatWidget {...props} /> : <div></div>;
+  return isWidgetReady ? isChatWidget ? <ChatWidget {...props} /> : <SearchComponent {...props} /> : <div></div>;
 };
 
 ZSBWidget.defaultProps = {
