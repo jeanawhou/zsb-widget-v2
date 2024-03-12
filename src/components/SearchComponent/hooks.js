@@ -2,8 +2,8 @@ import { useContext, useRef, useState } from 'react';
 
 import { Context } from 'store/store.jsx';
 import useSelector from 'store/useSelector';
-import { isSearchingSelector, widgetTypeSelector } from 'src/store/selectors/ui';
-import { FINISH_SEARCH, SHOW_SEARCH_INDICATOR, START_SEARCH } from 'src/store/action';
+import { hasSearchErrorSelector, isSearchingSelector, widgetTypeSelector } from 'src/store/selectors/ui';
+import { FINISH_SEARCH, FINISH_SEARCH_WITH_ERROR, SHOW_SEARCH_INDICATOR, START_SEARCH } from 'src/store/action';
 import { publicKeysSelector, websocketSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
 import { apiService } from 'src/services/api.service';
@@ -11,6 +11,7 @@ import { generateUUID } from 'src/store/utils';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { historySelector, lastHistorySelector } from 'src/store/selectors/history';
 import useReply from '../hooks/useReply';
+import { DEFAULT_ERROR_MESSAGE } from 'src/constants/chat';
 
 const useSearchComponent = () => {
   const [, dispatch] = useContext(Context);
@@ -24,6 +25,7 @@ const useSearchComponent = () => {
   const allHistory = useSelector(historySelector);
   const widgetType = useSelector(widgetTypeSelector);
   const lastHistory = useSelector(lastHistorySelector);
+  const hasSearchError = useSelector(hasSearchErrorSelector);
 
   const [value, setValue] = useState('');
 
@@ -45,13 +47,16 @@ const useSearchComponent = () => {
         integration,
         websocket.channel,
       );
-      if (res.data.success && res.data.report[0]) {
+      if (res.data?.success && res.data?.report[0]) {
         const result = res.data.report[0];
         addResponse(result);
         dispatch({ type: FINISH_SEARCH });
       }
+      if (!res || res.message?.toLowerCase()?.includes('error')) {
+        throw new Error(DEFAULT_ERROR_MESSAGE);
+      }
     } catch (error) {
-      dispatch({ type: FINISH_SEARCH });
+      dispatch({ type: FINISH_SEARCH_WITH_ERROR, payload: { text: error.message, context: {} } });
     }
   };
 
@@ -80,6 +85,7 @@ const useSearchComponent = () => {
     searchInputRef,
     allHistory,
     lastHistory,
+    hasSearchError,
   };
 };
 

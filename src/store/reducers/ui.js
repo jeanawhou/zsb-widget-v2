@@ -21,6 +21,7 @@ import {
   SET_WIDGET_WIDTH_TO_HALF_FULLSCREEN,
   FINISH_SEARCH,
   SHOW_SEARCH_INDICATOR,
+  FINISH_SEARCH_WITH_ERROR,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
@@ -277,9 +278,25 @@ export const uiReducer = (state, action) => {
               widgetType === 'search'
                 ? {
                     ...config,
+                    error: false,
                     loading: false,
                   }
                 : {},
+          },
+        },
+      };
+    }
+
+    case FINISH_SEARCH_WITH_ERROR: {
+      const widgetType = state.ui.widgetType;
+      const config = widgetType === 'chat' ? state.ui.widgetConfig.chat : state.ui.widgetConfig.search;
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            search: { ...config, error: true, loading: false },
           },
         },
       };

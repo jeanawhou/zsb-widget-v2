@@ -12,6 +12,7 @@ import {
   SUBMIT_AGENT_HANDOVER_FORM,
   START_SEARCH,
   ADD_LAST_SEARCH_TO_HISTORY,
+  FINISH_SEARCH_WITH_ERROR,
 } from '../action';
 import {
   DEFAULT_AGENT_HANDOVER_MESSAGE,
@@ -52,6 +53,42 @@ export const historyReducer = (state, action) => {
       return {
         ...state,
         history: allHistory,
+      };
+    }
+
+    case FINISH_SEARCH_WITH_ERROR: {
+      const { text, isLastReplyItem } = action.payload;
+      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+        const lastMessage = idx == removeLastMessageStatus.length - 1;
+        if (lastMessage && msg.lastUserReplied === 'client' && !msg.answerId) {
+          return {
+            ...msg,
+            answerId: null,
+            reply: {
+              text: [text],
+              isLastReplyItem: Boolean(isLastReplyItem),
+            },
+            timeReply: new Date(),
+            lastUserReplied: 'bot',
+            type: 'error',
+            isLastMessage: true,
+          };
+        }
+        return msg;
+      });
+      return {
+        ...state,
+        history: historyWithReplyLastMsg,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: !isLastReplyItem,
+            },
+          },
+        },
       };
     }
 

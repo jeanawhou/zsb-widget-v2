@@ -6,12 +6,14 @@ const BASE_URL = __VITE_BASE_URL__;
 
 export const apiService = {
   jacPrimeRun: function (data) {
-    return axios.request({
-      baseURL: BASE_URL,
-      url: '/js_public/walker_summon',
-      method: 'post',
-      data,
-    });
+    return axios
+      .request({
+        baseURL: BASE_URL,
+        url: '/js_public/walker_summon',
+        method: 'post',
+        data,
+      })
+      .catch((error) => error);
   },
 
   askQuestion: function (input, publicKeys, user, widgetType, interactionId, integration, ws) {

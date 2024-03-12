@@ -148,3 +148,5 @@ export const isWidthHalfFullscreenSelector = createSelector(
 );
 
 export const isSearchingSelector = createSelector(searchConfigSelector, (search) => Boolean(search?.loading));
+
+export const hasSearchErrorSelector = createSelector(searchConfigSelector, (search) => Boolean(search.error));
