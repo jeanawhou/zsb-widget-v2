@@ -1,5 +1,5 @@
 [build]
-  command = "git config --global user.email 'jeana.luisa@gmail.com' && git config --global user.name 'Jeana Fernandez' && npm run build"
+  command = "git config --global user.email 'jeana.luisa@gmail.com' && git config --global user.name 'Jeana Fernandez' && npm run build:prerelease"
   functions = "netlify/functions"
   publish = "dist"
 
