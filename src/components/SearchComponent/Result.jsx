@@ -4,14 +4,16 @@ import useSelector from 'src/store/useSelector';
 import { lastHistorySelector } from 'src/store/selectors/history';
 import { StyledFlexColumnLeft } from '../ChatWidget/StyledComponents';
 import Answer from './Answer';
-import { InfoCircleFilled } from '@ant-design/icons';
+import { InfoCircleFilled, WarningFilled } from '@ant-design/icons';
 import { cssVariables } from 'src/styles/variables';
-import { isSearchingSelector } from 'src/store/selectors/ui';
+import { hasSearchErrorSelector, isSearchingSelector } from 'src/store/selectors/ui';
 import { Spin } from 'antd';
+import { DEFAULT_ERROR_MESSAGE } from 'src/constants/chat';
 
 const Result = (props) => {
   const lastHistory = useSelector(lastHistorySelector);
   const spinning = useSelector(isSearchingSelector);
+  const hasSearchError = useSelector(hasSearchErrorSelector);
 
   const { value } = props;
 
@@ -19,11 +21,17 @@ const Result = (props) => {
     <Spin spinning={spinning} tip={'Just a moment...'}>
       <StyledFlexColumnLeft>
         <h4>
-          {'Result'}
-          <InfoCircleFilled title={'Answer'} style={{ color: cssVariables.blueLike, marginLeft: 10 }} />
+          {'Result'}{' '}
+          {hasSearchError ? (
+            <WarningFilled title={'Error'} style={{ color: cssVariables.warning }} />
+          ) : (
+            <InfoCircleFilled title={'Answer'} style={{ color: cssVariables.blueLike, marginLeft: 10 }} />
+          )}
         </h4>
         <StyledFlexColumnLeft>
-          {lastHistory.reply ? (
+          {hasSearchError ? (
+            <Answer answer={DEFAULT_ERROR_MESSAGE} isError={true} />
+          ) : lastHistory.reply ? (
             <>
               <Answer answer={lastHistory.reply} />{' '}
             </>

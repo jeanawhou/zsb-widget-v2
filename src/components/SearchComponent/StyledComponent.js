@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { cssVariables } from 'src/styles/variables';
 import { Input } from 'antd';
 import { StyledFlexColumnLeft, StyledFlexRowLeft } from '../ChatWidget/StyledComponents';
+import { DEFAULT_HEIGHT } from 'src/constants/chat';
 
 export const StyledInput = styled(Input)`
   height: ${(props) => props.$height || '55px'};
@@ -86,6 +87,9 @@ export const StyledContentsWrapper = styled(StyledFlexColumnLeft)`
   > * {
     text-align: left;
   }
+  height: auto;
+  max-height: ${(props) => props.height || DEFAULT_HEIGHT};
+  overflow-y: auto;
 `;
 
 export const StyledHistoryWrapper = styled(StyledFlexColumnLeft)`
