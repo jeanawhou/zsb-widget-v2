@@ -12,7 +12,7 @@ import {
   isWidthHalfFullscreenSelector,
   widgetHeightSelector,
 } from 'src/store/selectors/ui';
-import { lastMessageQuickReplySelector } from 'src/store/selectors/messages';
+import { lastMessageQuickReplySelector } from 'src/store/selectors/history';
 import { SET_RANDOM_GENERATED_ID, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
 import useScreens from '../hooks/useScreens';
 import { visitorIdSelector } from 'src/store/selectors/user';

@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { WarningFilled } from '@ant-design/icons';
 
@@ -20,7 +21,7 @@ import {
   StyledReplyFooter,
   StyledWSProcessStep,
 } from './StyledComponents';
-import TimeStamp from './TimeStamp';
+import TimeStamp from '../TimeStamp';
 import ChatBubble from './ChatBubble';
 import AgentHandoverForm from './AgentHandoverForm';
 import Typing from './Typing';

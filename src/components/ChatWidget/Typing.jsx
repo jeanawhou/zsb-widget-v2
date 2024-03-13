@@ -1,3 +1,4 @@
+import React from 'react';
 import useSelector from 'src/store/useSelector';
 import { StyledBotReply, StyledMessage } from './StyledComponents';
 import {

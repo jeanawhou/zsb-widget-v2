@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { StyledChatWrapper, StyledFlexColumn, StyledWidgetWrapper } from './StyledComponents';
@@ -7,6 +8,7 @@ import ChatHeader from './ChatHeader';
 import QuickReplies from './QuickReplies';
 import Launcher from './Launcher';
 import MessageWrapper from './messages/MessageWrapper';
+import Watermark from '../Watermark';
 
 const ChatWidget = (props) => {
   const {
@@ -62,6 +64,7 @@ const ChatWidget = (props) => {
             <StyledFlexColumn>
               <QuickReplies quickReplies={quickReplies} />
               <MessageInput />
+              <Watermark />
             </StyledFlexColumn>
           </StyledChatWrapper>
         ) : null}

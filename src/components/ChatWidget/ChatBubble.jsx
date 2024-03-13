@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import { DislikeFilled, LikeFilled } from '@ant-design/icons';

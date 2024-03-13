@@ -1,7 +1,7 @@
 import { startCase } from 'lodash';
 
 import { EMPTY_QUICK_REPLY } from 'src/constants/chat';
-import { ADD_REPLY, DISCONNECT_WEBSOCKET, SET_WS_ASK_QUESTION_ACTION, SET_WS_CHANNEL } from '../action';
+import { ADD_ANSWER, DISCONNECT_WEBSOCKET, SET_WS_ASK_QUESTION_ACTION, SET_WS_CHANNEL } from '../action';
 import { initialWebsocketState } from '../initialState';
 
 export const websocketReducer = (state, action) => {
@@ -26,7 +26,7 @@ export const websocketReducer = (state, action) => {
       };
     }
 
-    case ADD_REPLY: {
+    case ADD_ANSWER: {
       return {
         ...state,
         websocket: {
@@ -41,13 +41,13 @@ export const websocketReducer = (state, action) => {
       const actionList = state.websocket?.askQuestionActions.length
         ? [...(state.websocket?.askQuestionActions || []), action.payload]
         : [action.payload];
-      const chatList = state.messages;
+      const chatList = state.history;
       const currentSteps = state.websocket.steps;
       const newGeneratedAnswer = data?.content || '';
       const generatedAnswer = state.websocket.generatedAnswer || '';
       const wsProcess =
         currentSteps.length && currentSteps.includes(type) ? currentSteps : [...currentSteps, startCase(type)];
-      const concatenatedAnswer = generatedAnswer + newGeneratedAnswer;
+      const concatenatedAnswer = generatedAnswer.trim() === '-' ? '' : generatedAnswer + newGeneratedAnswer;
       const newReply = {
         reply: {
           text: [concatenatedAnswer],
@@ -80,7 +80,7 @@ export const websocketReducer = (state, action) => {
 
         return {
           ...state,
-          messages: updatedChatList,
+          history: updatedChatList,
           websocket: {
             ...initialWebsocketState,
             channel: state.websocket.channel,
@@ -102,7 +102,7 @@ export const websocketReducer = (state, action) => {
 
         return {
           ...state,
-          messages: updatedChatList,
+          history: updatedChatList,
           websocket: {
             ...state.websocket,
             askQuestionActiveAction: action.payload,
