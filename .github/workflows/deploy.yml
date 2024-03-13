@@ -30,6 +30,10 @@ jobs:
         run: |
           npm install
 
+      - name: Check available scripts
+        run: |
+          npm run
+
       - name: Build Package
         run: |
           npm run build:prerelease
