@@ -5,7 +5,7 @@ import { StyledWatermark } from './SearchComponent/StyledComponent';
 const Watermark = () => {
   return (
     <StyledWatermark>
-      <span>{'Powered by:'}</span> <a href="https://zeroshotbot.com">{BRAND}</a>
+      <span>{'Powered by:'}</span> <a href="https://www.zeroshotbot.com">{BRAND}</a>
     </StyledWatermark>
   );
 };
