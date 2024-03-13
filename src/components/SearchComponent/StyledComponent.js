@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { cssVariables } from 'src/styles/variables';
 import { Input } from 'antd';
-import { StyledFlexColumnLeft, StyledFlexRowLeft } from '../ChatWidget/StyledComponents';
+import { StyledFlexColumnLeft, StyledFlexRowLeft, StyledFlexbox } from '../ChatWidget/StyledComponents';
 import { DEFAULT_HEIGHT } from 'src/constants/chat';
 
 export const StyledInput = styled(Input)`
@@ -73,6 +73,10 @@ export const StyledResultWrapper = styled(StyledFlexRowLeft)`
     color: ${cssVariables.grayBorder};
   }
 
+  .ant-spin-nested-loading {
+    width: 100%;
+  }
+
   h1,
   h2,
   h3,
@@ -95,12 +99,17 @@ export const StyledContentsWrapper = styled(StyledFlexColumnLeft)`
 export const StyledHistoryWrapper = styled(StyledFlexColumnLeft)`
   margin: 5px 18px;
 
-  .ant-spin-nested-loading {
-    width: 100%;
-  }
-
   .anticon-info-circle {
     color: ${cssVariables.blueLike};
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 10px 0;
   }
 `;
 
@@ -126,7 +135,7 @@ export const StyledResultItem = styled(StyledFlexRowLeft)`
 `;
 
 export const StyledAnswerWrapper = styled(StyledFlexRowLeft)`
-  margin: 0 !important;
+  margin: 0 5px !important;
   &:first-child {
     margin-right: 10px;
   }
@@ -184,5 +193,42 @@ export const StyledHistoryItem = styled(StyledFlexColumnLeft)`
 
   p:only-child {
     margin: 0;
+  }
+`;
+
+export const StyledFeedbackWrapper = styled(StyledFlexRowLeft)`
+  width: 250px;
+  margin: 5px 0;
+  margin-left: 6px;
+  font-style: italic;
+
+  .anticon {
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  > * + * {
+    margin: 0 16px;
+  }
+
+  .anticon-like {
+    color: ${cssVariables.blueLike};
+  }
+  .anticon-dislike {
+    color: ${cssVariables.redLike};
+  }
+`;
+
+export const StyledWatermark = styled(StyledFlexbox)`
+  justify-content: center;
+  width: 99%;
+  a,
+  span {
+    color: ${cssVariables.grayBorder};
+    font-size: 12px;
+  }
+
+  a {
+    margin-left: 5px;
   }
 `;
