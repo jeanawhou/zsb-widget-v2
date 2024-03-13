@@ -1,3 +1,4 @@
+import React from 'react';
 import { cssVariables } from 'src/styles/variables';
 
 export const defaultIcon = (iconColor) => {

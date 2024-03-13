@@ -36,9 +36,7 @@ const SearchComponent = () => {
         onChange={handleChangeSearchInput}
         onKeyDown={handleKeyDown}
         addonBefore={<SearchOutlined />}
-        addonAfter={
-          value ? <ArrowRightOutlined tabIndex={0} title={`Search for "${value}"`} onClick={handleSearch} /> : null
-        }
+        addonAfter={<Avatar isLogo />}
         placeholder="Search"
         variant={value ? 'borderless' : undefined}
         disabled={isSearchComponentLoading}
