@@ -33,3 +33,7 @@ export const PROPS_TO_DEPRECATED = [
   { old: 'bubbleColor', new: 'clientBubbleColor' },
   { old: 'bubbleGradient', new: 'replyBubbleGradient' },
 ];
+
+export const WIDGET_TYPES = ['chat', 'search'];
+
+export const BRAND = 'Zeroshotbot';
