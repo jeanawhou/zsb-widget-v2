@@ -2,7 +2,7 @@ import { omit } from 'lodash';
 
 import {
   ADD_ERROR_REPLY,
-  ADD_REACTION_TO_LAST_MESSAGE,
+  ADD_REACTION_TO_LAST_RESPONSE,
   ADD_ANSWER,
   CLEAR_NEW_MESSAGE_BADGE,
   CLEAR_QUICK_REPLIES,
@@ -132,7 +132,6 @@ export const uiReducer = (state, action) => {
         ...restOfUI
       } = widgetUI;
       const isProd = import.meta.env.PROD;
-      const userIcon = extractUserIcon(avatar, iconColor);
       const launcher = launcherIcon ? extractUserIcon(launcherIcon, iconColor) : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
@@ -140,6 +139,7 @@ export const uiReducer = (state, action) => {
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
+      const userIcon = extractUserIcon(avatar, widgetType === 'search' ? restOfUI.color : iconColor);
 
       const chatPosition =
         isChatWidget && isValidMidPosition
@@ -206,7 +206,7 @@ export const uiReducer = (state, action) => {
       };
     }
 
-    case ADD_REACTION_TO_LAST_MESSAGE: {
+    case ADD_REACTION_TO_LAST_RESPONSE: {
       const historyWithReplyLastMsg = (state.history || []).map((msg, idx) => {
         if (idx == state.history?.length - 1) {
           return {

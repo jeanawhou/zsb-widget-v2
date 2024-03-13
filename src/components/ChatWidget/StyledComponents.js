@@ -23,7 +23,7 @@ export const StyledFlexCenter = styled(StyledFlexbox)`
 `;
 
 export const StyledFlexRowRight = styled(StyledFlexbox)`
-  ${StyledFlexCenter}
+  ${StyledFlexCenter};
   flex-direction: row;
   justify-content: flex-end;
 `;
@@ -837,9 +837,9 @@ export const StyledReplyMessageContent = styled.span`
 export const StyledInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 5px 10px 5px;
+  padding: 10px 3px 10px 3px;
   width: 98%;
-  border-top: 1.5px solid ${cssVariables.grayBorder};
+  border: 1px solid ${cssVariables.grayBorder};
   height: inherit;
 
   textarea {
