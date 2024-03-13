@@ -9,6 +9,7 @@ import { cssVariables } from 'src/styles/variables';
 import { hasSearchErrorSelector, isSearchingSelector } from 'src/store/selectors/ui';
 import { Spin } from 'antd';
 import { DEFAULT_ERROR_MESSAGE } from 'src/constants/chat';
+import { StyledResultWrapper } from './StyledComponent';
 
 const Result = (props) => {
   const lastHistory = useSelector(lastHistorySelector);
@@ -17,28 +18,30 @@ const Result = (props) => {
 
   const { value } = props;
 
-  return value && lastHistory.text === value ? (
-    <Spin spinning={spinning} tip={'Just a moment...'}>
-      <StyledFlexColumnLeft>
-        <h4>
-          {'Result'}{' '}
-          {hasSearchError ? (
-            <WarningFilled title={'Error'} style={{ color: cssVariables.warning }} />
-          ) : (
-            <InfoCircleFilled title={'Answer'} style={{ color: cssVariables.blueLike, marginLeft: 10 }} />
-          )}
-        </h4>
+  return value && lastHistory?.text === value ? (
+    <StyledResultWrapper style={{ marginLeft: 16 }}>
+      <Spin spinning={spinning} tip={'Looking for answer...'}>
         <StyledFlexColumnLeft>
-          {hasSearchError ? (
-            <Answer answer={DEFAULT_ERROR_MESSAGE} isError={true} />
-          ) : lastHistory.reply ? (
-            <>
-              <Answer answer={lastHistory.reply} />{' '}
-            </>
-          ) : null}
+          <h4>
+            {'Search Result'}{' '}
+            {hasSearchError ? (
+              <WarningFilled title={'Error'} style={{ color: cssVariables.warning }} />
+            ) : (
+              <InfoCircleFilled title={'Answer'} style={{ color: cssVariables.blueLike, marginLeft: 10 }} />
+            )}
+          </h4>
+          <StyledFlexColumnLeft>
+            {hasSearchError ? (
+              <Answer answer={DEFAULT_ERROR_MESSAGE} isError={true} />
+            ) : lastHistory.reply ? (
+              <>
+                <Answer isResult feedback={lastHistory.feedback} answer={lastHistory.reply} isLoading={spinning} />{' '}
+              </>
+            ) : null}
+          </StyledFlexColumnLeft>
         </StyledFlexColumnLeft>
-      </StyledFlexColumnLeft>
-    </Spin>
+      </Spin>
+    </StyledResultWrapper>
   ) : null;
 };
 
