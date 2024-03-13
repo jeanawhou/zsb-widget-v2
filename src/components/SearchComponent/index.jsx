@@ -12,6 +12,8 @@ import {
 import useSearchComponent from './hooks';
 import History from './History';
 
+import Watermark from '../Watermark';
+
 const SearchComponent = () => {
   const {
     value,
@@ -57,6 +59,7 @@ const SearchComponent = () => {
           </StyledContentsWrapper>
         </>
       ) : null}
+      <Watermark />
     </StyledComponentWrapper>
   );
 };
