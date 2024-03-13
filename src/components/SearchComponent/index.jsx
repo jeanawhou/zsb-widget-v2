@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRightOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import { isPlainObject } from 'lodash';
 
 import {
@@ -11,7 +11,9 @@ import {
 } from './StyledComponent';
 import useSearchComponent from './hooks';
 import History from './History';
-
+import { StyledFlexColumnLeft } from '../ChatWidget/StyledComponents';
+import Result from './Result';
+import Avatar from '../Avatar';
 import Watermark from '../Watermark';
 
 const SearchComponent = () => {
@@ -55,7 +57,10 @@ const SearchComponent = () => {
                 </StyledResultItem>
               </StyledResultWrapper>
             ) : null}
-            <History value={value} />
+            <StyledFlexColumnLeft>
+              <Result value={value} />
+              <History value={value} />
+            </StyledFlexColumnLeft>
           </StyledContentsWrapper>
         </>
       ) : null}
