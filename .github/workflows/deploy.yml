@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Package
         run: |
-          npm run build:prerelease
+          npm run build:alpha
 
   publish_with_latest_node:
     name: Publish with latest Node.js
