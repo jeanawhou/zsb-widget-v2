@@ -4,6 +4,7 @@ import { DEFAULT_FONT_SIZE, DEFAULT_HEIGHT, HEADER_LOGO_POSITIONS } from 'src/co
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
 import { zsbIcon } from 'src/svg/Icons';
+import { PLACEHOLDER } from 'src/constants';
 
 export const uiSelector = (state) => state.ui;
 
@@ -29,7 +30,7 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
   );
 });
 
-export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat) => chat.color);
+export const widgetThemeColorSelector = createSelector(widgetConfigSelector, (widget) => widget.color);
 export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) =>
   chat.avatarPosition === 'header' ? 'header' : 'chat',
 );
@@ -58,11 +59,7 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
   return height ? `${height}px` : DEFAULT_HEIGHT;
 });
 
-export const avatarSelector = createSelector(
-  widgetConfigSelector,
-  chatConfigSelector,
-  (widget) => widget.avatar || zsbIcon(),
-);
+export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar || zsbIcon(widget.color));
 export const fontSizeSelector = createSelector(chatConfigSelector, (chat) =>
   chat?.fontSize ? (chat.fontSize.includes('px') ? chat.fontSize : `${chat.fontSize}`) : DEFAULT_FONT_SIZE,
 );
@@ -146,6 +143,17 @@ export const isWidthHalfFullscreenSelector = createSelector(
   isWidgetExpandedSelector,
   (widget, isExpanded) => (isExpanded && widget.isWidthHalfFullscreen) || false,
 );
+
+export const placeholderSelector = createSelector(widgetConfigSelector, widgetTypeSelector, (widgetConfig, type) => {
+  if (widgetConfig.placeholder) {
+    return widgetConfig?.placeholder;
+  } else {
+    if (type === 'search') {
+      return PLACEHOLDER.search;
+    }
+    return PLACEHOLDER.chat;
+  }
+});
 
 export const isSearchingSelector = createSelector(searchConfigSelector, (search) => Boolean(search?.loading));
 
