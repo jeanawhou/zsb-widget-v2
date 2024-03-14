@@ -37,3 +37,10 @@ export const PROPS_TO_DEPRECATED = [
 export const WIDGET_TYPES = ['chat', 'search'];
 
 export const BRAND = 'Zeroshotbot';
+
+export const PLACEHOLDER = {
+  search: 'Search',
+  chat: 'Type your query here...',
+};
+
+export const ICON_OPTIONS = ['icon1', 'icon2', 'icon3', 'icon4'];
