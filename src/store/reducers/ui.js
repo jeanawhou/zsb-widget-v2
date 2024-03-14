@@ -143,7 +143,13 @@ export const uiReducer = (state, action) => {
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
-      const userIcon = extractUserIcon(avatar, ICON_OPTIONS.includes(avatar) ? iconColor : null);
+      const userIconColor =
+        !isChatWidget && ICON_OPTIONS.includes(avatar)
+          ? color
+          : isChatWidget && ICON_OPTIONS.includes(avatar)
+            ? iconColor || color
+            : null;
+      const userIcon = extractUserIcon(avatar, userIconColor);
 
       const chatPosition =
         isChatWidget && isValidMidPosition
