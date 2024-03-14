@@ -11,6 +11,7 @@ import {
   isFullscreenSelector,
   isWidthHalfFullscreenSelector,
   widgetHeightSelector,
+  widgetThemeColorSelector,
 } from 'src/store/selectors/ui';
 import { lastMessageQuickReplySelector } from 'src/store/selectors/history';
 import { SET_RANDOM_GENERATED_ID, SET_WIDGET_TO_FULLSCREEN } from 'src/store/action';
@@ -31,6 +32,7 @@ const useChatWidget = () => {
   const isWidthHalfFullscreen = useSelector(isWidthHalfFullscreenSelector);
   const componentVisitorId = useSelector(visitorIdSelector);
   const height = useSelector(widgetHeightSelector);
+  const themeColor = useSelector(widgetThemeColorSelector);
 
   // refs
   const widgetRef = useRef(null);
@@ -160,6 +162,7 @@ const useChatWidget = () => {
     quickReplies,
     isMobile,
     isWidthHalfFullscreen,
+    themeColor,
   };
 };
 

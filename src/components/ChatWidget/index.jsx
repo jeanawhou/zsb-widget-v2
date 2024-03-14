@@ -22,15 +22,16 @@ const ChatWidget = (props) => {
     quickReplies,
     isMobile,
     isWidthHalfFullscreen,
+    themeColor,
   } = useChatWidget(props);
-  const { position, color, shape, textColor, showIconOnChatHeader, showCloseButton } = chatStyles;
+  const { position, shape, textColor, showIconOnChatHeader, showCloseButton } = chatStyles;
 
   return (
     <StyledWidgetWrapper
       fullheight={fullHeight && isExpanded ? 'true' : 'false'}
       fullscreen={isFullscreen && isExpanded ? 'true' : 'false'}
       position={position}
-      color={color}
+      color={themeColor}
       shape={shape}
       height={height}
       id="zsb-widget-wrapper"

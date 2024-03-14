@@ -26,6 +26,7 @@ const SearchComponent = () => {
     searchInputRef,
     allHistory,
     lastHistory,
+    placeholder,
   } = useSearchComponent();
 
   return (
@@ -37,7 +38,7 @@ const SearchComponent = () => {
         onKeyDown={handleKeyDown}
         addonBefore={<SearchOutlined />}
         addonAfter={<Avatar isLogo />}
-        placeholder="Search"
+        placeholder={placeholder}
         variant={value ? 'borderless' : undefined}
         disabled={isSearchComponentLoading}
         value={value}
