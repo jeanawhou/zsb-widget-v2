@@ -66,6 +66,8 @@ export const zsbIcon = (iconColor) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 569.58 556.98"
       fill={iconColor || cssVariables.defaultIconColor}
+      width={45}
+      height={48}
     >
       <defs>
         <style></style>

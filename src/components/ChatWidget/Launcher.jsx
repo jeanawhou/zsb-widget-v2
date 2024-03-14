@@ -11,6 +11,7 @@ import {
   isWidgetExpandedSelector,
   launcherIconSelector,
   newMessageCountSelector,
+  widgetThemeColorSelector,
 } from 'src/store/selectors/ui';
 import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 
@@ -21,6 +22,8 @@ const Launcher = (props) => {
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
   const launcherIcon = useSelector(launcherIconSelector);
+  const themeColor = useSelector(widgetThemeColorSelector);
+
   const disableClose = chatStyles.disableClose && isExpanded;
   // TODO: needs more accurate computation
   const adjustment =
@@ -54,7 +57,7 @@ const Launcher = (props) => {
       ) : (
         // if shape not circle
         // render the label or fallback
-        <StyledWidgetLabel color={chatStyles.color}>{chatStyles.label || FALLBACK_WIDGET_LABEL}</StyledWidgetLabel>
+        <StyledWidgetLabel color={themeColor}>{chatStyles.label || FALLBACK_WIDGET_LABEL}</StyledWidgetLabel>
       )}
       {newMessageCount ? <StyledMessageBadge>{newMessageCount}</StyledMessageBadge> : null}
     </StyledLauncherWrapper>

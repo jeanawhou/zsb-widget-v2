@@ -1,5 +1,5 @@
 import React from 'react';
-import { icon1, icon3, icon2, icon4, defaultIcon } from 'src/svg/Icons';
+import { icon1, icon3, icon2, icon4, defaultIcon, zsbIcon } from 'src/svg/Icons';
 
 export const extractUserIcon = (icon, color) => {
   switch (icon) {
@@ -33,6 +33,10 @@ export const extractUserIcon = (icon, color) => {
           {icon4(color)}
         </svg>
       );
+    }
+
+    case 'zsb': {
+      return zsbIcon(color);
     }
     case 'default': {
       return (

@@ -2,7 +2,12 @@ import { useContext, useRef, useState } from 'react';
 
 import { Context } from 'store/store.jsx';
 import useSelector from 'store/useSelector';
-import { hasSearchErrorSelector, isSearchingSelector, widgetTypeSelector } from 'src/store/selectors/ui';
+import {
+  hasSearchErrorSelector,
+  isSearchingSelector,
+  placeholderSelector,
+  widgetTypeSelector,
+} from 'src/store/selectors/ui';
 import { FINISH_SEARCH, FINISH_SEARCH_WITH_ERROR, SHOW_SEARCH_INDICATOR, START_SEARCH } from 'src/store/action';
 import { publicKeysSelector, websocketSelector } from 'src/store/selectors';
 import { userSelector } from 'src/store/selectors/user';
@@ -26,6 +31,7 @@ const useSearchComponent = () => {
   const widgetType = useSelector(widgetTypeSelector);
   const lastHistory = useSelector(lastHistorySelector);
   const hasSearchError = useSelector(hasSearchErrorSelector);
+  const placeholder = useSelector(placeholderSelector);
 
   const [value, setValue] = useState('');
 
@@ -86,6 +92,7 @@ const useSearchComponent = () => {
     allHistory,
     lastHistory,
     hasSearchError,
+    placeholder,
   };
 };
 
