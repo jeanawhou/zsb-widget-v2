@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
     define: defineEnv,
     build: {
       outDir: 'dist',
-      assetsDir: 'assets',
+      assetsDir: 'src/assets',
       target: 'es2015',
       lib: {
         entry: 'src/main.jsx',
