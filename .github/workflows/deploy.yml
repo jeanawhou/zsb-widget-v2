@@ -26,8 +26,8 @@ jobs:
           npm install
 
       - name: Bump version
-        run: |
-          git config user.email "${{ secrets.VERSION_BUMP_EMAIL }}" && npm version prerelease --force
+        run: npm version prerelease --force
+        run: git config user.email "${{ secrets.VERSION_BUMP_EMAIL }}"
 
       - name: Build Package
         run: |
@@ -56,8 +56,8 @@ jobs:
           npm install
 
       - name: Bump version
-        run: |
-          git config user.email "${{ secrets.VERSION_BUMP_EMAIL }}" && npm version prerelease --force
+        run: npm version prerelease --force
+        run: git config user.email "${{ secrets.VERSION_BUMP_EMAIL }}"
 
       - name: Build Package
         run: |
