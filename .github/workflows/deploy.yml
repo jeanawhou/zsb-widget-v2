@@ -18,8 +18,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "jeana.luisa@gmail.com"
-          git config --global user.name "Jeana fernandez"
+          git config --global user.email "${{ secrets.VERSION_BUMP_EMAIL }}"
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -30,13 +29,19 @@ jobs:
         run: |
           npm install
 
-      - name: Check available scripts
+      - name: Bump version
         run: |
-          npm run
+          npm version prerelease --force
 
       - name: Build Package
         run: |
           npm run build
+        
+      - name: NPM Publish
+        env: NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: |
+          npm publish
+          
 
   publish_with_latest_node:
     name: Publish with latest Node.js
@@ -48,8 +53,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "jeana.luisa@gmail.com"
-          git config --global user.name "Jeana fernandez"
+          git config --global user.email "${{ secrets.VERSION_BUMP_EMAIL }}"
 
       - name: Use latest Node.js
         uses: actions/setup-node@v2
@@ -60,9 +64,15 @@ jobs:
         run: |
           npm install
 
-      - name: Semantic Release
-        run: npx semantic-release
+      - name: Bump version
+        run: |
+          npm version prerelease --force
 
       - name: Build Package
         run: |
           npm run build
+        
+      - name: NPM Publish
+        env: NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: |
+          npm publish
