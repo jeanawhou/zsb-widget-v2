@@ -1,7 +1,7 @@
 {
   "name": "zsb-widget-v2",
   "private": false,
-  "version": "1.6.0",
+  "version": "1.7.0-alpha.2",
   "type": "module",
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "prepare": "husky",
     "build:test": "vite build && npm pack",
-    "build:production": "npm version patch --force && vite build && npm run publish:production",
+    "build:production": "npm version prerelease --force && vite build && npm run publish:production",
     "publish:production": "npm publish --userconfig .npmrc",
     "test": "npm run lint"
   },
