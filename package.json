@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm version prerelease --force && vite build && npm run publish:production",
+    "build": "vite build",
     "lint": "eslint --fix",
     "preview": "vite preview",
     "prepare": "husky",
