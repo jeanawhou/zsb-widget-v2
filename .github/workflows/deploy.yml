@@ -38,9 +38,9 @@ jobs:
           npm run build
         
       - name: NPM Publish
-        env: NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        run: |
-          npm publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
           
 
   publish_with_latest_node:
