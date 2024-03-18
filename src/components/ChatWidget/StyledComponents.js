@@ -23,7 +23,7 @@ export const StyledFlexCenter = styled(StyledFlexbox)`
 `;
 
 export const StyledFlexRowRight = styled(StyledFlexbox)`
-  ${StyledFlexCenter}
+  ${StyledFlexCenter};
   flex-direction: row;
   justify-content: flex-end;
 `;
@@ -355,61 +355,73 @@ export const StyledWidgetWrapper = styled.div`
   left: ${(props) => (props.position?.includes('left') ? '0px' : 'inherit')};
   /* TODO: needs cleanup */
   margin-bottom: ${(props) =>
-    props.position?.includes('mid')
-      ? 'auto'
-      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('bottom')
-        ? '10px'
-        : (props.minimized === 'true' ||
-              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-            props.position?.includes('bottom')
+    props.minimized === 'true'
+      ? '0px'
+      : props.position?.includes('mid')
+        ? 'auto'
+        : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('bottom')
           ? '10px'
-          : props.minimized === 'false' &&
-              (props.fullheight === 'true' || props.fullscreen === 'true') &&
+          : props.fullheight === 'false' &&
+              props.fullscreen === 'false' &&
+              props.halfscreen === 'false' &&
               props.position?.includes('bottom')
-            ? '0px'
-            : 'inherit'};
+            ? '10px'
+            : props.minimized === 'false' &&
+                (props.fullheight === 'true' || props.fullscreen === 'true') &&
+                props.position?.includes('bottom')
+              ? '0px'
+              : 'inherit'};
   margin-right: ${(props) =>
-    props.position === 'mid-right' && props.minimized === 'true'
-      ? '-50px'
-      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('right')
-        ? '10px'
-        : (props.minimized === 'true' ||
-              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-            props.position?.includes('right')
+    props.minimized === 'true'
+      ? '0px'
+      : props.position === 'mid-right' && props.minimized === 'true'
+        ? '-50px'
+        : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('right')
           ? '10px'
-          : props.minimized === 'false' &&
-              (props.fullheight === 'true' || (props.fullheight === 'false' && props.fullscreen === 'false')) &&
+          : props.fullheight === 'false' &&
+              props.fullscreen === 'false' &&
+              props.halfscreen === 'false' &&
               props.position?.includes('right')
-            ? '0px'
-            : 'inherit'};
+            ? '10px'
+            : props.minimized === 'false' &&
+                (props.fullheight === 'true' || (props.fullheight === 'false' && props.fullscreen === 'false')) &&
+                props.position?.includes('right')
+              ? '0px'
+              : 'inherit'};
   margin-top: ${(props) =>
-    props.position?.includes('mid')
-      ? 'auto'
-      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('top')
-        ? '10px'
-        : (props.minimized === 'true' ||
-              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-            props.position?.includes('top')
+    props.minimized === 'true'
+      ? '0px'
+      : props.position?.includes('mid')
+        ? 'auto'
+        : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('top')
           ? '10px'
-          : props.minimized === 'false' &&
-              (props.fullheight === 'true' || props.fullscreen === 'true') &&
+          : props.fullheight === 'false' &&
+              props.fullscreen === 'false' &&
+              props.halfscreen === 'false' &&
               props.position?.includes('top')
-            ? '0px'
-            : 'inherit'};
+            ? '10px'
+            : props.minimized === 'false' &&
+                (props.fullheight === 'true' || props.fullscreen === 'true') &&
+                props.position?.includes('top')
+              ? '0px'
+              : 'inherit'};
   margin-left: ${(props) =>
-    props.position === 'mid-left' && props.minimized === 'true'
-      ? '-50px'
-      : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('left')
-        ? '10px'
-        : (props.minimized === 'true' ||
-              (props.fullheight === 'false' && props.fullscreen === 'false' && props.halfscreen === 'false')) &&
-            props.position?.includes('left')
+    props.minimized === 'true'
+      ? '0px'
+      : props.position === 'mid-left' && props.minimized === 'true'
+        ? '-50px'
+        : props.mobile !== 'true' && props.minimized === 'true' && props.position?.includes('left')
           ? '10px'
-          : props.minimized === 'false' &&
-              (props.fullheight === 'true' || props.fullscreen === 'true') &&
+          : props.fullheight === 'false' &&
+              props.fullscreen === 'false' &&
+              props.halfscreen === 'false' &&
               props.position?.includes('left')
-            ? '0px'
-            : 'inherit'};
+            ? '10px'
+            : props.minimized === 'false' &&
+                (props.fullheight === 'true' || props.fullscreen === 'true') &&
+                props.position?.includes('left')
+              ? '0px'
+              : 'inherit'};
 
   text-align: ${(props) => (props.position?.includes('left') ? 'left' : 'right')};
   text-align: ${(props) => (props.position?.includes('right') ? '-webkit-right' : '-webkit-left')};
@@ -560,6 +572,10 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   align-items: center;
   text-overflow: ellipsis;
   animation: fadeIn 0.5s ease-in-out;
+
+  > div:not(:last-child) {
+    margin: 0 5px;
+  }
 
   ${(props) => {
     return props.mobile === 'true' ||
@@ -837,9 +853,9 @@ export const StyledReplyMessageContent = styled.span`
 export const StyledInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 5px 10px 5px;
+  padding: 10px 3px 10px 3px;
   width: 98%;
-  border-top: 1.5px solid ${cssVariables.grayBorder};
+  border: 1px solid ${cssVariables.grayBorder};
   height: inherit;
 
   textarea {

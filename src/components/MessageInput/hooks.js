@@ -11,7 +11,13 @@ import { userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { generateUUID } from 'src/store/utils';
 import useReply from '../hooks/useReply';
-import { chatConfigSelector, newMessageCountSelector, widgetTypeSelector } from 'src/store/selectors/ui';
+import {
+  chatConfigSelector,
+  newMessageCountSelector,
+  placeholderSelector,
+  widgetThemeColorSelector,
+  widgetTypeSelector,
+} from 'src/store/selectors/ui';
 
 export const useMessageInput = () => {
   const { addResponse } = useReply();
@@ -25,6 +31,8 @@ export const useMessageInput = () => {
   const chatConfig = useSelector(chatConfigSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
   const widgetType = useSelector(widgetTypeSelector);
+  const placeholder = useSelector(placeholderSelector);
+  const themeColor = useSelector(widgetThemeColorSelector);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -75,5 +83,7 @@ export const useMessageInput = () => {
     newMessage,
     newMessageCount,
     setNewMessage,
+    placeholder,
+    themeColor,
   };
 };

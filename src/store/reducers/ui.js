@@ -2,7 +2,7 @@ import { omit } from 'lodash';
 
 import {
   ADD_ERROR_REPLY,
-  ADD_REACTION_TO_LAST_MESSAGE,
+  ADD_REACTION_TO_LAST_RESPONSE,
   ADD_ANSWER,
   CLEAR_NEW_MESSAGE_BADGE,
   CLEAR_QUICK_REPLIES,
@@ -28,7 +28,7 @@ import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
 import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
-import { WIDGET_TYPES } from 'src/constants';
+import { ICON_OPTIONS, WIDGET_TYPES } from 'src/constants';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -129,17 +129,27 @@ export const uiReducer = (state, action) => {
         type,
         position,
         label,
+        placeholder,
+        color,
         ...restOfUI
       } = widgetUI;
       const isProd = import.meta.env.PROD;
-      const userIcon = extractUserIcon(avatar, iconColor);
-      const launcher = launcherIcon ? extractUserIcon(launcherIcon, iconColor) : null;
+      const launcher = launcherIcon
+        ? extractUserIcon(launcherIcon, ICON_OPTIONS.includes(launcherIcon) ? iconColor || color : null)
+        : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
       const isChatWidget = !type || type === 'chat';
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
+      const userIconColor =
+        !isChatWidget && ICON_OPTIONS.includes(avatar)
+          ? color
+          : isChatWidget && ICON_OPTIONS.includes(avatar)
+            ? iconColor || color
+            : null;
+      const userIcon = extractUserIcon(avatar, userIconColor);
 
       const chatPosition =
         isChatWidget && isValidMidPosition
@@ -160,6 +170,8 @@ export const uiReducer = (state, action) => {
             ...state.ui.widgetConfig,
             // posibility of being reused on component type
             // hence moving it outside the chat object
+            placeholder,
+            color,
             avatar: userIcon,
             chat:
               widgetType === 'chat'
@@ -206,7 +218,7 @@ export const uiReducer = (state, action) => {
       };
     }
 
-    case ADD_REACTION_TO_LAST_MESSAGE: {
+    case ADD_REACTION_TO_LAST_RESPONSE: {
       const historyWithReplyLastMsg = (state.history || []).map((msg, idx) => {
         if (idx == state.history?.length - 1) {
           return {
