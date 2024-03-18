@@ -1,7 +1,8 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { StyledClientMessage, StyledMessage } from './StyledComponents';
-import TimeStamp from './TimeStamp';
+import TimeStamp from '../TimeStamp';
 import DOMPurify from 'dompurify';
 import useSelector from 'src/store/useSelector';
 import { clientBubbleColorSelector, fontSizeSelector } from 'src/store/selectors/ui';

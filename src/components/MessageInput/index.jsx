@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { SendOutlined } from '@ant-design/icons';
 
@@ -5,14 +6,23 @@ import { StyledInputWrapper } from '../ChatWidget/StyledComponents';
 import { useMessageInput } from './hooks';
 
 const MessageInput = (props) => {
-  const { chatConfig, clearNewMessageBadge, handleKeyDown, handleSendMessage, isExpanded, newMessage, setNewMessage } =
-    useMessageInput({
-      props,
-    });
-  const { placeholder, color, typing } = chatConfig;
+  const {
+    chatConfig,
+    clearNewMessageBadge,
+    handleKeyDown,
+    handleSendMessage,
+    isExpanded,
+    newMessage,
+    setNewMessage,
+    placeholder,
+    themeColor,
+  } = useMessageInput({
+    props,
+  });
+  const { typing } = chatConfig;
 
   return (
-    <StyledInputWrapper color={color}>
+    <StyledInputWrapper color={themeColor}>
       <textarea
         rows={1}
         placeholder={placeholder}
