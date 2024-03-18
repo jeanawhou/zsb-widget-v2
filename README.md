@@ -93,6 +93,7 @@ For Config File props
 - headerLogoPosition => Icon Position in the header (OPT: left, right, center)
 - interactionHistory => Save the interaction history
 - maxInteraction => Maximum number of interaction to be stored
+- type => Type of widget. (OPT: chat(default)/search)
 
 
 ### License

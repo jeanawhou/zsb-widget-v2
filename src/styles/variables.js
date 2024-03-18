@@ -9,4 +9,5 @@ export const cssVariables = {
   warning: '#faad14',
   grayBorder: '#c3c3c3',
   defaultIconColor: '#E9E5E5',
+  primaryBlueHover: '#daecfd',
 };

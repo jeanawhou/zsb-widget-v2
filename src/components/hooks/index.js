@@ -17,7 +17,6 @@ const useZSBWidget = ({ props }) => {
   const chatStyles = useSelector(chatConfigSelector);
   const websocket = useSelector(websocketSelector);
   const componentVisitorId = useSelector(visitorIdSelector);
-
   const configURL = useSelector(configURLSelector);
   const isWidgetReady = useSelector(isWidgetReadySelector);
   const isChatWidget = useSelector(isChatWidgetSelector);
