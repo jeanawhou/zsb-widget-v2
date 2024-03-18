@@ -1,4 +1,4 @@
-import { cloneElement } from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import useSelector from 'src/store/useSelector';
 import { isCircleLauncherSelector, avatarSelector } from 'src/store/selectors/ui';
