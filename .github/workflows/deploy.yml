@@ -65,7 +65,7 @@ jobs:
 
       - name: Build Package
         run: |
-          npm run build
+          npm run build:prerelease
 
       - name: NPM Publish
         run: npm publish
