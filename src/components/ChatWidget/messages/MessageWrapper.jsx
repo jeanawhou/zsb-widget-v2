@@ -1,4 +1,6 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+
 import { StyledMessagesWrapper } from 'src/components/ChatWidget/StyledComponents';
 import UserMessage from 'src/components/ChatWidget/UserMessage';
 import Reply from 'src/components/ChatWidget/Reply';
@@ -7,7 +9,7 @@ import Typing from 'src/components/ChatWidget/Typing';
 
 const MessageWrapper = (props) => {
   const { fullHeight } = props;
-  const { allMessages, isExpanded, isWidthHalfFullscreen, messagesRef } = useMessagesWrapper();
+  const { allHistory, isExpanded, isWidthHalfFullscreen, messagesRef } = useMessagesWrapper();
 
   return (
     <StyledMessagesWrapper
@@ -15,7 +17,7 @@ const MessageWrapper = (props) => {
       fullheight={fullHeight && isExpanded ? 'true' : 'false'}
       halfscreen={isWidthHalfFullscreen ? 'true' : 'false'}
     >
-      {allMessages.map((message, index) => {
+      {allHistory.map((message, index) => {
         return (
           <div key={`message-${index}`}>
             {message.text ? <UserMessage message={message} /> : null}

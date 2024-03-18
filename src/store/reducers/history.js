@@ -2,14 +2,17 @@ import { isEmpty } from 'lodash';
 
 import {
   ADD_ERROR_REPLY,
-  ADD_REPLY,
+  ADD_ANSWER,
   AGENT_HANDOVER_SUBMIT_FAIL,
   CANCEL_AGENT_HANDOVER,
-  CLEAR_CHAT_MESSAGES,
+  CLEAR_HISTORY,
   RETRIGGER_AGENT_HANDOVER,
   SEND_NEW_MESSAGE,
   SHOW_AGENT_HANDOVER_FORM,
   SUBMIT_AGENT_HANDOVER_FORM,
+  START_SEARCH,
+  ADD_LAST_SEARCH_TO_HISTORY,
+  FINISH_SEARCH_WITH_ERROR,
 } from '../action';
 import {
   DEFAULT_AGENT_HANDOVER_MESSAGE,
@@ -19,8 +22,8 @@ import {
   SUBMIT_ERROR_MESSAGE,
 } from '../../constants/chat';
 
-export const messagesReducer = (state, action) => {
-  const messageState = state.messages;
+export const historyReducer = (state, action) => {
+  const messageState = state.history || [];
   const removeLastMessageStatus = messageState.map((msg, idx) => {
     if (idx === messageState.length - 1) {
       return {
@@ -32,12 +35,13 @@ export const messagesReducer = (state, action) => {
   });
 
   switch (action.type) {
+    case START_SEARCH:
     case SEND_NEW_MESSAGE: {
-      const { newMessage, interactionId, ...rest } = action.payload;
-      const allMessages = [
+      const { userInput, interactionId, ...rest } = action.payload;
+      const allHistory = [
         ...removeLastMessageStatus,
         {
-          text: newMessage,
+          text: userInput,
           lastUserReplied: 'client',
           isLastMessage: true,
           timeMessageSent: new Date(),
@@ -48,15 +52,51 @@ export const messagesReducer = (state, action) => {
 
       return {
         ...state,
-        messages: allMessages,
+        history: allHistory,
       };
     }
 
-    case ADD_REPLY: {
+    case FINISH_SEARCH_WITH_ERROR: {
+      const { text, isLastReplyItem } = action.payload;
+      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+        const lastMessage = idx == removeLastMessageStatus.length - 1;
+        if (lastMessage && msg.lastUserReplied === 'client' && !msg.answerId) {
+          return {
+            ...msg,
+            answerId: null,
+            reply: {
+              text: [text],
+              isLastReplyItem: Boolean(isLastReplyItem),
+            },
+            timeReply: new Date(),
+            lastUserReplied: 'bot',
+            type: 'error',
+            isLastMessage: true,
+          };
+        }
+        return msg;
+      });
+      return {
+        ...state,
+        history: historyWithReplyLastMsg,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            chat: {
+              ...state.ui.widgetConfig.chat,
+              typing: !isLastReplyItem,
+            },
+          },
+        },
+      };
+    }
+
+    case ADD_ANSWER: {
       const { text, isLastReplyItem, context, name, jid } = action.payload;
       const { quick_reply } = context;
       const quickReplies = isEmpty(quick_reply) ? EMPTY_QUICK_REPLY : quick_reply;
-      const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
         const lastMessage = idx == removeLastMessageStatus.length - 1;
         // match the jid payload passed
         // message.reply.text shouldn't be empty
@@ -98,7 +138,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: messagesWithReplyLastMsg,
+        history: historyWithReplyLastMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -113,7 +153,7 @@ export const messagesReducer = (state, action) => {
     }
 
     case ADD_ERROR_REPLY: {
-      const messagesWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
         if (idx == messageState.length - 1) {
           return {
             ...msg,
@@ -129,14 +169,14 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: messagesWithReplyLastMsg,
+        history: historyWithReplyLastMsg,
       };
     }
 
-    case CLEAR_CHAT_MESSAGES: {
+    case CLEAR_HISTORY: {
       return {
         ...state,
-        messages: [],
+        history: [],
       };
     }
 
@@ -169,7 +209,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: newMessages,
+        history: newMessages,
       };
     }
 
@@ -192,7 +232,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: updatedMsg,
+        history: updatedMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -228,7 +268,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: updatedMsg,
+        history: updatedMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -258,7 +298,7 @@ export const messagesReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: updatedMsg,
+        history: updatedMsg,
         ui: {
           ...state.ui,
           widgetConfig: {
@@ -268,6 +308,15 @@ export const messagesReducer = (state, action) => {
               typing: false,
             },
           },
+        },
+      };
+    }
+
+    case ADD_LAST_SEARCH_TO_HISTORY: {
+      return {
+        ...state,
+        history: {
+          ...state.history,
         },
       };
     }

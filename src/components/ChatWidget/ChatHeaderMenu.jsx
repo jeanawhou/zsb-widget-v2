@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Dropdown } from 'antd';
 import {
   ArrowsAltOutlined,
@@ -12,7 +12,7 @@ import {
 
 import { Context } from 'src/store/store';
 import {
-  CLEAR_CHAT_MESSAGES,
+  CLEAR_HISTORY,
   RESTORE_WIDGET_HEIGHT,
   RESTORE_WIDGET_WIDTH,
   SET_WIDGET_TO_FULLSCREEN,
@@ -35,7 +35,7 @@ const ChatHeaderMenu = () => {
     const key = e.key;
     switch (key) {
       case 'clear':
-        dispatch({ type: CLEAR_CHAT_MESSAGES });
+        dispatch({ type: CLEAR_HISTORY });
         break;
 
       case 'fullheight': {

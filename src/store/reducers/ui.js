@@ -2,8 +2,8 @@ import { omit } from 'lodash';
 
 import {
   ADD_ERROR_REPLY,
-  ADD_REACTION_TO_LAST_MESSAGE,
-  ADD_REPLY,
+  ADD_REACTION_TO_LAST_RESPONSE,
+  ADD_ANSWER,
   CLEAR_NEW_MESSAGE_BADGE,
   CLEAR_QUICK_REPLIES,
   EXPAND_WIDGET,
@@ -19,12 +19,16 @@ import {
   SET_WIDGET_TO_FULLSCREEN,
   RESTORE_WIDGET_WIDTH,
   SET_WIDGET_WIDTH_TO_HALF_FULLSCREEN,
+  FINISH_SEARCH,
+  SHOW_SEARCH_INDICATOR,
+  FINISH_SEARCH_WITH_ERROR,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
 import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
+import { ICON_OPTIONS, WIDGET_TYPES } from 'src/constants';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -88,7 +92,7 @@ export const uiReducer = (state, action) => {
       };
     }
 
-    case ADD_REPLY: {
+    case ADD_ANSWER: {
       const { newMessageCount } = action.payload;
       return {
         ...state,
@@ -125,16 +129,27 @@ export const uiReducer = (state, action) => {
         type,
         position,
         label,
+        placeholder,
+        color,
         ...restOfUI
       } = widgetUI;
       const isProd = import.meta.env.PROD;
-      const userIcon = extractUserIcon(avatar, iconColor);
-      const launcher = launcherIcon ? extractUserIcon(launcherIcon, iconColor) : null;
+      const launcher = launcherIcon
+        ? extractUserIcon(launcherIcon, ICON_OPTIONS.includes(launcherIcon) ? iconColor || color : null)
+        : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
       const isChatWidget = !type || type === 'chat';
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
+      const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
+      const userIconColor =
+        !isChatWidget && ICON_OPTIONS.includes(avatar)
+          ? color
+          : isChatWidget && ICON_OPTIONS.includes(avatar)
+            ? iconColor || color
+            : null;
+      const userIcon = extractUserIcon(avatar, userIconColor);
 
       const chatPosition =
         isChatWidget && isValidMidPosition
@@ -150,18 +165,24 @@ export const uiReducer = (state, action) => {
         ui: {
           ...state.ui,
           isWidgetExpanded: autoOpen,
-          widgetType: type || 'chat',
+          widgetType,
           widgetConfig: {
             ...state.ui.widgetConfig,
             // posibility of being reused on component type
             // hence moving it outside the chat object
+            placeholder,
+            color,
             avatar: userIcon,
-            chat: {
-              launcherIcon: launcher || userIcon || fallbackIcon,
-              position: chatPosition,
-              label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
-              ...restOfUI,
-            },
+            chat:
+              widgetType === 'chat'
+                ? {
+                    launcherIcon: launcher || userIcon || fallbackIcon,
+                    position: chatPosition,
+                    label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
+                    ...restOfUI,
+                  }
+                : {},
+            search: widgetType === 'search' ? restOfUI : {},
           },
         },
         user: {
@@ -184,20 +205,22 @@ export const uiReducer = (state, action) => {
           ...restOfUI.integration,
         },
         isWidgetReady: true,
-        messages: state.messages?.length
+        history: state.history?.length
           ? []
-          : [
-              {
-                reply: { text: widgetUI.welcomeMessage } || null,
-                timeReply: new Date(),
-              },
-            ],
+          : widgetType === 'chat'
+            ? [
+                {
+                  reply: { text: widgetUI.welcomeMessage } || null,
+                  timeReply: new Date(),
+                },
+              ]
+            : [],
       };
     }
 
-    case ADD_REACTION_TO_LAST_MESSAGE: {
-      const messagesWithReplyLastMsg = (state.messages || []).map((msg, idx) => {
-        if (idx == state.messages?.length - 1) {
+    case ADD_REACTION_TO_LAST_RESPONSE: {
+      const historyWithReplyLastMsg = (state.history || []).map((msg, idx) => {
+        if (idx == state.history?.length - 1) {
           return {
             ...msg,
             feedback: action.payload,
@@ -207,7 +230,7 @@ export const uiReducer = (state, action) => {
       });
       return {
         ...state,
-        messages: messagesWithReplyLastMsg,
+        history: historyWithReplyLastMsg,
         metadata: {
           ...state.metadata,
           dislikes: action.payload === 0 ? 1 + state.metadata.dislikes : state.metadata.dislikes,
@@ -217,33 +240,75 @@ export const uiReducer = (state, action) => {
 
     case SET_WS_ASK_QUESTION_ACTION:
     case SEND_NEW_MESSAGE:
+    case SHOW_SEARCH_INDICATOR:
     case START_TYPING_MESSAGE: {
+      const widgetType = state.ui.widgetType;
+      const config = widgetType === 'chat' ? state.ui.widgetConfig.chat : state.ui.widgetConfig.search;
       return {
         ...state,
         ui: {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            chat: {
-              ...state.ui.widgetConfig.chat,
-              typing: true,
-            },
+            chat:
+              widgetType === 'chat'
+                ? {
+                    ...config,
+                    typing: true,
+                  }
+                : {},
+            search:
+              widgetType === 'search'
+                ? {
+                    ...config,
+                    loading: true,
+                  }
+                : {},
           },
         },
       };
     }
 
+    case FINISH_SEARCH:
     case STOP_TYPING_MESSAGE: {
+      const widgetType = state.ui.widgetType;
+      const config = widgetType === 'chat' ? state.ui.widgetConfig.chat : state.ui.widgetConfig.search;
       return {
         ...state,
         ui: {
           ...state.ui,
           widgetConfig: {
             ...state.ui.widgetConfig,
-            chat: {
-              ...state.ui.widgetConfig.chat,
-              typing: false,
-            },
+            chat:
+              widgetType === 'chat'
+                ? {
+                    ...config,
+                    typing: false,
+                  }
+                : {},
+            search:
+              widgetType === 'search'
+                ? {
+                    ...config,
+                    error: false,
+                    loading: false,
+                  }
+                : {},
+          },
+        },
+      };
+    }
+
+    case FINISH_SEARCH_WITH_ERROR: {
+      const widgetType = state.ui.widgetType;
+      const config = widgetType === 'chat' ? state.ui.widgetConfig.chat : state.ui.widgetConfig.search;
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          widgetConfig: {
+            ...state.ui.widgetConfig,
+            search: { ...config, error: true, loading: false },
           },
         },
       };
