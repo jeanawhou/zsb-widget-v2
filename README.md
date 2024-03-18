@@ -75,7 +75,7 @@ const App = () => {
 ### Config File props
 `type: 'chat'`
 
-![Chat Widget Preview](/src/assets/chat-sample.png "Type: Chat")
+![Chat Widget Preview](/assets/chat-sample.png "Type: Chat")
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
 - background => Background of the Demo App. (OPT: dark/light)
@@ -100,7 +100,7 @@ const App = () => {
 
 `type: 'search'`
 
-![Search Preview](/src/assets/search-sample.png "Type: Search")
+![Search Preview](/assets/search-sample.png "Type: Search")
 
 - placeholder => Placeholder of the chat area.
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
