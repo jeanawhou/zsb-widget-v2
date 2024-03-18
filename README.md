@@ -70,9 +70,12 @@ const App = () => {
 
 - disableClose => Prevent closing/minimizing the chat widget
 - hideWidgetMenu => Hide extra menu on chat header
+- type => Type of widget. (OPT: chat(default)/search)
 
-For Config File props
+### Config File props
+`type: 'chat'`
 
+![Chat Widget Preview](/src/assets/chat-sample.png "Type: Chat")
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
 - background => Background of the Demo App. (OPT: dark/light)
@@ -95,6 +98,13 @@ For Config File props
 - maxInteraction => Maximum number of interaction to be stored
 - type => Type of widget. (OPT: chat(default)/search)
 
+`type: 'search'`
+
+![Search Preview](/src/assets/search-sample.png "Type: Search")
+
+- placeholder => Placeholder of the chat area.
+- avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
+- color => Color of `avatar` or brand logo (positioned to the right most of search component). (in hex code - include #)
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.

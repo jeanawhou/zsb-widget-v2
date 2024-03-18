@@ -5,7 +5,7 @@ import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { StyledClientMessage, StyledQuickReplyWrapper } from './StyledComponents';
 import { Context } from 'src/store/store';
 import {
-  ADD_REACTION_TO_LAST_MESSAGE,
+  ADD_REACTION_TO_LAST_RESPONSE,
   RETRIGGER_AGENT_HANDOVER,
   SEND_NEW_MESSAGE,
   SHOW_AGENT_HANDOVER_FORM,
@@ -82,7 +82,7 @@ const QuickReplies = (props) => {
   const handleAddFeedback = async (reply) => {
     apiService.logFeedback(publicKeys, reply, lastMessage.interactionId || '', user, integration.name);
     dispatch({
-      type: ADD_REACTION_TO_LAST_MESSAGE,
+      type: ADD_REACTION_TO_LAST_RESPONSE,
       payload: reply,
     });
   };

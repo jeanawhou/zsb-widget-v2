@@ -4,8 +4,9 @@ import { isPlainObject } from 'lodash';
 
 import { StyledAnswerWrapper } from './StyledComponent';
 import DOMPurify from 'dompurify';
+import Feedback from './Feedback';
 
-const Answer = ({ answer }) => {
+const Answer = ({ answer, isResult, isLoading, feedback }) => {
   const displayAnswer =
     typeof answer === 'string'
       ? answer
@@ -16,18 +17,24 @@ const Answer = ({ answer }) => {
           : null;
 
   return (
-    <StyledAnswerWrapper>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(displayAnswer),
-        }}
-      />
-    </StyledAnswerWrapper>
+    <div>
+      <StyledAnswerWrapper>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(displayAnswer),
+          }}
+        />
+      </StyledAnswerWrapper>
+      {!isLoading ? <Feedback feedback={feedback} isResult={isResult} /> : null}
+    </div>
   );
 };
 
 Answer.propTypes = {
   answer: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.array]).isRequired,
+  isResult: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  feedback: PropTypes.number,
 };
 
 export default Answer;
