@@ -45,7 +45,6 @@ const App = () => {
 
 ```
 
-
 ## Properties / Bot Configuration (props/variable name => Description/Functionality.)
 (Data type: String)
 
@@ -75,7 +74,7 @@ const App = () => {
 ### Config File props
 `type: 'chat'`
 
-![Chat Widget Preview](/assets/chat-sample.png "Type: Chat")
+![Chat Widget Preview](https://raw.githubusercontent.com/jeanawhou/zsb-widget-v2/main/public/assets/chat-sample.png?token=GHSAT0AAAAAACOJI6XUT2B64WTUCPH3VKAMZPY46HQ "Type: Chat")
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
 - background => Background of the Demo App. (OPT: dark/light)
@@ -100,11 +99,12 @@ const App = () => {
 
 `type: 'search'`
 
-![Search Preview](/assets/search-sample.png "Type: Search")
+![Search Preview](https://raw.githubusercontent.com/jeanawhou/zsb-widget-v2/main/public/assets/search-sample.png?token=GHSAT0AAAAAACOJI6XUT2B64WTUCPH3VKAMZPY46HQ "Type: Search")
 
 - placeholder => Placeholder of the chat area.
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
 - color => Color of `avatar` or brand logo (positioned to the right most of search component). (in hex code - include #)
+- height => max-height of the widget including the history container. (in pixels - add px)
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
