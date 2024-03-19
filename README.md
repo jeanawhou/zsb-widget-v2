@@ -10,7 +10,6 @@ You can use v1 version if your app is still in node 16.
 
 
 ## Usage
-### For Node 18+
 
 ```bash
 npm install zsb-widget-v2
@@ -18,16 +17,6 @@ npm install zsb-widget-v2
 or
 ```bash
 yarn add zsb-widget-v2
-```
-
-### For Node 16
-
-```bash
-npm install zsb-widget-v2@v1.x
-```
-or
-```bash
-yarn add zsb-widget-v2@v1.x
 ```
 
 Import to your component
@@ -74,7 +63,7 @@ const App = () => {
 ### Config File props
 `type: 'chat'`
 
-![Chat Widget Preview](https://raw.githubusercontent.com/jeanawhou/zsb-widget-v2/main/public/assets/chat-sample.png?token=GHSAT0AAAAAACOJI6XUT2B64WTUCPH3VKAMZPY46HQ "Type: Chat")
+![Chat Widget Preview](https://github.com/jeanawhou/zsb-widget-v2/blob/main/public/assets/chat-sample.png "Type: Chat")
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
 - background => Background of the Demo App. (OPT: dark/light)
@@ -99,7 +88,7 @@ const App = () => {
 
 `type: 'search'`
 
-![Search Preview](https://raw.githubusercontent.com/jeanawhou/zsb-widget-v2/main/public/assets/search-sample.png?token=GHSAT0AAAAAACOJI6XUT2B64WTUCPH3VKAMZPY46HQ "Type: Search")
+![Search Preview](https://github.com/jeanawhou/zsb-widget-v2/blob/main/public/assets/search-sample.png "Type: Search")
 
 - placeholder => Placeholder of the chat area.
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
