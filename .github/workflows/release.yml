@@ -31,9 +31,9 @@ jobs:
           git config user.name "${{ secrets.VERSION_BUMP_NAME }}"
           npm version prerelease --force
 
-      - name: Build Package
+      - name: Build NPM Package
         run: |
-          npm run build:prerelease
+          npm run build
 
       - name: NPM Publish
         run: npm publish
@@ -63,11 +63,15 @@ jobs:
           git config user.name "${{ secrets.VERSION_BUMP_NAME }}"
           npm version prerelease --force
 
-      - name: Build Package
+      - name: Build NPM Package
         run: |
-          npm run build:prerelease
+          npm run build:library
 
       - name: NPM Publish
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Build CDN
+        run: |
+          npm run build:vanillajs
