@@ -565,16 +565,16 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
       props.fullheight === 'true' ||
       props.halfscreen === 'true'
     )
-      ? '5px 5px 0px 0px'
+      ? '10px 10px 0px 0px'
       : '0px'};
-  height: ${(props) => (props.fullheight === 'true' || props.fullscreen === 'true' ? '12%' : '80px')};
-  max-height: 80px;
+  height: ${(props) => (props.fullheight === 'true' || props.fullscreen === 'true' ? '12%' : '100px')};
+  max-height: 120px;
   align-items: center;
   text-overflow: ellipsis;
   animation: fadeIn 0.5s ease-in-out;
 
   > div:not(:last-child) {
-    margin: 0 5px;
+    margin: 0 10px;
   }
 
   ${(props) => {
