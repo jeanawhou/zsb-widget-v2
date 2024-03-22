@@ -31,9 +31,11 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
 });
 
 export const widgetThemeColorSelector = createSelector(widgetConfigSelector, (widget) => widget.color);
-export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) =>
-  chat.avatarPosition === 'header' ? 'header' : 'chat',
-);
+
+export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) => {
+  return chat.avatarPosition ? (chat.avatarPosition === 'header' ? 'header' : 'chat') : null;
+});
+
 export const clientBubbleColorSelector = createSelector(
   chatConfigSelector,
   widgetThemeColorSelector,
@@ -77,13 +79,13 @@ export const headerImgPositionSelector = createSelector(
   chatConfigSelector,
   avatarPositionSelector,
   (showChatHeaderIcon, chat, position) => {
-    return !position || position === 'header'
+    return position === 'header'
       ? showChatHeaderIcon
         ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
           ? chat.headerLogoPosition
-          : 'left'
+          : 'center'
         : !chat.headerLogoPosition
-          ? 'left'
+          ? 'center'
           : null
       : null;
   },
