@@ -1,0 +1,43 @@
+name: NPM Publish
+
+on:
+  push:
+    branches:
+      - release/latest-**
+
+jobs:
+  publish_with_latest_node:
+    name: Publish with latest Node.js
+    if: github.ref == 'refs/heads/release/latest-alpha'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Use latest Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Bump version
+        run: |
+          git config user.email "${{ secrets.VERSION_BUMP_EMAIL }}"
+          git config user.name "${{ secrets.VERSION_BUMP_NAME }}"
+          npm version prerelease --force
+
+      - name: Build NPM Package
+        run: |
+          npm run build:library
+
+      - name: NPM Publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Build CDN
+        run: |
+          npm run build:vanillajs
