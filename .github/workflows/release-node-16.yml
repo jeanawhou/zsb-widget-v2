@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - release/node-16
-    tags:
-      - v1.xx
+    tags-ignore:
+      - v1.5.x
 
 jobs:
   publish_node_16:
