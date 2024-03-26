@@ -1,11 +1,11 @@
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DislikeFilled, LikeFilled } from '@ant-design/icons';
 
 import { StyledClientMessage, StyledQuickReplyWrapper } from './StyledComponents';
 import { Context } from 'src/store/store';
 import {
-  ADD_REACTION_TO_LAST_MESSAGE,
+  ADD_REACTION_TO_LAST_RESPONSE,
   RETRIGGER_AGENT_HANDOVER,
   SEND_NEW_MESSAGE,
   SHOW_AGENT_HANDOVER_FORM,
@@ -13,9 +13,9 @@ import {
 import useSelector from 'src/store/useSelector';
 import {
   hasQuickReplySelector,
-  lastMessageSelector,
+  lastHistorySelector,
   shouldShowQuickRepliesSelector,
-} from 'src/store/selectors/messages';
+} from 'src/store/selectors/history';
 import { apiService } from 'src/services/api.service';
 import { isMaxDislikesReachedSelector, publicKeysSelector } from 'src/store/selectors';
 import { hasSubmittedUserDetailsSelector, userSelector } from 'src/store/selectors/user';
@@ -34,7 +34,7 @@ const QuickReplies = (props) => {
   const publicKeys = useSelector(publicKeysSelector);
   const user = useSelector(userSelector);
   const integration = useSelector(integrationSelector);
-  const lastMessage = useSelector(lastMessageSelector);
+  const lastMessage = useSelector(lastHistorySelector);
   const maxDislikesReached = useSelector(isMaxDislikesReachedSelector);
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const handoffLabel = useSelector(handOffLabelSelector);
@@ -44,7 +44,7 @@ const QuickReplies = (props) => {
   const handleAddQuickReply = async (reply) => {
     dispatch({
       type: SEND_NEW_MESSAGE,
-      payload: { newMessage: reply.display, interactionId: lastMessage.interactionId },
+      payload: { userInput: reply.display, interactionId: lastMessage.interactionId },
     });
     if (reply.answer) {
       setTimeout(() => {
@@ -57,7 +57,7 @@ const QuickReplies = (props) => {
     await dispatch({
       type: SEND_NEW_MESSAGE,
       payload: {
-        newMessage: handoffLabel,
+        userInput: handoffLabel,
         interactionId: generateUUID(),
         type: hasSubmittedUserDetails ? 'agent-handover' : undefined,
       },
@@ -82,7 +82,7 @@ const QuickReplies = (props) => {
   const handleAddFeedback = async (reply) => {
     apiService.logFeedback(publicKeys, reply, lastMessage.interactionId || '', user, integration.name);
     dispatch({
-      type: ADD_REACTION_TO_LAST_MESSAGE,
+      type: ADD_REACTION_TO_LAST_RESPONSE,
       payload: reply,
     });
   };

@@ -1,0 +1,31 @@
+name: NPM Publish node 16 build
+
+on:
+  push:
+    branches:
+      - release/node-16
+
+jobs:
+  publish_node_16:
+    name: Publish with Node.js 16
+    if: github.ref == 'refs/heads/release/node-16'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16.20.x
+
+      - name: NPM Bump, Build and Publish
+        run: |
+          git config user.email "${{ secrets.VERSION_BUMP_EMAIL }}"
+          git config user.name "${{ secrets.VERSION_BUMP_NAME }}"
+          npm version prerelease --force
+          npm install
+          npm run build
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

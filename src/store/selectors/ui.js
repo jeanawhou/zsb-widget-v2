@@ -1,9 +1,10 @@
 import { createSelector } from 'reselect';
 
-import { DEFAULT_FONT_SIZE, HEADER_LOGO_POSITIONS } from 'src/constants/chat';
+import { DEFAULT_FONT_SIZE, DEFAULT_HEIGHT, HEADER_LOGO_POSITIONS } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
 import { zsbIcon } from 'src/svg/Icons';
+import { PLACEHOLDER } from 'src/constants';
 
 export const uiSelector = (state) => state.ui;
 
@@ -12,8 +13,10 @@ export const isWidgetExpandedSelector = createSelector(uiSelector, (ui) => ui.is
 export const widgetConfigSelector = createSelector(uiSelector, (ui) => ui.widgetConfig);
 
 export const chatConfigSelector = createSelector(widgetConfigSelector, (widgetConfig) => widgetConfig.chat);
+export const searchConfigSelector = createSelector(widgetConfigSelector, (widgetConfig) => widgetConfig.search);
 export const widgetTypeSelector = createSelector(uiSelector, (ui) => ui.widgetType);
 export const isChatWidgetSelector = createSelector(widgetTypeSelector, (widgetType) => widgetType === 'chat');
+export const isSearchWidgetSelector = createSelector(widgetTypeSelector, (widgetType) => widgetType === 'search');
 export const widgetTitleSelector = createSelector(chatConfigSelector, (chatConfig) => {
   return chatConfig.title || chatConfig.identifier || chatConfig.botTitle;
 });
@@ -27,10 +30,12 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
   );
 });
 
-export const widgetThemeColorSelector = createSelector(chatConfigSelector, (chat) => chat.color);
-export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) =>
-  chat.avatarPosition === 'header' ? 'header' : 'chat',
-);
+export const widgetThemeColorSelector = createSelector(widgetConfigSelector, (widget) => widget.color);
+
+export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) => {
+  return chat.avatarPosition ? (chat.avatarPosition === 'header' ? 'header' : 'chat') : null;
+});
+
 export const clientBubbleColorSelector = createSelector(
   chatConfigSelector,
   widgetThemeColorSelector,
@@ -53,14 +58,10 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
   if (typeof height === 'string' && height?.endsWith('px')) {
     return height;
   }
-  return `${height}px`;
+  return height ? `${height}px` : DEFAULT_HEIGHT;
 });
 
-export const avatarSelector = createSelector(
-  widgetConfigSelector,
-  chatConfigSelector,
-  (widget) => widget.avatar || zsbIcon(),
-);
+export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar || zsbIcon(widget.color));
 export const fontSizeSelector = createSelector(chatConfigSelector, (chat) =>
   chat?.fontSize ? (chat.fontSize.includes('px') ? chat.fontSize : `${chat.fontSize}`) : DEFAULT_FONT_SIZE,
 );
@@ -78,13 +79,13 @@ export const headerImgPositionSelector = createSelector(
   chatConfigSelector,
   avatarPositionSelector,
   (showChatHeaderIcon, chat, position) => {
-    return !position || position === 'header'
+    return position === 'header'
       ? showChatHeaderIcon
         ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
           ? chat.headerLogoPosition
-          : 'left'
+          : 'center'
         : !chat.headerLogoPosition
-          ? 'left'
+          ? 'center'
           : null
       : null;
   },
@@ -144,3 +145,18 @@ export const isWidthHalfFullscreenSelector = createSelector(
   isWidgetExpandedSelector,
   (widget, isExpanded) => (isExpanded && widget.isWidthHalfFullscreen) || false,
 );
+
+export const placeholderSelector = createSelector(widgetConfigSelector, widgetTypeSelector, (widgetConfig, type) => {
+  if (widgetConfig.placeholder) {
+    return widgetConfig?.placeholder;
+  } else {
+    if (type === 'search') {
+      return PLACEHOLDER.search;
+    }
+    return PLACEHOLDER.chat;
+  }
+});
+
+export const isSearchingSelector = createSelector(searchConfigSelector, (search) => Boolean(search?.loading));
+
+export const hasSearchErrorSelector = createSelector(searchConfigSelector, (search) => Boolean(search.error));

@@ -11,7 +11,13 @@ import { userSelector } from 'src/store/selectors/user';
 import { integrationSelector } from 'src/store/selectors/integration';
 import { generateUUID } from 'src/store/utils';
 import useReply from '../hooks/useReply';
-import { chatConfigSelector, newMessageCountSelector } from 'src/store/selectors/ui';
+import {
+  chatConfigSelector,
+  newMessageCountSelector,
+  placeholderSelector,
+  widgetThemeColorSelector,
+  widgetTypeSelector,
+} from 'src/store/selectors/ui';
 
 export const useMessageInput = () => {
   const { addResponse } = useReply();
@@ -24,18 +30,22 @@ export const useMessageInput = () => {
   const websocket = useSelector(websocketSelector);
   const chatConfig = useSelector(chatConfigSelector);
   const newMessageCount = useSelector(newMessageCountSelector);
+  const widgetType = useSelector(widgetTypeSelector);
+  const placeholder = useSelector(placeholderSelector);
+  const themeColor = useSelector(widgetThemeColorSelector);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() === '' || chatConfig.typing) return;
     const interactionId = generateUUID();
-    dispatch({ type: SEND_NEW_MESSAGE, payload: { newMessage, interactionId } });
+    dispatch({ type: SEND_NEW_MESSAGE, payload: { userInput: newMessage, interactionId } });
     setNewMessage('');
     try {
       const res = await apiService.askQuestion(
         newMessage,
         publicKeys,
         user,
+        widgetType,
         interactionId,
         integration,
         websocket.channel,
@@ -73,5 +83,7 @@ export const useMessageInput = () => {
     newMessage,
     newMessageCount,
     setNewMessage,
+    placeholder,
+    themeColor,
   };
 };
