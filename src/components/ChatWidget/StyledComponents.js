@@ -299,7 +299,7 @@ export const StyledLauncherWrapper = styled.div`
         `}
 
   /* mid position needs more testing */
-  width: ${(props) => (props.position?.includes('mid') ? '40px' : 'auto')};
+  width: ${(props) => (props.position?.includes('mid') ? '45px' : 'auto')};
   cursor: ${(props) => (props.disableclose === 'true' ? 'not-allowed' : 'pointer')};
 `;
 
@@ -483,8 +483,8 @@ export const StyledWidgetWrapper = styled.div`
 
   .chat-launcher {
     cursor: pointer;
-    height: 40px;
-    width: 40px;
+    height: 45px;
+    width: 45px;
     background: ${(props) => props.color || cssVariables.zsbCyan};
     padding: 5px;
     border-radius: ${(props) => (props.shape?.includes('circle') ? '50%' : '5px')};
@@ -517,8 +517,8 @@ export const StyledWidgetWrapper = styled.div`
         ? css`
             border-radius: 50%;
             border: 1px solid ${(props) => props.color || cssVariables.zsbCyan};
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: ${(props) => props.color || cssVariables.zsbCyan};
 
             &.anticon-close {
