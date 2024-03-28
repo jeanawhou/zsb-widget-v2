@@ -5,6 +5,7 @@ import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
 import { PLACEHOLDER } from 'src/constants';
 import { isEmpty } from 'lodash';
+import { zsbIcon } from 'src/svg/Icons';
 
 export const uiSelector = (state) => state.ui;
 
@@ -106,8 +107,12 @@ export const showIconOnReplySelector = createSelector(avatarSelector, avatarPosi
       (typeof avatar === 'object' && !isEmpty(avatar)))
   );
 });
-export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat) => {
-  return chat.launcherIcon;
+export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat, avatar) => {
+  return chat.launcherIcon
+    ? typeof chat.launcherIcon === 'string' && chat.launcherIcon.toLowerCase() === 'none'
+      ? zsbIcon(chat.color)
+      : chat.launcherIcon
+    : avatar;
 });
 export const isCircleLauncherSelector = createSelector(
   chatConfigSelector,
