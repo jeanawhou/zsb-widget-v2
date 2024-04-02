@@ -74,7 +74,7 @@ const App = () => {
 ### Config File props
 `type: 'chat'`
 
-![Chat Widget Preview](https://zsbclient-dev.azureedge.net/assets/chat-sample.png?sv=2020-10-02&st=2022-10-09T12%3A34%3A55Z&se=2024-10-10T12%3A34%3A00Z&sr=c&sp=racwl&sig=WRpNY9Fb2HIcf2jCZ%2FXwBdpqh2xtpIMH1RtIB2P4m0A%3D "Type: Chat")
+![Chat Widget Preview](https://github.com/jeanawhou/zsb-widget-v2/blob/main/public/assets/chat-sample.png "Type: Chat")
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
 - background => Background of the Demo App. (OPT: dark/light)
@@ -99,7 +99,7 @@ const App = () => {
 
 `type: 'search'`
 
-![Search Preview](https://zsbclient-dev.azureedge.net/assets/search-sample.png?sv=2020-10-02&st=2022-10-09T12%3A34%3A55Z&se=2024-10-10T12%3A34%3A00Z&sr=c&sp=racwl&sig=WRpNY9Fb2HIcf2jCZ%2FXwBdpqh2xtpIMH1RtIB2P4m0A%3D "Type: Search")
+![Search Preview](https://github.com/jeanawhou/zsb-widget-v2/blob/main/public/assets/search-sample.png "Type: Search")
 
 - placeholder => Placeholder of the chat area.
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
