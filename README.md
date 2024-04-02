@@ -2,6 +2,12 @@
 
 This project is built with Vite and React.
 
+### Expected compatible frameworks:
+- React 16.x
+- Angular 6+
+- Vue2.x
+
+
 ## Prerequisites
 
 Before you start, ensure you have Node.js 16+ installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
@@ -92,6 +98,9 @@ const App = () => {
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
 - color => Color of `avatar` or brand logo (positioned to the right most of search component). (in hex code - include #)
 - height => max-height of the widget including the history container. (in pixels - add px)
+
+### CDN
+[Click here](https://zsbclient-dev.azureedge.net/zsbv6.js?sv=2020-10-02&st=2022-10-09T12%3A34%3A55Z&se=2024-10-10T12%3A34%3A00Z&sr=c&sp=racwl&sig=WRpNY9Fb2HIcf2jCZ%2FXwBdpqh2xtpIMH1RtIB2P4m0A%3D)
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
