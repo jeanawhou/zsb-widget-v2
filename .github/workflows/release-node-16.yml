@@ -29,3 +29,14 @@ jobs:
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Deploy environment variables
+        env:
+          VITE_CUSTOM_COMPONENT: ${{ secrets.VITE_CUSTOM_COMPONENT }}
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+          VITE_CRYPTO_KEY: ${{ secrets.VITE_CRYPTO_KEY }}
+          VITE_MAX_DISLIKES: ${{ secrets.VITE_MAX_DISLIKES }}
+          REACT_APP_PORTAL_URL: ${{ secrets.REACT_APP_PORTAL_URL }}
+          VITE_WEBSOCKET_URI: ${{ secrets.VITE_WEBSOCKET_URI }}
+          VITE_WEBSOCKET_WS: ${{ secrets.VITE_WEBSOCKET_WS }}
+        run: ./deploy.sh
