@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - release/latest-**
+      - release/latest
 
 jobs:
   publish_with_latest_node:
