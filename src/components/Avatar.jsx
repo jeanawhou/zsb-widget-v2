@@ -10,16 +10,29 @@ const Avatar = (props) => {
   const classNames = `chat-launcher${isLogo ? ' isLogoOnly' : ''}`;
   const avatar = source || icon;
 
-  // we assume that if the avatar is typeof string
-  // it is a url
-  return typeof avatar === 'string' && isCircleLauncher ? (
-    <img src={avatar} className={classNames} alt="chat launcher" {...rest} />
-  ) : (
-    cloneElement(avatar, {
-      className: classNames,
-      ...rest,
-    })
-  );
+  console.log('types', typeof avatar);
+
+  return avatar ? (
+    typeof avatar === 'string' ? (
+      avatar.toLowerCase() !== 'none' ? (
+        isCircleLauncher ? (
+          // we assume that if the avatar is typeof string
+          // && !== 'none' it is a url
+          <img src={avatar} className={classNames} alt="chat launcher" {...rest} />
+        ) : (
+          cloneElement(avatar, {
+            className: classNames,
+            ...rest,
+          })
+        )
+      ) : null
+    ) : (
+      cloneElement(avatar, {
+        className: classNames,
+        ...rest,
+      })
+    )
+  ) : null;
 };
 
 Avatar.propTypes = {
