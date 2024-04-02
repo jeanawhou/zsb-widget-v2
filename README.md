@@ -2,11 +2,16 @@
 
 This project is built with Vite and React.
 
+### Expected compatible frameworks:
+- React (latest version)
+- Angular (latest version)
+- Vue (latest version)
+
 ## Prerequisites
 
 Before you start, ensure you have Node.js 18 installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
 
-You can use v1 version if your app is still in node 16.
+You can use v1 version if your app is still in react 16.
 
 
 ## Usage
@@ -74,7 +79,7 @@ const App = () => {
 ### Config File props
 `type: 'chat'`
 
-![Chat Widget Preview](https://raw.githubusercontent.com/jeanawhou/zsb-widget-v2/main/public/assets/chat-sample.png?token=GHSAT0AAAAAACOJI6XUT2B64WTUCPH3VKAMZPY46HQ "Type: Chat")
+![Chat Widget Preview](https://zsbclient-dev.azureedge.net/assets/chat-sample.png?sv=2020-10-02&st=2022-10-09T12%3A34%3A55Z&se=2024-10-10T12%3A34%3A00Z&sr=c&sp=racwl&sig=WRpNY9Fb2HIcf2jCZ%2FXwBdpqh2xtpIMH1RtIB2P4m0A%3D "Type: Chat")
 - placeholder => Placeholder of the chat area.
 - subtitle => Subtitle of the widget.
 - background => Background of the Demo App. (OPT: dark/light)
@@ -99,12 +104,15 @@ const App = () => {
 
 `type: 'search'`
 
-![Search Preview](https://raw.githubusercontent.com/jeanawhou/zsb-widget-v2/main/public/assets/search-sample.png?token=GHSAT0AAAAAACOJI6XUT2B64WTUCPH3VKAMZPY46HQ "Type: Search")
+![Search Preview](https://zsbclient-dev.azureedge.net/assets/search-sample.png?sv=2020-10-02&st=2022-10-09T12%3A34%3A55Z&se=2024-10-10T12%3A34%3A00Z&sr=c&sp=racwl&sig=WRpNY9Fb2HIcf2jCZ%2FXwBdpqh2xtpIMH1RtIB2P4m0A%3D "Type: Search")
 
 - placeholder => Placeholder of the chat area.
 - avatar => Accepts 'icon1', 'icon2', 'icon3', 'icon4', image URL, or node for the **header** and **reply** avatar. Previously *headerResponseImgUrl* (deprecated).
 - color => Color of `avatar` or brand logo (positioned to the right most of search component). (in hex code - include #)
 - height => max-height of the widget including the history container. (in pixels - add px)
+
+### CDN
+[Click here](https://zsbclient-dev.azureedge.net/zsbv6.js?sv=2020-10-02&st=2022-10-09T12%3A34%3A55Z&se=2024-10-10T12%3A34%3A00Z&sr=c&sp=racwl&sig=WRpNY9Fb2HIcf2jCZ%2FXwBdpqh2xtpIMH1RtIB2P4m0A%3D)
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
