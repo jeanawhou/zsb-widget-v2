@@ -308,6 +308,7 @@ export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
   padding: 12px;
   border-radius: ${(props) =>
     !(props.mobile === 'true' || props.fullscreen === 'true' || props.fullheight === 'true') ? '5px' : '0px'};
+  width: auto;
   background: ${(props) => props.color || cssVariables.zsbCyan};
 `;
 
