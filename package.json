@@ -1,7 +1,7 @@
 {
   "name": "zsb-widget-v2",
   "private": false,
-  "version": "1.7.4-alpha.2",
+  "version": "1.7.4-alpha.3",
   "type": "module",
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/zsb-widget-v2",
