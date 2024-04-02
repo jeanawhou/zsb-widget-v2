@@ -9,7 +9,7 @@ on:
 jobs:
   publish_with_latest_node:
     name: Publish with latest Node.js
-    if: github.ref == 'refs/heads/release/latest-alpha'
+    if: github.ref == 'refs/heads/release/latest-alpha' || github.ref == 'refs/heads/release/latest'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
