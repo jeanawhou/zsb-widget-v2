@@ -4,9 +4,7 @@ This project is built with Vite and React.
 
 ## Prerequisites
 
-Before you start, ensure you have Node.js 18 installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
-
-You can use v1 version if your app is still in node 16.
+Before you start, ensure you have Node.js 16+ installed on your machine. We recommend using NVM (Node Version Manager) for managing Node.js versions.
 
 
 ## Usage
