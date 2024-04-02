@@ -133,12 +133,11 @@ export const uiReducer = (state, action) => {
         color,
         ...restOfUI
       } = widgetUI;
-      const isProd = import.meta.env.PROD;
       const launcher = launcherIcon
         ? extractUserIcon(launcherIcon, ICON_OPTIONS.includes(launcherIcon) ? iconColor || color : null)
         : null;
       // eslint-disable-next-line no-undef
-      const fallbackIcon = isProd ? `${__VITE_BASE_ORIGIN__}${DEFAULT_ZSB_ICON}` : DEFAULT_ZSB_ICON;
+      const fallbackIcon = DEFAULT_ZSB_ICON;
       const isChatWidget = !type || type === 'chat';
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
