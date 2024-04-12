@@ -10,8 +10,6 @@ const Avatar = (props) => {
   const classNames = `chat-launcher${isLogo ? ' isLogoOnly' : ''}`;
   const avatar = source || icon;
 
-  console.log('types', typeof avatar);
-
   return avatar ? (
     typeof avatar === 'string' ? (
       avatar.toLowerCase() !== 'none' ? (
