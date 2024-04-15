@@ -21,7 +21,11 @@ const MessageWrapper = (props) => {
         return (
           <div key={`message-${index}`}>
             {message.text ? <UserMessage message={message} /> : null}
-            {message.reply ? <Reply message={message} key={`reply-message-${index}`} /> : <Typing />}
+            {message.reply ? (
+              <Reply message={message} key={`reply-message-${index}`} />
+            ) : message.isLastMessage ? (
+              <Typing />
+            ) : null}
           </div>
         );
       })}
