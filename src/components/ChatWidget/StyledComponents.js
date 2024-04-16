@@ -155,7 +155,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
           /* box-shadow: ${cssVariables.boxShadow}; */
           min-height: 250px;
           background-color: #fff;
-          animation: fadeIn 0.25s ease-in-out;
+          animation: fadeIn 0.01s ease-in-out;
 
           .anticon-close {
             color: ${(props) => props.textcolor || '#fff'};
@@ -572,7 +572,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   max-height: 120px;
   align-items: center;
   text-overflow: ellipsis;
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.01s ease-in-out;
 
   > div:not(:last-child) {
     margin: 0 10px;
@@ -701,7 +701,7 @@ export const StyledBotReply = styled(StyledMessage)`
   max-width: 80%;
 
   &.typing {
-    background: ${(props) => props.color || cssVariables.zsbCyan} !important;
+    background: transparent;
     text-align: left;
     width: fit-content;
     padding: 10px 4px;
@@ -713,11 +713,12 @@ export const StyledBotReply = styled(StyledMessage)`
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    margin-left: -10px;
 
     > span {
       padding: 5px !important;
       content: '';
-      animation: blink 1s infinite;
+      animation: blink 0.01s infinite;
       animation-fill-mode: both;
       background: ${(props) => props.dotcolor || cssVariables.zsbCyan} !important;
       top: 5px;
