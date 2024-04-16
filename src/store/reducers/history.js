@@ -24,22 +24,13 @@ import {
 
 export const historyReducer = (state, action) => {
   const messageState = state.history || [];
-  const removeLastMessageStatus = messageState.map((msg, idx) => {
-    if (idx === messageState.length - 1) {
-      return {
-        ...msg,
-        isLastMessage: false,
-      };
-    }
-    return msg;
-  });
 
   switch (action.type) {
     case START_SEARCH:
     case SEND_NEW_MESSAGE: {
       const { userInput, interactionId, ...rest } = action.payload;
       const allHistory = [
-        ...removeLastMessageStatus,
+        ...messageState,
         {
           text: userInput,
           lastUserReplied: 'client',
@@ -58,8 +49,8 @@ export const historyReducer = (state, action) => {
 
     case FINISH_SEARCH_WITH_ERROR: {
       const { text, isLastReplyItem } = action.payload;
-      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
-        const lastMessage = idx == removeLastMessageStatus.length - 1;
+      const historyWithReplyLastMsg = messageState.map((msg, idx) => {
+        const lastMessage = idx == messageState.length - 1;
         if (lastMessage && msg.lastUserReplied === 'client' && !msg.answerId) {
           return {
             ...msg,
@@ -74,7 +65,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
@@ -96,13 +90,16 @@ export const historyReducer = (state, action) => {
       const { text, isLastReplyItem, context, name, jid } = action.payload;
       const { quick_reply } = context;
       const quickReplies = isEmpty(quick_reply) ? EMPTY_QUICK_REPLY : quick_reply;
-      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
-        const lastMessage = idx == removeLastMessageStatus.length - 1;
+      const historyWithReplyLastMsg = messageState.map((msg, idx) => {
+        const lastMessage = idx == messageState.length - 1;
         // match the jid payload passed
         // message.reply.text shouldn't be empty
         if (lastMessage && msg.answerId === jid) {
           // text prop should be array now
-          const newReplies = msg.reply?.text ? [...msg.reply.text, text] : [text];
+          const newReplies =
+            msg.reply?.text && Array.isArray(msg.reply?.text) && msg.reply?.text[0]?.length
+              ? [...msg.reply.text, text]
+              : [text];
           return {
             ...msg,
             answerId: msg?.jid || jid,
@@ -134,7 +131,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
@@ -153,7 +153,7 @@ export const historyReducer = (state, action) => {
     }
 
     case ADD_ERROR_REPLY: {
-      const historyWithReplyLastMsg = removeLastMessageStatus.map((msg, idx) => {
+      const historyWithReplyLastMsg = messageState.map((msg, idx) => {
         if (idx == messageState.length - 1) {
           return {
             ...msg,
@@ -165,7 +165,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
@@ -189,8 +192,8 @@ export const historyReducer = (state, action) => {
       if (!callbackEmail) {
         return state;
       }
-      const newMessages = removeLastMessageStatus.map((msg, idx) => {
-        const lastMessage = removeLastMessageStatus?.length - 1;
+      const newMessages = messageState.map((msg, idx) => {
+        const lastMessage = messageState?.length - 1;
         // attach reply to handoff label
         if (idx === lastMessage) {
           return {
@@ -205,7 +208,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
@@ -216,8 +222,8 @@ export const historyReducer = (state, action) => {
     case CANCEL_AGENT_HANDOVER: {
       const config = state.ui?.widgetConfig?.chat || {};
       const cancelledFormMessage = config.cancelledFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.cancelledFormMessage;
-      const lastMessage = removeLastMessageStatus?.length - 1;
-      const updatedMsg = removeLastMessageStatus.map((msg, idx) => {
+      const lastMessage = messageState?.length - 1;
+      const updatedMsg = messageState.map((msg, idx) => {
         if (msg.type === 'agent-handover' && idx === lastMessage) {
           return {
             ...msg,
@@ -228,7 +234,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
@@ -250,8 +259,8 @@ export const historyReducer = (state, action) => {
     case SUBMIT_AGENT_HANDOVER_FORM: {
       const config = state.ui?.widgetConfig?.chat || {};
       const submittedFormMessage = config.submittedFormMessage || DEFAULT_AGENT_HANDOVER_MESSAGE.submittedFormMessage;
-      const lastMessage = removeLastMessageStatus?.length - 1;
-      const updatedMsg = removeLastMessageStatus.map((msg, idx) => {
+      const lastMessage = messageState?.length - 1;
+      const updatedMsg = messageState.map((msg, idx) => {
         if (msg.type === 'agent-handover' && idx === lastMessage) {
           return {
             ...msg,
@@ -264,7 +273,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
@@ -283,8 +295,8 @@ export const historyReducer = (state, action) => {
     }
 
     case AGENT_HANDOVER_SUBMIT_FAIL: {
-      const updatedMsg = removeLastMessageStatus.map((msg, idx) => {
-        const lastMessage = removeLastMessageStatus?.length - 1;
+      const updatedMsg = messageState.map((msg, idx) => {
+        const lastMessage = messageState?.length - 1;
         if (msg.type === 'agent-handover' && idx === lastMessage) {
           return {
             ...msg,
@@ -294,7 +306,10 @@ export const historyReducer = (state, action) => {
             isLastMessage: true,
           };
         }
-        return msg;
+        return {
+          ...msg,
+          isLastMessage: false,
+        };
       });
       return {
         ...state,
