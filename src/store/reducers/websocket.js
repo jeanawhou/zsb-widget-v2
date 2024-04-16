@@ -47,7 +47,9 @@ export const websocketReducer = (state, action) => {
       const generatedAnswer = state.websocket.generatedAnswer || '';
       const wsProcess =
         currentSteps.length && currentSteps.includes(type) ? currentSteps : [...currentSteps, startCase(type)];
-      const concatenatedAnswer = generatedAnswer.trim() === '-' ? '' : generatedAnswer + newGeneratedAnswer;
+      const concatenatedAnswer =
+        generatedAnswer.trim() === '-' || !generatedAnswer.trim()?.length ? '' : generatedAnswer + newGeneratedAnswer;
+
       const newReply = {
         reply: {
           text: [concatenatedAnswer],
