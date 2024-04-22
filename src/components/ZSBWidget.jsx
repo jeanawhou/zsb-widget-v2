@@ -12,7 +12,6 @@ const ZSBWidget = (props) => {
 };
 
 ZSBWidget.defaultProps = {
-  type: 'chat',
   bot: '',
 };
 
