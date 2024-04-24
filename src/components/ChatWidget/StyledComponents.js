@@ -718,7 +718,7 @@ export const StyledBotReply = styled(StyledMessage)`
     > span {
       padding: 5px !important;
       content: '';
-      animation: blink 0.01s infinite;
+      animation: blink 0.5s infinite;
       animation-fill-mode: both;
       background: ${(props) => props.dotcolor || cssVariables.zsbCyan} !important;
       top: 5px;
