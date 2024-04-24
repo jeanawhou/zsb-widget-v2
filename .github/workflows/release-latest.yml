@@ -3,8 +3,7 @@ name: NPM Publish latest build
 on:
   push:
     branches:
-      - release/latest-**
-      - release/latest
+      - build
 
 jobs:
   publish_with_latest_node:
