@@ -87,7 +87,7 @@ const ChatHeader = (props) => {
     >
       {renderHeaderTitleText()}
       <StyledChatHeaderActionIcons>
-        {chatConfig.showCloseButton && (
+        {!chatConfig.showCloseButton && (
           <CloseOutlined onClick={toggleChat} tabIndex={1} onKeyDown={(e) => (e.key === 'Enter' ? toggleChat() : {})} />
         )}
         {chatConfig.hideWidgetMenu ? <div></div> : <ChatHeaderMenu />}

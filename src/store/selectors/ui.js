@@ -3,8 +3,9 @@ import { createSelector } from 'reselect';
 import { DEFAULT_FONT_SIZE, DEFAULT_HEIGHT, HEADER_LOGO_POSITIONS } from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
-import { zsbIcon } from 'src/svg/Icons';
 import { PLACEHOLDER } from 'src/constants';
+import { isEmpty } from 'lodash';
+import { zsbIcon } from 'src/svg/Icons';
 
 export const uiSelector = (state) => state.ui;
 
@@ -31,9 +32,11 @@ export const chatStylesSelector = createSelector(chatConfigSelector, (chatConfig
 });
 
 export const widgetThemeColorSelector = createSelector(widgetConfigSelector, (widget) => widget.color);
-export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) =>
-  chat.avatarPosition === 'header' ? 'header' : 'chat',
-);
+
+export const avatarPositionSelector = createSelector(chatConfigSelector, (chat) => {
+  return chat.avatarPosition ? (chat.avatarPosition === 'header' ? 'header' : 'chat') : null;
+});
+
 export const clientBubbleColorSelector = createSelector(
   chatConfigSelector,
   widgetThemeColorSelector,
@@ -59,7 +62,14 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
   return height ? `${height}px` : DEFAULT_HEIGHT;
 });
 
-export const avatarSelector = createSelector(widgetConfigSelector, (widget) => widget.avatar || zsbIcon(widget.color));
+export const avatarSelector = createSelector(widgetConfigSelector, (widget) => {
+  return !isEmpty(widget.avatar)
+    ? (typeof widget.avatar === 'string' && widget.avatar.toLowerCase() !== 'none') ||
+      (typeof widget.avatar === 'object' && !isEmpty(widget.avatar))
+      ? widget.avatar
+      : null
+    : null;
+});
 export const fontSizeSelector = createSelector(chatConfigSelector, (chat) =>
   chat?.fontSize ? (chat.fontSize.includes('px') ? chat.fontSize : `${chat.fontSize}`) : DEFAULT_FONT_SIZE,
 );
@@ -77,23 +87,32 @@ export const headerImgPositionSelector = createSelector(
   chatConfigSelector,
   avatarPositionSelector,
   (showChatHeaderIcon, chat, position) => {
-    return !position || position === 'header'
+    return position === 'header'
       ? showChatHeaderIcon
         ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
           ? chat.headerLogoPosition
-          : 'left'
+          : 'center'
         : !chat.headerLogoPosition
-          ? 'left'
+          ? 'center'
           : null
       : null;
   },
 );
 
 export const showIconOnReplySelector = createSelector(avatarSelector, avatarPositionSelector, (avatar, position) => {
-  return Boolean(avatar) && position === 'chat';
+  return (
+    Boolean(avatar) &&
+    position === 'chat' &&
+    ((typeof avatar === 'string' && avatar.toLowerCase() !== 'none') ||
+      (typeof avatar === 'object' && !isEmpty(avatar)))
+  );
 });
-export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat) => {
-  return chat.launcherIcon;
+export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat, avatar) => {
+  return chat.launcherIcon
+    ? typeof chat.launcherIcon === 'string' && chat.launcherIcon.toLowerCase() === 'none'
+      ? zsbIcon(chat.color)
+      : chat.launcherIcon
+    : avatar;
 });
 export const isCircleLauncherSelector = createSelector(
   chatConfigSelector,
