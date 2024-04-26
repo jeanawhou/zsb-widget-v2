@@ -42,6 +42,10 @@ export const StyledInput = styled(Input)`
             border-radius: 8px;
           `}
   }
+
+  img {
+    height: inherit;
+  }
 `;
 
 export const StyledComponentWrapper = styled.div`

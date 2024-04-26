@@ -155,7 +155,7 @@ export const StyledChatWrapper = styled(StyledFlexColumn)`
           /* box-shadow: ${cssVariables.boxShadow}; */
           min-height: 250px;
           background-color: #fff;
-          animation: fadeIn 0.25s ease-in-out;
+          animation: fadeIn 0.01s ease-in-out;
 
           .anticon-close {
             color: ${(props) => props.textcolor || '#fff'};
@@ -299,7 +299,7 @@ export const StyledLauncherWrapper = styled.div`
         `}
 
   /* mid position needs more testing */
-  width: ${(props) => (props.position?.includes('mid') ? '40px' : 'auto')};
+  width: ${(props) => (props.position?.includes('mid') ? '45px' : 'auto')};
   cursor: ${(props) => (props.disableclose === 'true' ? 'not-allowed' : 'pointer')};
 `;
 
@@ -308,6 +308,7 @@ export const StyledWidgetLabel = styled(StyledFlexRowCenter)`
   padding: 12px;
   border-radius: ${(props) =>
     !(props.mobile === 'true' || props.fullscreen === 'true' || props.fullheight === 'true') ? '5px' : '0px'};
+  width: auto;
   background: ${(props) => props.color || cssVariables.zsbCyan};
 `;
 
@@ -482,8 +483,8 @@ export const StyledWidgetWrapper = styled.div`
 
   .chat-launcher {
     cursor: pointer;
-    height: 40px;
-    width: 40px;
+    height: 45px;
+    width: 45px;
     background: ${(props) => props.color || cssVariables.zsbCyan};
     padding: 5px;
     border-radius: ${(props) => (props.shape?.includes('circle') ? '50%' : '5px')};
@@ -516,8 +517,8 @@ export const StyledWidgetWrapper = styled.div`
         ? css`
             border-radius: 50%;
             border: 1px solid ${(props) => props.color || cssVariables.zsbCyan};
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: ${(props) => props.color || cssVariables.zsbCyan};
 
             &.anticon-close {
@@ -565,16 +566,16 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
       props.fullheight === 'true' ||
       props.halfscreen === 'true'
     )
-      ? '5px 5px 0px 0px'
+      ? '10px 10px 0px 0px'
       : '0px'};
-  height: ${(props) => (props.fullheight === 'true' || props.fullscreen === 'true' ? '12%' : '80px')};
-  max-height: 80px;
+  height: ${(props) => (props.fullheight === 'true' || props.fullscreen === 'true' ? '12%' : '100px')};
+  max-height: 120px;
   align-items: center;
   text-overflow: ellipsis;
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.01s ease-in-out;
 
   > div:not(:last-child) {
-    margin: 0 5px;
+    margin: 0 10px;
   }
 
   ${(props) => {
@@ -700,7 +701,7 @@ export const StyledBotReply = styled(StyledMessage)`
   max-width: 80%;
 
   &.typing {
-    background: ${(props) => props.color || cssVariables.zsbCyan} !important;
+    background: transparent;
     text-align: left;
     width: fit-content;
     padding: 10px 4px;
@@ -712,11 +713,12 @@ export const StyledBotReply = styled(StyledMessage)`
     justify-content: center;
     align-items: center;
     flex-direction: row;
+    margin-left: -10px;
 
     > span {
       padding: 5px !important;
       content: '';
-      animation: blink 1s infinite;
+      animation: blink 0.5s infinite;
       animation-fill-mode: both;
       background: ${(props) => props.dotcolor || cssVariables.zsbCyan} !important;
       top: 5px;
