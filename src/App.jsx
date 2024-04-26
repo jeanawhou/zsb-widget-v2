@@ -1,3 +1,5 @@
+import React from 'react';
+
 import './App.css';
 import ZSBWidget from './components/ZSBWidget';
 import Store from './store/store.jsx';

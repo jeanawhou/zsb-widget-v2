@@ -10,7 +10,7 @@ const camelCaseKeys = (key) => {
     const deprecatedProp = PROPS_TO_DEPRECATED.find(({ old }) => old.toLowerCase() === key.toLowerCase());
     if (!isEmpty(deprecatedProp)) {
       console.error(
-        `Deprecated zsb props warning. Please use "${deprecatedProp.new}" instead of "${deprecatedProp.old}"`,
+        `Deprecated zsb property warning. Please use "${deprecatedProp.new}" instead of "${deprecatedProp.old}"`,
       );
       return deprecatedProp.new;
     }

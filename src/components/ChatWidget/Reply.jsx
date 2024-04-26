@@ -60,13 +60,13 @@ const Reply = ({ message }) => {
           // - chatConfig is true
           // - not the lastReplyItem (value from reducer)
           // - reply.text.length or show only below the last bubble
-          const lastChatBubble = idx === reply.text.length - 1;
+          const lastChatBubble = idx === reply.text.length - 1 && isLastMessage;
           // like or dislike is only visible to last chat bubble
           const theFeedBackIcon = reply?.isLastReplyItem && lastChatBubble ? feedback : undefined;
           const shouldShowTyping = chatConfig.typing && !reply.isLastReplyItem && lastChatBubble;
           // add typing component if reply doesnt contain alphanumeric
           // or only contains special chars
-          if (!replyText.replace(ALPHANUMBERIC_REGEX, '').length) {
+          if (!replyText.replace(ALPHANUMBERIC_REGEX, '').length && lastChatBubble) {
             if (steps.length) {
               return (
                 <StyledFlexColumnLeft key={`chat-bubble-${idx}-ws-step-${steps}`}>
@@ -95,7 +95,7 @@ const Reply = ({ message }) => {
           }
           return <ChatBubble key={`chat-bubble-${timeReply}-${idx}`} content={replyText} feedback={theFeedBackIcon} />;
         });
-      } else if (!reply.text.replace(ALPHANUMBERIC_REGEX, '').length) {
+      } else if (!reply.text.replace(ALPHANUMBERIC_REGEX, '').length && isLastMessage) {
         return <Typing />;
       }
       return (
