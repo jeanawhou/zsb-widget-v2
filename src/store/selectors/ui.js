@@ -64,7 +64,9 @@ export const widgetHeightSelector = createSelector(chatConfigSelector, ({ height
 
 export const avatarSelector = createSelector(widgetConfigSelector, (widget) => {
   return !isEmpty(widget.avatar)
-    ? (typeof widget.avatar === 'string' && widget.avatar.toLowerCase() !== 'none') ||
+    ? (typeof widget.avatar === 'string' &&
+        widget.avatar.toLowerCase() !== 'none' &&
+        widget.avatar.toLowerCase() !== 'custom') ||
       (typeof widget.avatar === 'object' && !isEmpty(widget.avatar))
       ? widget.avatar
       : null
@@ -78,7 +80,11 @@ export const showIconOnChatHeaderSelector = createSelector(
   avatarSelector,
   avatarPositionSelector,
   (avatar, position) => {
-    return Boolean(avatar) && position === 'header';
+    return avatar
+      ? typeof avatar === 'string'
+        ? avatar !== 'None' && avatar !== 'Custom'
+        : Boolean(avatar) && position === 'header'
+      : false;
   },
 );
 
@@ -87,15 +93,14 @@ export const headerImgPositionSelector = createSelector(
   chatConfigSelector,
   avatarPositionSelector,
   (showChatHeaderIcon, chat, position) => {
-    return position === 'header'
-      ? showChatHeaderIcon
-        ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
-          ? chat.headerLogoPosition
-          : 'center'
-        : !chat.headerLogoPosition
-          ? 'center'
-          : null
-      : null;
+    console.log('showChatHeaderIcon', showChatHeaderIcon);
+    return position === 'header' && showChatHeaderIcon
+      ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
+        ? chat.headerLogoPosition
+        : 'center'
+      : !chat.headerLogoPosition
+        ? 'center'
+        : null;
   },
 );
 
