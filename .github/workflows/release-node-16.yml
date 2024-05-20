@@ -3,7 +3,7 @@ name: NPM Publish node 16 build
 on:
   push:
     branches:
-      - release/node-16
+      - build
 
 jobs:
   publish_node_16:
@@ -25,7 +25,7 @@ jobs:
           git config user.name "${{ secrets.VERSION_BUMP_NAME }}"
           npm version prerelease --force
           npm install
-          npm run build
+          npm run build:dev-prerelease
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
