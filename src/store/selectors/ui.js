@@ -93,7 +93,6 @@ export const headerImgPositionSelector = createSelector(
   chatConfigSelector,
   avatarPositionSelector,
   (showChatHeaderIcon, chat, position) => {
-    console.log('showChatHeaderIcon', showChatHeaderIcon);
     return position === 'header' && showChatHeaderIcon
       ? chat.headerLogoPosition && HEADER_LOGO_POSITIONS.includes(chat.headerLogoPosition)
         ? chat.headerLogoPosition
