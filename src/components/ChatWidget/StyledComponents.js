@@ -573,6 +573,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
   align-items: center;
   text-overflow: ellipsis;
   animation: fadeIn 0.01s ease-in-out;
+  position: relative;
 
   > div:not(:last-child) {
     margin: 0 10px;
@@ -605,7 +606,7 @@ export const StyledChatHeader = styled(StyledFlexRowCenter)`
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin: 0px 5px;
+    margin: 0px;
     margin-left: 0px;
     &:not(:last-child) {
       margin-bottom: 5px;
@@ -650,8 +651,8 @@ export const StyledMessage = styled.div`
   font-size: ${(props) => props.$fontsize};
   flex-direction: column;
   word-break: break-word;
-  margin-bottom: 5px;
   margin: ${(props) => (props.quickreply === 'true' ? '0' : '5px')};
+  margin-bottom: 5px;
 
   > em {
     margin-top: 5px;
@@ -891,6 +892,8 @@ export const StyledInputWrapper = styled.div`
 export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
   width: auto;
   height: 100%;
+  position: absolute;
+  right: 0;
 
   .anticon {
     cursor: pointer;
