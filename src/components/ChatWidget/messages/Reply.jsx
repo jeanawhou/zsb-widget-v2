@@ -20,11 +20,11 @@ import {
   StyledMessage,
   StyledReplyFooter,
   StyledWSProcessStep,
-} from './StyledComponents';
-import TimeStamp from '../TimeStamp';
-import ChatBubble from './ChatBubble';
-import AgentHandoverForm from './AgentHandoverForm';
-import Typing from './Typing';
+} from '../StyledComponents';
+import TimeStamp from '../../TimeStamp';
+import ChatBubble from '../ChatBubble';
+import AgentHandoverForm from '../AgentHandoverForm';
+import Typing from '../Typing';
 import { ALPHANUMBERIC_REGEX } from 'src/constants';
 import { websocketSelector } from 'src/store/selectors';
 
