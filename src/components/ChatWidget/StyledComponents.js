@@ -794,10 +794,11 @@ export const StyledReplyMessageContent = styled.span`
   border-radius: 10px;
   background: ${(props) => props.color || cssVariables.zsbCyan} !important;
   text-align: left;
-  width: fit-content;
+  width: auto;
   padding: 8px;
   line-height: 18px;
   margin: 5px 0;
+  color: ${(props) => props.textColor || '#fff'};
 
   .anticon:not(.anticon-warning) {
     display: block;
@@ -891,7 +892,8 @@ export const StyledInputWrapper = styled.div`
 
 export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
   width: auto;
-  height: 100%;
+  height: 95%;
+  top: 5px;
   position: absolute;
   right: 0;
 
