@@ -11,7 +11,6 @@ import {
   SEND_NEW_MESSAGE,
   SET_WIDGET_TO_FULL_HEIGHT,
   SET_QUICK_REPLIES,
-  SET_WIDGET_CONFIG,
   SET_WS_ASK_QUESTION_ACTION,
   START_TYPING_MESSAGE,
   STOP_TYPING_MESSAGE,
@@ -22,6 +21,7 @@ import {
   FINISH_SEARCH,
   SHOW_SEARCH_INDICATOR,
   FINISH_SEARCH_WITH_ERROR,
+  SET_WIDGET_CONFIG,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
@@ -115,7 +115,9 @@ export const uiReducer = (state, action) => {
 
     case SET_WIDGET_CONFIG: {
       const { configJSON, widgetProps } = action.payload;
-      const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
+      const widgetUI = configJSON
+        ? extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS))
+        : omit(widgetProps, EXCLUDED_PROPS);
       const sessionId = generateUUID();
       const {
         avatar,
@@ -157,7 +159,7 @@ export const uiReducer = (state, action) => {
             ? 'bottom-right'
             : position?.includes('left') && isMid
               ? 'bottom-left'
-              : position;
+              : position ?? 'bottom-right';
 
       return {
         ...state,
@@ -186,8 +188,8 @@ export const uiReducer = (state, action) => {
         },
         user: {
           ...state.user,
-          isAuthenticated: visitorId ? true : authenticatedUser,
-          visitorId,
+          isAuthenticated: visitorId ? true : authenticatedUser ?? null,
+          visitorId: visitorId ?? null,
           sessionId,
         },
         fbConfig: {
@@ -209,7 +211,7 @@ export const uiReducer = (state, action) => {
           : widgetType === 'chat'
             ? [
                 {
-                  reply: { text: widgetUI.welcomeMessage } || null,
+                  reply: widgetUI.welcomeMessag ? { text: widgetUI.welcomeMessage } : null,
                   timeReply: new Date(),
                 },
               ]
