@@ -24,6 +24,7 @@ export const COMPONENT_PROPS = [
   'typingExperience',
   'autoOpen',
   'launcherAvatar',
+  'launcherIcon',
   'responseAvatar',
   'headerAvatar',
   'launcherAvatarType',
