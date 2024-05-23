@@ -802,7 +802,6 @@ export const StyledReplyMessageContent = styled.span`
   padding: 8px;
   line-height: 18px;
   margin: 5px 0;
-  color: ${(props) => props.textColor || '#fff'};
 
   .anticon:not(.anticon-warning) {
     display: block;
@@ -925,7 +924,7 @@ export const StyledMessageBadge = styled.span`
   margin-top: -10px;
   width: 20px;
   font-size: 12px;
-  color: #fff;
+  align-content: center;
 `;
 
 export const StyledWSProcessStep = styled.span`
