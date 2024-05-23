@@ -23,7 +23,7 @@ const useZSBWidget = ({ props }) => {
   const isChatWidget = useSelector(isChatWidgetSelector);
 
   const setWidgetConfigFromProps = () => {
-    if (!isEmpty(props) && props.bot) {
+    if (!isEmpty(props)) {
       dispatch({
         type: SET_WIDGET_CONFIG,
         payload: { widgetProps: props },

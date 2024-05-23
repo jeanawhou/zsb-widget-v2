@@ -770,6 +770,10 @@ export const StyledBotReply = styled(StyledMessage)`
     margin-top: 12px;
   }
 
+  .anticon-warning {
+    margin-left: 0;
+  }
+
   .anticon-user {
     background: ${(props) => props.widgetthemecolor || cssVariables.zsbCyan};
     padding: 5px;
