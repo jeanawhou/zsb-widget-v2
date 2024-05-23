@@ -770,6 +770,10 @@ export const StyledBotReply = styled(StyledMessage)`
     margin-top: 12px;
   }
 
+  .anticon-warning {
+    margin-left: 0;
+  }
+
   .anticon-user {
     background: ${(props) => props.widgetthemecolor || cssVariables.zsbCyan};
     padding: 5px;
@@ -921,7 +925,7 @@ export const StyledMessageBadge = styled.span`
   margin-top: -10px;
   width: 20px;
   font-size: 12px;
-  color: #fff;
+  align-content: center;
 `;
 
 export const StyledWSProcessStep = styled.span`
