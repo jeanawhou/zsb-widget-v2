@@ -100,7 +100,7 @@ ChatHeader.propTypes = {
   toggleChat: PropTypes.func.isRequired,
   showIconOnChatHeader: PropTypes.bool,
   fullHeight: PropTypes.bool,
-  launcherIcon: PropTypes.any,
+  launcherAvatar: PropTypes.any,
   textColor: PropTypes.string,
   isMobile: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
