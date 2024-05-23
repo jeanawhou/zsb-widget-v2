@@ -41,6 +41,7 @@ export const DEFAULT_FONT_SIZE = '14px';
 
 export const DEFAULT_HEIGHT = '450px';
 export const DEFAULT_WIDTH = '350px';
+export const DEFAULT_LAUNCHER_SHAPE = 'circle';
 
 export const DEFAULT_ERROR_MESSAGE = `Sorry, I'm having trouble to look for the answer. Please try again later.`;
 export const SUBMIT_ERROR_MESSAGE = `Sorry, something went wrong while submitting your information. Please contact admin.`;

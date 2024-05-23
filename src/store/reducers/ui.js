@@ -27,7 +27,7 @@ import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
-import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
+import { DEFAULT_LAUNCHER_SHAPE, FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
 import { ICON_OPTIONS, WIDGET_TYPES } from 'src/constants';
 
 export const uiReducer = (state, action) => {
@@ -115,7 +115,9 @@ export const uiReducer = (state, action) => {
 
     case SET_WIDGET_CONFIG: {
       const { configJSON, widgetProps } = action.payload;
-      const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
+      const widgetUI = configJSON
+        ? extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS))
+        : extractWidgetUI({}, omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
       const {
         avatar,
@@ -131,6 +133,7 @@ export const uiReducer = (state, action) => {
         label,
         placeholder,
         color,
+        shape,
         ...restOfUI
       } = widgetUI;
       const launcher = launcherAvatar
@@ -140,7 +143,7 @@ export const uiReducer = (state, action) => {
       const fallbackIcon = DEFAULT_ZSB_ICON;
       const isChatWidget = !type || type === 'chat';
       const isMid = position?.includes('mid');
-      const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
+      const isValidMidPosition = isMid && shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
       const userIconColor =
         !isChatWidget && ICON_OPTIONS.includes(avatar)
@@ -177,7 +180,8 @@ export const uiReducer = (state, action) => {
                 ? {
                     launcherAvatar: launcher || userIcon || fallbackIcon,
                     position: chatPosition,
-                    label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
+                    label: shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
+                    shape: shape ?? DEFAULT_LAUNCHER_SHAPE,
                     ...restOfUI,
                   }
                 : {},
