@@ -9,7 +9,7 @@ import {
   chatConfigSelector,
   isCircleLauncherSelector,
   isWidgetExpandedSelector,
-  launcherIconSelector,
+  launcherAvatarSelector,
   newMessageCountSelector,
   widgetThemeColorSelector,
 } from 'src/store/selectors/ui';
@@ -21,7 +21,7 @@ const Launcher = (props) => {
   const newMessageCount = useSelector(newMessageCountSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
-  const launcherIcon = useSelector(launcherIconSelector);
+  const launcherAvatar = useSelector(launcherAvatarSelector);
   const themeColor = useSelector(widgetThemeColorSelector);
 
   const disableClose = chatStyles.disableClose && isExpanded;
@@ -52,7 +52,7 @@ const Launcher = (props) => {
         isExpanded ? (
           <CloseOutlined size={30} className={`chat-launcher ${disableClose ? 'disableclose' : ''}`} />
         ) : (
-          <Avatar source={launcherIcon} />
+          <Avatar source={launcherAvatar} />
         )
       ) : (
         // if shape not circle

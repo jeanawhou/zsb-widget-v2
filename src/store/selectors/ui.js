@@ -111,11 +111,11 @@ export const showIconOnReplySelector = createSelector(avatarSelector, avatarPosi
       (typeof avatar === 'object' && !isEmpty(avatar)))
   );
 });
-export const launcherIconSelector = createSelector(chatConfigSelector, avatarSelector, (chat, avatar) => {
-  return chat.launcherIcon
-    ? typeof chat.launcherIcon === 'string' && chat.launcherIcon.toLowerCase() === 'none'
+export const launcherAvatarSelector = createSelector(chatConfigSelector, avatarSelector, (chat, avatar) => {
+  return chat.launcherAvatar
+    ? typeof chat.launcherAvatar === 'string' && chat.launcherAvatar.toLowerCase() === 'none'
       ? zsbIcon(chat.color)
-      : chat.launcherIcon
+      : chat.launcherAvatar
     : avatar;
 });
 export const isCircleLauncherSelector = createSelector(
