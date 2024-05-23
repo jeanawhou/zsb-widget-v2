@@ -115,9 +115,7 @@ export const uiReducer = (state, action) => {
 
     case SET_WIDGET_CONFIG: {
       const { configJSON, widgetProps } = action.payload;
-      const widgetUI = configJSON
-        ? extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS))
-        : omit(widgetProps, EXCLUDED_PROPS);
+      const widgetUI = extractWidgetUI(omit(configJSON, EXCLUDED_PROPS), omit(widgetProps, EXCLUDED_PROPS));
       const sessionId = generateUUID();
       const {
         avatar,
@@ -127,7 +125,7 @@ export const uiReducer = (state, action) => {
         authenticatedUser,
         autoOpen,
         visitorId,
-        launcherIcon,
+        launcherAvatar,
         type,
         position,
         label,
@@ -135,8 +133,8 @@ export const uiReducer = (state, action) => {
         color,
         ...restOfUI
       } = widgetUI;
-      const launcher = launcherIcon
-        ? extractUserIcon(launcherIcon, ICON_OPTIONS.includes(launcherIcon) ? iconColor || color : null)
+      const launcher = launcherAvatar
+        ? extractUserIcon(launcherAvatar, ICON_OPTIONS.includes(launcherAvatar) ? iconColor || color : null)
         : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = DEFAULT_ZSB_ICON;
@@ -177,7 +175,7 @@ export const uiReducer = (state, action) => {
             chat:
               widgetType === 'chat'
                 ? {
-                    launcherIcon: launcher || userIcon || fallbackIcon,
+                    launcherAvatar: launcher || userIcon || fallbackIcon,
                     position: chatPosition,
                     label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
                     ...restOfUI,
