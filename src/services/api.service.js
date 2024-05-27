@@ -17,6 +17,7 @@ export const apiService = {
         if (res.data?.error || res.data?.errors) {
           throw res.data.error || res.data.errors;
         }
+        return res;
       })
       .catch((error) => error);
   },

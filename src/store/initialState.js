@@ -2,7 +2,7 @@ import { MAX_DISLIKES } from '../constants/chat';
 
 export const initialHistory = [];
 
-export const initialChat = {
+export const initialChatConfig = {
   title: 'ZSB Chat',
   subtitle: '',
   placeholder: 'Type your message...',
@@ -19,7 +19,7 @@ export const initialUI = {
   widgetType: null,
   newMessageCount: null,
   widgetConfig: {
-    chat: initialChat,
+    chat: initialChatConfig,
   },
 };
 
