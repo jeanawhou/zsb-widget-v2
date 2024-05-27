@@ -29,7 +29,6 @@ export const parseValues = (value) => {
 };
 
 export const reconcileProps = (obj) => {
-  console.log('obj obj', obj);
   if (isPlainObject(obj)) {
     return mapValues(
       mapKeys(obj, (_, key) => camelCaseKeys(key)),

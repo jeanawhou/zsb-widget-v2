@@ -53,4 +53,4 @@ export const PLACEHOLDER = {
   chat: 'Type your query here...',
 };
 
-export const ICON_OPTIONS = ['icon1', 'icon2', 'icon3', 'icon4', 'zsb'];
+export const ICON_OPTIONS = ['default', 'icon1', 'icon2', 'icon3', 'icon4', 'zsb'];
