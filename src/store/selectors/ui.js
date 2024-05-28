@@ -177,29 +177,29 @@ export const showIconOnReplySelector = createSelector(
   (avatar, type) => shouldShowChatWidgetAvatar(avatar, type),
 );
 
-export const isCircleLauncherSelector = createSelector(widgetPropsSelector, (chat) => {
-  return !chat.shape || chat.shape?.toLowerCase() === 'circle';
+export const isCircleLauncherSelector = createSelector(widgetPropsSelector, (config) => {
+  return !config.shape || config.shape?.toLowerCase() === 'circle';
 });
 
-export const handOffLabelSelector = createSelector(widgetPropsSelector, (chat) => chat.handoffLabel);
-export const shouldSendCallbackEmailSelector = createSelector(widgetPropsSelector, (chat) => chat.callbackEmail);
+export const handOffLabelSelector = createSelector(widgetPropsSelector, (config) => config.handoffLabel);
+export const shouldSendCallbackEmailSelector = createSelector(widgetPropsSelector, (config) => config.callbackEmail);
 
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);
 export const userStyleSelector = createSelector(uiSelector, (ui) => ui.userStyle);
 
 export const typingExperienceEnabledSelector = createSelector(
   widgetPropsSelector,
-  (chat) => chat.typingExperience || false,
+  (config) => config.typingExperience || false,
 );
 export const isTypingSelector = createSelector(
   widgetPropsSelector,
   typingExperienceEnabledSelector,
   websocketSelector,
-  (chat, typingExperienceEnabled, websocket) => {
-    const isTyping = typingExperienceEnabled && chat.typing;
+  (config, typingExperienceEnabled, websocket) => {
+    const isTyping = typingExperienceEnabled && config.typing;
     // hasn't got the answer yet
     // hence, we're showing typing/loading indicator
-    if (websocket?.steps?.length && chat.typing) {
+    if (websocket?.steps?.length && config.typing) {
       return true;
     }
     // should only be true
