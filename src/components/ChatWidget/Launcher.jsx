@@ -27,16 +27,18 @@ const Launcher = (props) => {
   const disableClose = chatStyles.disableClose && isExpanded;
   // TODO: needs more accurate computation
   const adjustment =
-    2 * chatStyles.label?.length +
-    (chatStyles.label?.length > 30
-      ? chatStyles.label?.length - 2
-      : chatStyles.label?.length <= 10
-        ? chatStyles.label?.length - 20
-        : chatStyles.label?.length <= 20
-          ? chatStyles.label?.length - 14
-          : chatStyles.label?.length <= 30
-            ? chatStyles.label?.length
-            : -1);
+    2 * Number(chatStyles.label?.length) ||
+    1 +
+      (chatStyles.label?.length > 30
+        ? chatStyles.label?.length - 2
+        : chatStyles.label?.length <= 10
+          ? chatStyles.label?.length - 20
+          : chatStyles.label?.length <= 20
+            ? chatStyles.label?.length - 14
+            : chatStyles.label?.length <= 30
+              ? chatStyles.label?.length
+              : -1) ||
+    0;
 
   const noOperation = () => {};
 

@@ -896,7 +896,7 @@ export const StyledInputWrapper = styled.div`
 
 export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
   width: auto;
-  height: 95%;
+  height: 90%;
   top: 5px;
   position: absolute;
   right: 0;
@@ -941,7 +941,9 @@ export const StyledWSProcessStep = styled.span`
 
 export const StyledChatHeaderAvatar = styled(Avatar)`
   width: 70px;
+  position: absolute;
   margin-left: 5px;
+  left: 0;
 `;
 
 export const StyledChatReplyAvatar = styled(Avatar)`
