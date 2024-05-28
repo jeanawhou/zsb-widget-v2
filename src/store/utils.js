@@ -1,7 +1,10 @@
 import { AES, enc } from 'crypto-js';
 import { v4 as uuidv4 } from 'uuid';
+import { isEmpty, isPlainObject } from 'lodash';
 
 import { getLocalStorageItem } from 'src/services/global.service';
+import { LAUNCHER_ONLY_ICONS } from 'src/constants/chat';
+import { ICON_OPTIONS } from 'src/constants';
 
 export const getTimeStamp = () => {
   return new Date().toLocaleTimeString();
@@ -21,3 +24,59 @@ export const getStoredInteractions = (maxInteractionHistory) => {
 };
 
 export const generateUUID = () => uuidv4();
+
+export const isUrl = (string) => {
+  try {
+    return Boolean(new URL(string));
+  } catch (e) {
+    return false;
+  }
+};
+
+export const getChatWidgetAvatar = (avatar, type, fallbackLauncherAvatar, isLauncherAnIcon) => {
+  // icon type check
+  if (type === 'icon' && isLauncherAnIcon) {
+    if (!LAUNCHER_ONLY_ICONS.includes(avatar)) {
+      return fallbackLauncherAvatar;
+    }
+    return null;
+  } else if (
+    // avatar is null check
+    type.toLowerCase() === 'none' &&
+    (!avatar === 'none' || !avatar)
+  ) {
+    return null;
+  }
+  // amazing lodash isEmpty()!
+  // checks if string, array or object types is empty
+  else if (!isEmpty(avatar)) {
+    if (isPlainObject(avatar)) {
+      return avatar;
+    } else if (avatar?.toLowerCase() !== 'none') {
+      console.log('R WE HERE???', avatar, type);
+      if (ICON_OPTIONS.includes(avatar)) {
+        return !LAUNCHER_ONLY_ICONS.includes(avatar) ? avatar : null;
+      }
+      return isUrl(avatar) ? avatar : null;
+    }
+    return null;
+  }
+  return null;
+};
+
+export const shouldShowChatWidgetAvatar = (avatar, type) => {
+  const lowerCasedAvatar = typeof avatar === 'string' ? avatar.toLowerCase() : '';
+  if (!isEmpty(avatar)) {
+    if (type?.toLowerCase() !== 'none') {
+      if (!isEmpty(avatar)) {
+        if (typeof avatar === 'string') {
+          return lowerCasedAvatar !== 'none' && avatar.toLowerCase() !== 'custom';
+        }
+        return true;
+      }
+      return false;
+    }
+    return !LAUNCHER_ONLY_ICONS.includes(avatar);
+  }
+  return false;
+};

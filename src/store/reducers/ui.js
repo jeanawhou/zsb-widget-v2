@@ -27,7 +27,7 @@ import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
-import { DEFAULT_LAUNCHER_SHAPE, FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
+import { DEFAULT_LAUNCHER_SHAPE, FALLBACK_WIDGET_LABEL, LAUNCHER_ONLY_ICONS } from 'src/constants/chat';
 import { ICON_OPTIONS, WIDGET_TYPES } from 'src/constants';
 
 export const uiReducer = (state, action) => {
@@ -128,6 +128,8 @@ export const uiReducer = (state, action) => {
         autoOpen,
         visitorId,
         launcherAvatar,
+        headerAvatar,
+        responseAvatar,
         type,
         position,
         label,
@@ -137,7 +139,7 @@ export const uiReducer = (state, action) => {
         ...restOfUI
       } = widgetUI;
       const launcher = launcherAvatar
-        ? extractUserIcon(launcherAvatar, ICON_OPTIONS.includes(launcherAvatar) ? iconColor || color : null)
+        ? extractUserIcon(launcherAvatar, ICON_OPTIONS.includes(launcherAvatar) ? iconColor : null)
         : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = DEFAULT_ZSB_ICON;
@@ -151,7 +153,14 @@ export const uiReducer = (state, action) => {
           : isChatWidget && ICON_OPTIONS.includes(avatar)
             ? iconColor || color
             : null;
-      const userIcon = extractUserIcon(avatar, userIconColor);
+      const headerIcon =
+        typeof headerAvatar === 'string' && !LAUNCHER_ONLY_ICONS.includes(headerAvatar)
+          ? extractUserIcon(headerAvatar, userIconColor)
+          : headerAvatar;
+      const responseIcon =
+        typeof responseAvatar === 'string' && !LAUNCHER_ONLY_ICONS.includes(responseAvatar)
+          ? extractUserIcon(responseAvatar, userIconColor)
+          : responseAvatar;
 
       const chatPosition =
         isChatWidget && isValidMidPosition
@@ -174,18 +183,19 @@ export const uiReducer = (state, action) => {
             // hence moving it outside the chat object
             placeholder,
             color,
-            avatar: userIcon,
             chat:
               widgetType === 'chat'
                 ? {
-                    launcherAvatar: launcher || userIcon || fallbackIcon,
+                    launcherAvatar: launcher || fallbackIcon,
+                    headerAvatar: headerIcon,
+                    responseAvatar: responseIcon,
                     position: chatPosition,
                     label: shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
                     shape: shape ?? DEFAULT_LAUNCHER_SHAPE,
                     ...restOfUI,
                   }
                 : {},
-            search: widgetType === 'search' ? restOfUI : {},
+            search: widgetType === 'search' ? { launcherAvatar: launcher || fallbackIcon, ...restOfUI } : {},
           },
         },
         user: {

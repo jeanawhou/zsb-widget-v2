@@ -47,3 +47,4 @@ export const DEFAULT_ERROR_MESSAGE = `Sorry, I'm having trouble to look for the 
 export const SUBMIT_ERROR_MESSAGE = `Sorry, something went wrong while submitting your information. Please contact admin.`;
 
 export const HEADER_LOGO_POSITIONS = ['left', 'right', 'center'];
+export const LAUNCHER_ONLY_ICONS = ['default', 'icon1'];
