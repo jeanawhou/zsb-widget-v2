@@ -153,7 +153,7 @@ const Reply = ({ message }) => {
           {type === 'error' ? (
             <WarningFilled style={{ color: cssVariables.warning }} />
           ) : showIconOnReply ? (
-            <StyledChatReplyAvatar isLogo color={widgetThemeColor} />
+            <StyledChatReplyAvatar isChatResponse isLogo color={widgetThemeColor} />
           ) : null}
           <StyledFlexColumnLeft>{renderReply()}</StyledFlexColumnLeft>
         </StyledFlexRowLeft>
