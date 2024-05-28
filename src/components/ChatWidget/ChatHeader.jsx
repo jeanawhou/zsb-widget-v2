@@ -36,7 +36,7 @@ const ChatHeader = (props) => {
       case 'left':
         return (
           <>
-            {headerImgPosition ? <StyledChatHeaderAvatar isLogo /> : null}
+            {headerImgPosition ? <StyledChatHeaderAvatar isHeader isLogo /> : null}
             <StyledFlexColumnLeft>
               <h3>{widgetTitle}</h3>
               <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
@@ -51,14 +51,14 @@ const ChatHeader = (props) => {
               <h3>{widgetTitle}</h3>
               <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
             </StyledFlexColumnRight>
-            {headerImgPosition ? <StyledChatHeaderAvatar isLogo /> : null}
+            {headerImgPosition ? <StyledChatHeaderAvatar isHeader isLogo /> : null}
           </>
         );
 
       case 'center':
         return (
           <>
-            {headerImgPosition ? <StyledChatHeaderAvatar isLogo /> : null}
+            {headerImgPosition ? <StyledChatHeaderAvatar isHeader isLogo /> : null}
             <StyledFlexColumnSpaceEvenly>
               <h3>{widgetTitle}</h3>
               <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
@@ -100,7 +100,6 @@ ChatHeader.propTypes = {
   toggleChat: PropTypes.func.isRequired,
   showIconOnChatHeader: PropTypes.bool,
   fullHeight: PropTypes.bool,
-  launcherAvatar: PropTypes.any,
   textColor: PropTypes.string,
   isMobile: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

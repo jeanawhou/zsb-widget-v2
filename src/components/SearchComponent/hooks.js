@@ -57,8 +57,7 @@ const useSearchComponent = () => {
         const result = res.data.report[0];
         addResponse(result);
         dispatch({ type: FINISH_SEARCH });
-      }
-      if (!res || res.message?.toLowerCase()?.includes('error')) {
+      } else if (!res || res.message?.toLowerCase()?.includes('error')) {
         throw new Error(DEFAULT_ERROR_MESSAGE);
       }
     } catch (error) {
