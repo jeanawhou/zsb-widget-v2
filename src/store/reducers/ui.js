@@ -28,7 +28,8 @@ import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
 import { FALLBACK_WIDGET_LABEL, LAUNCHER_ONLY_ICONS } from 'src/constants/chat';
-import { ICON_OPTIONS, WIDGET_TYPES } from 'src/constants';
+import { WIDGET_TYPES } from 'src/constants';
+import { getIconColor } from '../helpers/icons';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -135,21 +136,14 @@ export const uiReducer = (state, action) => {
         color,
         ...restOfUI
       } = widgetUI;
-      const launcher = launcherAvatar
-        ? extractUserIcon(launcherAvatar, ICON_OPTIONS.includes(launcherAvatar) ? iconColor : null)
-        : null;
+      const isChatWidget = !type || type === 'chat';
+      const userIconColor = getIconColor(avatar, color, isChatWidget, iconColor);
+      const launcher = launcherAvatar ? extractUserIcon(launcherAvatar, userIconColor) : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = DEFAULT_ZSB_ICON;
-      const isChatWidget = !type || type === 'chat';
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
-      const userIconColor =
-        !isChatWidget && ICON_OPTIONS.includes(avatar)
-          ? color
-          : isChatWidget && ICON_OPTIONS.includes(avatar)
-            ? iconColor || color
-            : null;
       const headerIcon =
         typeof headerAvatar === 'string' && !LAUNCHER_ONLY_ICONS.includes(headerAvatar)
           ? extractUserIcon(headerAvatar, userIconColor)

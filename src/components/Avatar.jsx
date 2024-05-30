@@ -21,8 +21,6 @@ const Avatar = (props) => {
     // then check which avatar position from the prop to render
     typeof source !== 'undefined' ? source : isHeader ? headerAvatar : isChatResponse ? responseAvatar : launcherAvatar;
 
-  console.log('from search', source, avatar, launcherAvatar);
-
   return !isEmpty(avatar) ? (
     typeof avatar === 'string' ? (
       avatar.toLowerCase() !== 'none' ? (
