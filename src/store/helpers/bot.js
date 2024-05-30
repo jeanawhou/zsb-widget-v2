@@ -1,11 +1,11 @@
 import { reconcileProps } from 'src/utils';
 
-export const extractPublicKeys = (pub) => {
+export const extractPublicKeys = (pubAskedQuestion) => {
   return {
-    sentinel: pub.snt,
-    graph: pub.nd,
-    wlk: pub.wlk,
-    key: pub.key,
+    sentinel: pubAskedQuestion.snt,
+    graph: pubAskedQuestion.nd,
+    key: pubAskedQuestion.key,
+    wlk: pubAskedQuestion.wlk,
   };
 };
 
