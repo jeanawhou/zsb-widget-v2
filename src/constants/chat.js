@@ -40,6 +40,7 @@ export const EMPTY_QUICK_REPLY = { replies: [] };
 export const DEFAULT_FONT_SIZE = '14px';
 
 export const DEFAULT_HEIGHT = '450px';
+export const DEFAULT_WIDGET_TYPE = 'chat';
 export const DEFAULT_WIDTH = '350px';
 export const DEFAULT_LAUNCHER_SHAPE = 'circle';
 
