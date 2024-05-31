@@ -27,6 +27,7 @@ export const COMPONENT_PROPS = [
   'responseAvatar',
   'headerAvatar',
   'launcherAvatarType',
+  'launcherIconType',
   'responseAvatarType',
   'headerAvatarType',
   'clientBubbleColor',
@@ -37,10 +38,13 @@ export const COMPONENT_PROPS = [
 export const PROPS_TO_DEPRECATED = [
   { old: 'openWidget', new: 'autoOpen' },
   { old: 'headerResponseImgUrl', new: 'avatar' },
+  { old: 'avatar', new: 'headerAvatar' },
+  { old: 'headerResponseImgUrl', new: 'headerAvatar' },
   { old: 'widgetIconUrl', new: 'launcherAvatar' },
   { old: 'launcherIcon', new: 'launcherAvatar' },
   { old: 'bubbleColor', new: 'clientBubbleColor' },
   { old: 'bubbleGradient', new: 'replyBubbleGradient' },
+  { old: 'launcherIconType', new: 'launcherAvatarType' },
 ];
 
 export const WIDGET_TYPES = ['chat', 'search'];

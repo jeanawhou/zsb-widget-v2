@@ -95,8 +95,16 @@ export const launcherAvatarSelector = createSelector(widgetPropsSelector, avatar
     : oldAvatarProp;
 });
 
-export const isLauncherAnIconSelector = createSelector(launcherAvatarSelector, (launcherAvatar) =>
-  ICON_OPTIONS.includes(launcherAvatar),
+export const launcherAvatarTypeSelector = createSelector(widgetPropsSelector, (config) => {
+  return config.launcherAvatarType;
+});
+
+export const isLauncherAnIconSelector = createSelector(
+  launcherAvatarSelector,
+  launcherAvatarTypeSelector,
+  (launcherAvatar, launcherAvatarType) => {
+    return launcherAvatarType === 'icon' || ICON_OPTIONS.includes(launcherAvatar);
+  },
 );
 
 export const headerAvatarTypeSelector = createSelector(
@@ -124,9 +132,8 @@ export const headerAvatarSelector = createSelector(
   headerAvatarTypeSelector,
   launcherAvatarSelector,
   isLauncherAnIconSelector,
-  avatarSelector,
   (config, headerAvatarType, launcherAvatar, isLauncherAnIcon) => {
-    const headerAvatar = config.headerAvatar;
+    const headerAvatar = config.headerAvatar || '';
     return getChatWidgetAvatar(headerAvatar, headerAvatarType, launcherAvatar, isLauncherAnIcon);
   },
 );
@@ -136,9 +143,8 @@ export const responseAvatarSelector = createSelector(
   responseAvatarTypeSelector,
   launcherAvatarSelector,
   isLauncherAnIconSelector,
-  avatarSelector,
   (config, responseAvatarType, launcherAvatar, isLauncherAnIcon) => {
-    const responseAvatar = config.responseAvatar;
+    const responseAvatar = config.responseAvatar || '';
     return getChatWidgetAvatar(responseAvatar, responseAvatarType, launcherAvatar, isLauncherAnIcon);
   },
 );
