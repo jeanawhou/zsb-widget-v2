@@ -35,7 +35,8 @@ export const isUrl = (string) => {
 
 export const getChatWidgetAvatar = (avatar, type, fallbackLauncherAvatar, isLauncherAnIcon) => {
   // icon type check
-  if (type === 'icon' && isLauncherAnIcon) {
+  const isIcon = type === 'icon' && isLauncherAnIcon;
+  if (isIcon) {
     if (!LAUNCHER_ONLY_ICONS.includes(avatar)) {
       return fallbackLauncherAvatar;
     }
@@ -53,11 +54,10 @@ export const getChatWidgetAvatar = (avatar, type, fallbackLauncherAvatar, isLaun
     if (isPlainObject(avatar)) {
       return avatar;
     } else if (avatar?.toLowerCase() !== 'none') {
-      console.log('R WE HERE???', avatar, type);
       if (ICON_OPTIONS.includes(avatar)) {
         return !LAUNCHER_ONLY_ICONS.includes(avatar) ? avatar : null;
       }
-      return isUrl(avatar) ? avatar : null;
+      return isUrl(avatar) ? avatar : isIcon ? fallbackLauncherAvatar : null;
     }
     return null;
   }
