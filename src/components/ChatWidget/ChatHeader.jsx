@@ -7,14 +7,13 @@ import {
   StyledChatHeaderActionIcons,
   StyledChatHeaderAvatar,
   StyledFlexColumnLeft,
-  StyledFlexColumnRight,
   StyledFlexColumnSpaceEvenly,
   StyledSubtitle,
 } from './StyledComponents';
 import useSelector from 'src/store/useSelector';
 import {
   chatConfigSelector,
-  headerImgPositionSelector,
+  headerAvatarSelector,
   isFullscreenSelector,
   isWidthHalfFullscreenSelector,
   widgetThemeColorSelector,
@@ -28,51 +27,28 @@ const ChatHeader = (props) => {
   const widgetThemeColor = useSelector(widgetThemeColorSelector);
   const widgetTitle = useSelector(widgetTitleSelector);
   const isWidgetHalfScreen = useSelector(isWidthHalfFullscreenSelector);
-  const headerImgPosition = useSelector(headerImgPositionSelector);
+  const headerAvatar = useSelector(headerAvatarSelector);
   const isFullscreen = useSelector(isFullscreenSelector);
 
   const renderHeaderTitleText = () => {
-    switch (headerImgPosition) {
-      case 'left':
-        return (
-          <>
-            {headerImgPosition ? <StyledChatHeaderAvatar isHeader isLogo /> : null}
-            <StyledFlexColumnLeft>
-              <h3>{widgetTitle}</h3>
-              <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-            </StyledFlexColumnLeft>
-          </>
-        );
-
-      case 'right':
-        return (
-          <>
-            <StyledFlexColumnRight>
-              <h3>{widgetTitle}</h3>
-              <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-            </StyledFlexColumnRight>
-            {headerImgPosition ? <StyledChatHeaderAvatar isHeader isLogo /> : null}
-          </>
-        );
-
-      case 'center':
-        return (
-          <>
-            {headerImgPosition ? <StyledChatHeaderAvatar isHeader isLogo /> : null}
-            <StyledFlexColumnSpaceEvenly>
-              <h3>{widgetTitle}</h3>
-              <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-            </StyledFlexColumnSpaceEvenly>
-          </>
-        );
-      default:
-        return (
-          <StyledFlexColumnSpaceEvenly>
+    if (headerAvatar) {
+      return (
+        <>
+          <StyledChatHeaderAvatar isHeader isLogo />
+          <StyledFlexColumnLeft>
             <h3>{widgetTitle}</h3>
             <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
-          </StyledFlexColumnSpaceEvenly>
-        );
+          </StyledFlexColumnLeft>
+        </>
+      );
     }
+
+    return (
+      <StyledFlexColumnSpaceEvenly>
+        <h3>{widgetTitle}</h3>
+        <StyledSubtitle>{chatConfig.subtitle}</StyledSubtitle>
+      </StyledFlexColumnSpaceEvenly>
+    );
   };
 
   return (
