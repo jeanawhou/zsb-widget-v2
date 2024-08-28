@@ -33,7 +33,7 @@ export const chatConfigSelector = createSelector(
 );
 
 export const widgetTitleSelector = createSelector(chatConfigSelector, (chatConfig) => {
-  return chatConfig.title || chatConfig.identifier || chatConfig.botTitle;
+  return chatConfig.title || chatConfig.botTitle || chatConfig.identifier;
 });
 
 export const widgetPropsSelector = createSelector(
