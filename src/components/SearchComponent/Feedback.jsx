@@ -14,8 +14,7 @@ import { integrationSelector } from 'src/store/selectors/integration';
 import { ADD_REACTION_TO_LAST_RESPONSE } from 'src/store/action';
 
 const Feedback = ({ feedback, isResult }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [_, dispatch] = useContext(Context);
+  const [, dispatch] = useContext(Context);
   const lastHistory = useSelector(lastHistorySelector);
   const publicKeys = useSelector(publicKeysSelector);
   const user = useSelector(userSelector);

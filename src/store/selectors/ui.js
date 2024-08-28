@@ -183,19 +183,19 @@ export const showIconOnReplySelector = createSelector(
   (avatar, type) => shouldShowChatWidgetAvatar(avatar, type),
 );
 
-export const isCircleLauncherSelector = createSelector(widgetPropsSelector, (config) => {
-  return !config.shape || config.shape?.toLowerCase() === 'circle';
+export const isCircleLauncherSelector = createSelector(widgetPropsSelector, (chat) => {
+  return !chat.shape || chat.shape?.toLowerCase() === 'circle';
 });
 
-export const handOffLabelSelector = createSelector(widgetPropsSelector, (config) => config.handoffLabel);
-export const shouldSendCallbackEmailSelector = createSelector(widgetPropsSelector, (config) => config.callbackEmail);
+export const handOffLabelSelector = createSelector(widgetPropsSelector, (chat) => chat.handoffLabel);
+export const shouldSendCallbackEmailSelector = createSelector(widgetPropsSelector, (chat) => chat.callbackEmail);
 
 export const newMessageCountSelector = createSelector(uiSelector, (ui) => ui.newMessageCount);
 export const userStyleSelector = createSelector(uiSelector, (ui) => ui.userStyle);
 
 export const typingExperienceEnabledSelector = createSelector(
   widgetPropsSelector,
-  (config) => config.typingExperience || false,
+  (chat) => chat.typingExperience || false,
 );
 export const isTypingSelector = createSelector(
   widgetPropsSelector,
@@ -208,7 +208,6 @@ export const isTypingSelector = createSelector(
     if (websocket?.steps?.length && config.typing) {
       return true;
     }
-    // should only be true
     return isTyping || false;
   },
 );
