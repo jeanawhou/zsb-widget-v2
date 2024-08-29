@@ -9,7 +9,7 @@ import {
   chatConfigSelector,
   isCircleLauncherSelector,
   isWidgetExpandedSelector,
-  launcherIconSelector,
+  launcherAvatarSelector,
   newMessageCountSelector,
   widgetThemeColorSelector,
 } from 'src/store/selectors/ui';
@@ -21,22 +21,24 @@ const Launcher = (props) => {
   const newMessageCount = useSelector(newMessageCountSelector);
   const isExpanded = useSelector(isWidgetExpandedSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
-  const launcherIcon = useSelector(launcherIconSelector);
+  const launcherAvatar = useSelector(launcherAvatarSelector);
   const themeColor = useSelector(widgetThemeColorSelector);
 
   const disableClose = chatStyles.disableClose && isExpanded;
   // TODO: needs more accurate computation
   const adjustment =
-    2 * chatStyles.label?.length +
-    (chatStyles.label?.length > 30
-      ? chatStyles.label?.length - 2
-      : chatStyles.label?.length <= 10
-        ? chatStyles.label?.length - 20
-        : chatStyles.label?.length <= 20
-          ? chatStyles.label?.length - 14
-          : chatStyles.label?.length <= 30
-            ? chatStyles.label?.length
-            : -1);
+    2 * Number(chatStyles.label?.length) ||
+    1 +
+      (chatStyles.label?.length > 30
+        ? chatStyles.label?.length - 2
+        : chatStyles.label?.length <= 10
+          ? chatStyles.label?.length - 20
+          : chatStyles.label?.length <= 20
+            ? chatStyles.label?.length - 14
+            : chatStyles.label?.length <= 30
+              ? chatStyles.label?.length
+              : -1) ||
+    0;
 
   const noOperation = () => {};
 
@@ -52,7 +54,7 @@ const Launcher = (props) => {
         isExpanded ? (
           <CloseOutlined size={30} className={`chat-launcher ${disableClose ? 'disableclose' : ''}`} />
         ) : (
-          <Avatar source={launcherIcon} />
+          <Avatar source={launcherAvatar} />
         )
       ) : (
         // if shape not circle

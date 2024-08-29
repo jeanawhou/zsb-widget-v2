@@ -40,9 +40,11 @@ export const EMPTY_QUICK_REPLY = { replies: [] };
 export const DEFAULT_FONT_SIZE = '14px';
 
 export const DEFAULT_HEIGHT = '450px';
+export const DEFAULT_WIDGET_TYPE = 'chat';
 export const DEFAULT_WIDTH = '350px';
 
 export const DEFAULT_ERROR_MESSAGE = `Sorry, I'm having trouble to look for the answer. Please try again later.`;
 export const SUBMIT_ERROR_MESSAGE = `Sorry, something went wrong while submitting your information. Please contact admin.`;
 
 export const HEADER_LOGO_POSITIONS = ['left', 'right', 'center'];
+export const LAUNCHER_ONLY_ICONS = ['default', 'icon1'];

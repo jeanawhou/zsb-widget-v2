@@ -13,6 +13,12 @@ export const apiService = {
         method: 'post',
         data,
       })
+      .then((res) => {
+        if (res.data?.error || res.data?.errors) {
+          throw res.data.error || res.data.errors;
+        }
+        return res;
+      })
       .catch((error) => error);
   },
 
