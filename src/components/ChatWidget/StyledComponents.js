@@ -770,6 +770,10 @@ export const StyledBotReply = styled(StyledMessage)`
     margin-top: 12px;
   }
 
+  .anticon-warning {
+    margin-left: 0;
+  }
+
   .anticon-user {
     background: ${(props) => props.widgetthemecolor || cssVariables.zsbCyan};
     padding: 5px;
@@ -794,7 +798,7 @@ export const StyledReplyMessageContent = styled.span`
   border-radius: 10px;
   background: ${(props) => props.color || cssVariables.zsbCyan} !important;
   text-align: left;
-  width: fit-content;
+  width: auto;
   padding: 8px;
   line-height: 18px;
   margin: 5px 0;
@@ -891,7 +895,8 @@ export const StyledInputWrapper = styled.div`
 
 export const StyledChatHeaderActionIcons = styled(StyledFlexColumnSpaceBetween)`
   width: auto;
-  height: 100%;
+  height: 90%;
+  top: 5px;
   position: absolute;
   right: 0;
 
@@ -919,7 +924,7 @@ export const StyledMessageBadge = styled.span`
   margin-top: -10px;
   width: 20px;
   font-size: 12px;
-  color: #fff;
+  align-content: center;
 `;
 
 export const StyledWSProcessStep = styled.span`
@@ -935,7 +940,9 @@ export const StyledWSProcessStep = styled.span`
 
 export const StyledChatHeaderAvatar = styled(Avatar)`
   width: 70px;
+  position: absolute;
   margin-left: 5px;
+  left: 0;
 `;
 
 export const StyledChatReplyAvatar = styled(Avatar)`

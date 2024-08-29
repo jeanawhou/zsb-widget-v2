@@ -8,6 +8,7 @@ import { DECRYPT_BOT, SET_RANDOM_GENERATED_ID, SET_WIDGET_CONFIG } from 'src/sto
 import useCustomWebsocket from '../hooks/useWebsocket';
 import { configURLSelector, isWidgetReadySelector, websocketSelector } from 'src/store/selectors';
 import { visitorIdSelector } from 'src/store/selectors/user';
+import { isEmpty } from 'lodash';
 
 const useZSBWidget = ({ props }) => {
   // hooks
@@ -21,6 +22,15 @@ const useZSBWidget = ({ props }) => {
   const isWidgetReady = useSelector(isWidgetReadySelector);
   const isChatWidget = useSelector(isChatWidgetSelector);
 
+  const setWidgetConfigFromProps = () => {
+    if (!isEmpty(props)) {
+      dispatch({
+        type: SET_WIDGET_CONFIG,
+        payload: { widgetProps: props },
+      });
+    }
+  };
+
   const fetchConfigProps = () => {
     fetch(configURL)
       .then((res) => res.json())
@@ -29,12 +39,17 @@ const useZSBWidget = ({ props }) => {
           type: SET_WIDGET_CONFIG,
           payload: { configJSON: res, widgetProps: props },
         });
+      })
+      .catch((error) => {
+        setWidgetConfigFromProps();
       });
   };
 
   useEffect(() => {
     if (configURL) {
       fetchConfigProps();
+    } else {
+      setWidgetConfigFromProps();
     }
   }, [configURL]);
 

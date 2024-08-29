@@ -18,20 +18,33 @@ export const COMPONENT_PROPS = [
   'visitorId',
   'disableClose',
   'hideWidgetMenu',
-  'avatarPosition',
-  'launcherIcon',
   'title',
   'subtitle',
   'placeholder',
   'typingExperience',
+  'autoOpen',
+  'launcherAvatar',
+  'responseAvatar',
+  'headerAvatar',
+  'launcherAvatarType',
+  'launcherIconType',
+  'responseAvatarType',
+  'headerAvatarType',
+  'clientBubbleColor',
+  'replyBubbleGradient',
+  'bgColorWithGradient',
 ];
 
 export const PROPS_TO_DEPRECATED = [
   { old: 'openWidget', new: 'autoOpen' },
   { old: 'headerResponseImgUrl', new: 'avatar' },
-  { old: 'widgetIconUrl', new: 'launcherIcon' },
+  { old: 'avatar', new: 'headerAvatar' },
+  { old: 'headerResponseImgUrl', new: 'headerAvatar' },
+  { old: 'widgetIconUrl', new: 'launcherAvatar' },
+  { old: 'launcherIcon', new: 'launcherAvatar' },
   { old: 'bubbleColor', new: 'clientBubbleColor' },
   { old: 'bubbleGradient', new: 'replyBubbleGradient' },
+  { old: 'launcherIconType', new: 'launcherAvatarType' },
 ];
 
 export const WIDGET_TYPES = ['chat', 'search'];
@@ -43,4 +56,4 @@ export const PLACEHOLDER = {
   chat: 'Type your query here...',
 };
 
-export const ICON_OPTIONS = ['icon1', 'icon2', 'icon3', 'icon4', 'zsb'];
+export const ICON_OPTIONS = ['default', 'icon1', 'icon2', 'icon3', 'icon4', 'zsb'];

@@ -11,7 +11,6 @@ import {
   SEND_NEW_MESSAGE,
   SET_WIDGET_TO_FULL_HEIGHT,
   SET_QUICK_REPLIES,
-  SET_WIDGET_CONFIG,
   SET_WS_ASK_QUESTION_ACTION,
   START_TYPING_MESSAGE,
   STOP_TYPING_MESSAGE,
@@ -22,13 +21,15 @@ import {
   FINISH_SEARCH,
   SHOW_SEARCH_INDICATOR,
   FINISH_SEARCH_WITH_ERROR,
+  SET_WIDGET_CONFIG,
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
 import DEFAULT_ZSB_ICON from '@/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
-import { FALLBACK_WIDGET_LABEL } from 'src/constants/chat';
-import { ICON_OPTIONS, WIDGET_TYPES } from 'src/constants';
+import { FALLBACK_WIDGET_LABEL, LAUNCHER_ONLY_ICONS } from 'src/constants/chat';
+import { WIDGET_TYPES } from 'src/constants';
+import { getIconColor } from '../helpers/icons';
 
 export const uiReducer = (state, action) => {
   const EXCLUDED_PROPS = ['style', 'bot', 'children'];
@@ -125,7 +126,9 @@ export const uiReducer = (state, action) => {
         authenticatedUser,
         autoOpen,
         visitorId,
-        launcherIcon,
+        launcherAvatar,
+        headerAvatar,
+        responseAvatar,
         type,
         position,
         label,
@@ -133,22 +136,22 @@ export const uiReducer = (state, action) => {
         color,
         ...restOfUI
       } = widgetUI;
-      const launcher = launcherIcon
-        ? extractUserIcon(launcherIcon, ICON_OPTIONS.includes(launcherIcon) ? iconColor || color : null)
-        : null;
+      const isChatWidget = !type || type === 'chat';
+      const userIconColor = getIconColor(avatar, color, isChatWidget, iconColor);
+      const launcher = launcherAvatar ? extractUserIcon(launcherAvatar, userIconColor) : null;
       // eslint-disable-next-line no-undef
       const fallbackIcon = DEFAULT_ZSB_ICON;
-      const isChatWidget = !type || type === 'chat';
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
-      const userIconColor =
-        !isChatWidget && ICON_OPTIONS.includes(avatar)
-          ? color
-          : isChatWidget && ICON_OPTIONS.includes(avatar)
-            ? iconColor || color
-            : null;
-      const userIcon = extractUserIcon(avatar, userIconColor);
+      const headerIcon =
+        typeof headerAvatar === 'string' && !LAUNCHER_ONLY_ICONS.includes(headerAvatar)
+          ? extractUserIcon(headerAvatar, userIconColor)
+          : headerAvatar;
+      const responseIcon =
+        typeof responseAvatar === 'string' && !LAUNCHER_ONLY_ICONS.includes(responseAvatar)
+          ? extractUserIcon(responseAvatar, userIconColor)
+          : responseAvatar;
 
       const chatPosition =
         isChatWidget && isValidMidPosition
@@ -157,7 +160,7 @@ export const uiReducer = (state, action) => {
             ? 'bottom-right'
             : position?.includes('left') && isMid
               ? 'bottom-left'
-              : position;
+              : position ?? 'bottom-right';
 
       return {
         ...state,
@@ -171,23 +174,24 @@ export const uiReducer = (state, action) => {
             // hence moving it outside the chat object
             placeholder,
             color,
-            avatar: userIcon,
             chat:
               widgetType === 'chat'
                 ? {
-                    launcherIcon: launcher || userIcon || fallbackIcon,
+                    launcherAvatar: launcher || fallbackIcon,
+                    headerAvatar: headerIcon,
+                    responseAvatar: responseIcon,
                     position: chatPosition,
                     label: restOfUI?.shape === 'rectangle' ? (label ? label : FALLBACK_WIDGET_LABEL) : null,
                     ...restOfUI,
                   }
                 : {},
-            search: widgetType === 'search' ? restOfUI : {},
+            search: widgetType === 'search' ? { launcherAvatar: launcher || fallbackIcon, ...restOfUI } : {},
           },
         },
         user: {
           ...state.user,
-          isAuthenticated: visitorId ? true : authenticatedUser,
-          visitorId,
+          isAuthenticated: visitorId ? true : authenticatedUser ?? null,
+          visitorId: visitorId ?? null,
           sessionId,
         },
         fbConfig: {
@@ -209,7 +213,7 @@ export const uiReducer = (state, action) => {
           : widgetType === 'chat'
             ? [
                 {
-                  reply: { text: widgetUI.welcomeMessage } || null,
+                  reply: widgetUI.welcomeMessag ? { text: widgetUI.welcomeMessage } : null,
                   timeReply: new Date(),
                 },
               ]

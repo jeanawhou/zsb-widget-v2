@@ -1,16 +1,27 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import useSelector from 'src/store/useSelector';
-import { isCircleLauncherSelector, avatarSelector } from 'src/store/selectors/ui';
+import {
+  isCircleLauncherSelector,
+  headerAvatarSelector,
+  responseAvatarSelector,
+  launcherAvatarSelector,
+} from 'src/store/selectors/ui';
+import { isEmpty } from 'lodash';
 
 const Avatar = (props) => {
-  const { isLogo, source, ...rest } = props;
-  const icon = useSelector(avatarSelector);
+  const { isLogo, source, isHeader, isChatResponse, ...rest } = props;
+  const headerAvatar = useSelector(headerAvatarSelector);
+  const responseAvatar = useSelector(responseAvatarSelector);
+  const launcherAvatar = useSelector(launcherAvatarSelector);
   const isCircleLauncher = useSelector(isCircleLauncherSelector);
   const classNames = `chat-launcher${isLogo ? ' isLogoOnly' : ''}`;
-  const avatar = source || icon;
+  const avatar =
+    // priority is the `source`
+    // then check which avatar position from the prop to render
+    typeof source !== 'undefined' ? source : isHeader ? headerAvatar : isChatResponse ? responseAvatar : launcherAvatar;
 
-  return avatar ? (
+  return !isEmpty(avatar) ? (
     typeof avatar === 'string' ? (
       avatar.toLowerCase() !== 'none' ? (
         isCircleLauncher ? (
@@ -23,18 +34,24 @@ const Avatar = (props) => {
             ...rest,
           })
         )
-      ) : null
+      ) : (
+        <></>
+      )
     ) : (
       cloneElement(avatar, {
         className: classNames,
         ...rest,
       })
     )
-  ) : null;
+  ) : (
+    <></>
+  );
 };
 
 Avatar.propTypes = {
   isLogo: PropTypes.bool,
+  isHeader: PropTypes.bool,
+  isChatResponse: PropTypes.bool,
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
 
