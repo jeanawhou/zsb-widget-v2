@@ -33,3 +33,4 @@ yarn.lock
 .npmrc
 
 .env.*
+*-widget-v2.git*
