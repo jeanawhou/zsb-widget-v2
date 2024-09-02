@@ -495,7 +495,8 @@ export const StyledWidgetWrapper = styled.div`
     width: 45px;
     background: ${(props) => props.color || cssVariables.zsbCyan};
     padding: 5px;
-    border-radius: ${(props) => (props.shape?.includes('circle') ? '50%' : '5px')};
+    border-radius: ${(props) =>
+      props.shape?.includes('circle') ? '50%' : typeof props.shape === 'undefined' ? '50%' : '5px'};
     box-shadow: ${cssVariables.boxShadow};
 
     &.disableclose {

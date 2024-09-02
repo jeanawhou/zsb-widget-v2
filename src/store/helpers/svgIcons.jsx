@@ -47,6 +47,6 @@ export const extractUserIcon = (icon, color) => {
       );
     }
     default:
-      return icon;
+      return zsbIcon(color ?? cssVariables.zsbCyan);
   }
 };

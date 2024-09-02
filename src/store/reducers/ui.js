@@ -25,7 +25,6 @@ import {
 } from '../action';
 import { extractWidgetUI } from '../helpers/bot';
 import { generateUUID } from '../utils';
-import DEFAULT_ZSB_ICON from '/assets/zsb-icon-faded-small.svg';
 import { extractUserIcon } from '../helpers/svgIcons';
 import { FALLBACK_WIDGET_LABEL, LAUNCHER_ONLY_ICONS } from 'src/constants/chat';
 import { WIDGET_TYPES } from 'src/constants';
@@ -138,9 +137,8 @@ export const uiReducer = (state, action) => {
       } = widgetUI;
       const isChatWidget = !type || type === 'chat';
       const userIconColor = getIconColor(avatar, color, isChatWidget, iconColor);
-      const launcher = launcherAvatar ? extractUserIcon(launcherAvatar ?? avatar, userIconColor) : null;
+      const launcher = extractUserIcon(launcherAvatar || avatar, userIconColor);
       // eslint-disable-next-line no-undef
-      const fallbackIcon = DEFAULT_ZSB_ICON;
       const isMid = position?.includes('mid');
       const isValidMidPosition = isMid && widgetUI.shape === 'rectangle';
       const widgetType = WIDGET_TYPES.includes(type) ? type.toLowerCase() : 'chat';
@@ -177,7 +175,7 @@ export const uiReducer = (state, action) => {
             chat:
               widgetType === 'chat'
                 ? {
-                    launcherAvatar: launcher || fallbackIcon,
+                    launcherAvatar: launcher,
                     headerAvatar: headerIcon,
                     responseAvatar: responseIcon,
                     position: chatPosition,
