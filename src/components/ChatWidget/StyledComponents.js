@@ -260,12 +260,16 @@ export const StyledLauncherWrapper = styled.div`
       ? '10px'
       : props.position?.includes('mid')
         ? '50%'
+          ? props.position?.includes('top')
+          : '10px'
         : 'unset'};
   bottom: ${(props) =>
     props.minimized === 'true' && props.position?.includes('bottom')
       ? '10px'
       : props.position?.includes('mid')
         ? '50%'
+          ? props.position?.includes('bottom')
+          : '10px'
         : 'unset'};
   left: ${(props) => {
     const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
@@ -275,7 +279,9 @@ export const StyledLauncherWrapper = styled.div`
         : `-${parsedAdjustment}px`
       : props.minimized === 'true' && props.position?.includes('left') && props.position?.includes('mid')
         ? '50%'
-        : 'unset';
+        : props.minimized === 'true' && props.position?.includes('left')
+          ? '10px'
+          : 'unset';
   }};
   right: ${(props) => {
     const parsedAdjustment = props?.adjustment ? Math.abs(Number(props.adjustment)) : null;
@@ -285,7 +291,9 @@ export const StyledLauncherWrapper = styled.div`
         : `-${parsedAdjustment}px`
       : props.minimized === 'true' && props.position?.includes('right') && props.position?.includes('mid')
         ? '50%'
-        : 'unset';
+        : props.minimized === 'true' && props.position?.includes('right')
+          ? '10px'
+          : 'unset';
   }};
   rotate: ${(props) =>
     props.position?.includes('mid-right') ? '-90deg' : props.position?.includes('mid-left') ? '90deg' : 'none'};
@@ -939,8 +947,7 @@ export const StyledWSProcessStep = styled.span`
 `;
 
 export const StyledChatHeaderAvatar = styled(Avatar)`
-  width: 70px;
-  position: absolute;
+  width: 100px;
   margin-left: 5px;
   left: 0;
 `;

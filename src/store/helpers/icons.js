@@ -10,5 +10,6 @@ export const getIconColor = (icon, widgetThemeColor, isChatWidget, iconColor) =>
     }
     return iconColor || cssVariables.defaultIconColor;
   }
-  return 'none';
+  // user's custom icon, so no color.
+  return icon ? 'none' : cssVariables.defaultIconColor;
 };

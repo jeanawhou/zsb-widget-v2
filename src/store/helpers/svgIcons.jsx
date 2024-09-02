@@ -1,4 +1,5 @@
 import React from 'react';
+import { cssVariables } from 'src/styles/variables';
 import { icon1, icon3, icon2, icon4, defaultIcon, zsbIcon } from 'src/svg/Icons';
 
 export const extractUserIcon = (icon, color) => {
@@ -36,7 +37,7 @@ export const extractUserIcon = (icon, color) => {
     }
 
     case 'zsb': {
-      return zsbIcon(color);
+      return zsbIcon(color ?? cssVariables.zsbCyan);
     }
     case 'default': {
       return (

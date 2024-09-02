@@ -48,3 +48,5 @@ export const SUBMIT_ERROR_MESSAGE = `Sorry, something went wrong while submittin
 
 export const HEADER_LOGO_POSITIONS = ['left', 'right', 'center'];
 export const LAUNCHER_ONLY_ICONS = ['default', 'icon1'];
+
+export const DEFAULT_CHAT_HEADER_TITLE = 'ZSB Chatbot';
