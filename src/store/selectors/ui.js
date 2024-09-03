@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect';
 
-import { DEFAULT_FONT_SIZE, DEFAULT_HEIGHT, HEADER_LOGO_POSITIONS } from 'src/constants/chat';
+import {
+  DEFAULT_CHAT_HEADER_TITLE,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_HEIGHT,
+  HEADER_LOGO_POSITIONS,
+} from 'src/constants/chat';
 import { convertRGBA, isHexColor } from 'src/utils/colors';
 import { websocketSelector } from '.';
 import { ICON_OPTIONS, PLACEHOLDER } from 'src/constants';
@@ -33,7 +38,7 @@ export const chatConfigSelector = createSelector(
 );
 
 export const widgetTitleSelector = createSelector(chatConfigSelector, (chatConfig) => {
-  return chatConfig.title || chatConfig.botTitle || chatConfig.identifier;
+  return (chatConfig.title || chatConfig.botTitle || chatConfig.identifier) ?? DEFAULT_CHAT_HEADER_TITLE;
 });
 
 export const widgetPropsSelector = createSelector(

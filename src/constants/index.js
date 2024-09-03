@@ -33,6 +33,7 @@ export const COMPONENT_PROPS = [
   'clientBubbleColor',
   'replyBubbleGradient',
   'bgColorWithGradient',
+  'avatar',
 ];
 
 export const PROPS_TO_DEPRECATED = [
